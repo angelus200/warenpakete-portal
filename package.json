@@ -12,7 +12,11 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "clean": "turbo run clean && rm -rf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,md,json}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "start:web": "cd apps/web && npm run start",
+    "start:api": "cd apps/api && npm run start",
+    "build:web": "cd apps/web && npm run build",
+    "build:api": "cd apps/api && npm run build"
   },
   "devDependencies": {
     "prettier": "^3.2.4",
