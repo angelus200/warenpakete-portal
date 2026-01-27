@@ -16,13 +16,16 @@ export class ApiClient {
     const token = await this.getToken();
     const url = `${this.baseUrl}${endpoint}`;
 
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options?.headers,
     };
 
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    if (options?.headers) {
+      Object.assign(headers, options.headers);
     }
 
     const response = await fetch(url, {
