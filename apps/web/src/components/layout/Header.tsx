@@ -6,11 +6,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useApiClient } from '@/lib/api-client';
 import { User, UserRole } from '@/types';
 import { Button } from '@/components/ui/button';
+import { Logo } from './Logo';
+import { usePathname } from 'next/navigation';
 
 export function Header() {
   const { isSignedIn } = useAuth();
   const { user: clerkUser } = useUser();
   const apiClient = useApiClient();
+  const pathname = usePathname();
 
   const { data: dbUser } = useQuery<User>({
     queryKey: ['user', 'me'],
@@ -20,51 +23,41 @@ export function Header() {
 
   const isAdmin = dbUser?.role === UserRole.ADMIN;
 
+  const NavLink = ({ href, children, isAdminLink = false }: { href: string; children: React.ReactNode; isAdminLink?: boolean }) => {
+    const isActive = pathname === href;
+    return (
+      <Link
+        href={href}
+        className={`text-sm font-medium transition-colors relative group ${
+          isAdminLink
+            ? 'text-gold-light hover:text-gold'
+            : isActive
+            ? 'text-gold'
+            : 'text-gray-300 hover:text-gold'
+        }`}
+      >
+        {children}
+        <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-gold transition-all group-hover:w-full ${isActive ? 'w-full' : ''}`} />
+      </Link>
+    );
+  };
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full border-b border-gold/20 bg-dark/95 backdrop-blur supports-[backdrop-filter]:bg-dark/90">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-              <span className="text-xl font-bold text-white">W</span>
-            </div>
-            <span className="text-xl font-bold text-gray-900">
-              Warenpakete Portal
-            </span>
-          </Link>
+          <Logo />
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            <Link
-              href="/products"
-              className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              Produkte
-            </Link>
+          <nav className="hidden md:flex items-center space-x-8">
+            <NavLink href="/products">Produkte</NavLink>
 
             {isSignedIn && (
               <>
-                <Link
-                  href="/dashboard"
-                  className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href="/orders"
-                  className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
-                >
-                  Bestellungen
-                </Link>
-                {isAdmin && (
-                  <Link
-                    href="/admin"
-                    className="text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
-                  >
-                    Admin
-                  </Link>
-                )}
+                <NavLink href="/dashboard">Dashboard</NavLink>
+                <NavLink href="/orders">Bestellungen</NavLink>
+                {isAdmin && <NavLink href="/admin" isAdminLink>Admin</NavLink>}
               </>
             )}
           </nav>
@@ -72,16 +65,16 @@ export function Header() {
           {/* User Actions */}
           <div className="flex items-center space-x-4">
             {isSignedIn ? (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-4">
                 {dbUser && (
                   <div className="hidden lg:block text-sm text-right">
-                    <p className="font-medium text-gray-900">
+                    <p className="font-semibold text-gold">
                       {dbUser.firstName || dbUser.email}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      {dbUser.role === UserRole.RESELLER && 'Reseller'}
-                      {dbUser.role === UserRole.ADMIN && 'Administrator'}
-                      {dbUser.role === UserRole.BUYER && 'Kunde'}
+                    <p className="text-xs text-gold-dark font-medium">
+                      {dbUser.role === UserRole.RESELLER && '⭐ Reseller'}
+                      {dbUser.role === UserRole.ADMIN && '👑 Administrator'}
+                      {dbUser.role === UserRole.BUYER && '🎯 Kunde'}
                     </p>
                   </div>
                 )}
@@ -89,20 +82,29 @@ export function Header() {
                   afterSignOutUrl="/"
                   appearance={{
                     elements: {
-                      avatarBox: 'h-9 w-9',
+                      avatarBox: 'h-10 w-10 ring-2 ring-gold/30',
                     },
                   }}
                 />
               </div>
             ) : (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <Link href="/sign-in">
-                  <Button variant="ghost" size="sm">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-300 hover:text-gold hover:bg-gold/10"
+                  >
                     Anmelden
                   </Button>
                 </Link>
                 <Link href="/sign-up">
-                  <Button size="sm">Registrieren</Button>
+                  <Button
+                    size="sm"
+                    className="bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-semibold shadow-lg shadow-gold/20"
+                  >
+                    Registrieren
+                  </Button>
                 </Link>
               </div>
             )}
@@ -111,33 +113,11 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isSignedIn && (
-          <div className="md:hidden border-t py-3 flex space-x-4 overflow-x-auto">
-            <Link
-              href="/products"
-              className="text-sm font-medium text-gray-700 hover:text-blue-600 whitespace-nowrap"
-            >
-              Produkte
-            </Link>
-            <Link
-              href="/dashboard"
-              className="text-sm font-medium text-gray-700 hover:text-blue-600 whitespace-nowrap"
-            >
-              Dashboard
-            </Link>
-            <Link
-              href="/orders"
-              className="text-sm font-medium text-gray-700 hover:text-blue-600 whitespace-nowrap"
-            >
-              Bestellungen
-            </Link>
-            {isAdmin && (
-              <Link
-                href="/admin"
-                className="text-sm font-medium text-red-600 hover:text-red-700 whitespace-nowrap"
-              >
-                Admin
-              </Link>
-            )}
+          <div className="md:hidden border-t border-gold/20 py-3 flex space-x-4 overflow-x-auto">
+            <NavLink href="/products">Produkte</NavLink>
+            <NavLink href="/dashboard">Dashboard</NavLink>
+            <NavLink href="/orders">Bestellungen</NavLink>
+            {isAdmin && <NavLink href="/admin" isAdminLink>Admin</NavLink>}
           </div>
         )}
       </div>

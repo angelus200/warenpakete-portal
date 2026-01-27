@@ -20,10 +20,10 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="de">
-        <body className={inter.className}>
+      <html lang="de" className="dark">
+        <body className={`${inter.className} bg-dark text-white antialiased`}>
           <Providers>
-            <div className="flex min-h-screen flex-col">
+            <div className="flex min-h-screen flex-col bg-dark">
               <Header />
               <main className="flex-1">{children}</main>
               <Footer />

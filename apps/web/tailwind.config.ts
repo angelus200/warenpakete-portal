@@ -17,6 +17,28 @@ const config: Config = {
     },
     extend: {
       colors: {
+        // Premium Gold Theme
+        gold: {
+          DEFAULT: '#D4AF37',
+          light: '#FFD700',
+          dark: '#B8860B',
+          darker: '#8B6914',
+          50: '#FFFEF5',
+          100: '#FFF9E6',
+          200: '#FFF2CC',
+          300: '#FFE699',
+          400: '#FFD700',
+          500: '#D4AF37',
+          600: '#B8860B',
+          700: '#8B6914',
+          800: '#6B5410',
+          900: '#4A3A0B',
+        },
+        dark: {
+          DEFAULT: '#0A0A0A',
+          light: '#1A1A1A',
+          lighter: '#2A2A2A',
+        },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
