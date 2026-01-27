@@ -7,6 +7,10 @@ import {
   Param,
   Delete,
   UseGuards,
+  Headers,
+  RawBodyRequest,
+  Req,
+  BadRequestException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
@@ -17,6 +21,8 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UserRole } from '@prisma/client';
+import { Request } from 'express';
+import { Webhook } from 'svix';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -65,13 +71,54 @@ export class UsersController {
 
   @Post('webhook')
   @ApiOperation({ summary: 'Clerk webhook for user sync' })
-  async handleWebhook(@Body() webhookData: any) {
-    const { type, data } = webhookData;
+  async handleWebhook(
+    @Headers('svix-id') svixId: string,
+    @Headers('svix-timestamp') svixTimestamp: string,
+    @Headers('svix-signature') svixSignature: string,
+    @Req() request: RawBodyRequest<Request>,
+  ) {
+    // Verify webhook signature
+    const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
 
-    if (type === 'user.created' || type === 'user.updated') {
-      return this.usersService.syncWithClerk(data.id, data);
+    if (!webhookSecret) {
+      throw new BadRequestException('CLERK_WEBHOOK_SECRET not configured');
     }
 
-    return { status: 'ignored' };
+    const wh = new Webhook(webhookSecret);
+    let payload: any;
+
+    try {
+      payload = wh.verify(request.rawBody.toString(), {
+        'svix-id': svixId,
+        'svix-timestamp': svixTimestamp,
+        'svix-signature': svixSignature,
+      }) as any;
+    } catch (err) {
+      console.error('Webhook signature verification failed:', err);
+      throw new BadRequestException('Invalid webhook signature');
+    }
+
+    const { type, data } = payload;
+
+    switch (type) {
+      case 'user.created':
+      case 'user.updated':
+        await this.usersService.syncWithClerk(data.id, data);
+        break;
+      case 'user.deleted':
+        await this.usersService.removeByClerkId(data.id);
+        break;
+      default:
+        console.log(`Unhandled webhook event: ${type}`);
+    }
+
+    return { received: true };
+  }
+
+  @Get('me/make-admin')
+  @ApiOperation({ summary: 'Make current user admin (DEV ONLY - Remove in production!)' })
+  async makeAdmin(@CurrentUser() user: { clerkId: string }) {
+    const dbUser = await this.usersService.findByClerkId(user.clerkId);
+    return this.usersService.update(dbUser.id, { role: UserRole.ADMIN });
   }
 }

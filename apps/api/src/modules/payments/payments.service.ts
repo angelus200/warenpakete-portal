@@ -84,15 +84,36 @@ export class PaymentsService {
       throw new BadRequestException(`Webhook signature verification failed: ${err.message}`);
     }
 
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const orderId = session.metadata?.orderId;
+    switch (event.type) {
+      case 'checkout.session.completed': {
+        const session = event.data.object as Stripe.Checkout.Session;
+        const orderId = session.metadata?.orderId;
 
-      if (orderId) {
-        await this.ordersService.updateStatus(orderId, {
-          status: OrderStatus.PAID,
-        });
+        if (orderId) {
+          console.log(`Processing checkout.session.completed for order ${orderId}`);
+          await this.ordersService.updateStatus(orderId, {
+            status: OrderStatus.PAID,
+          });
+        }
+        break;
       }
+
+      case 'payment_intent.succeeded': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        console.log(`Payment succeeded: ${paymentIntent.id}`);
+        // Additional handling if needed
+        break;
+      }
+
+      case 'payment_intent.payment_failed': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        console.error(`Payment failed: ${paymentIntent.id}`);
+        // Handle payment failure (e.g., notify user)
+        break;
+      }
+
+      default:
+        console.log(`Unhandled Stripe event: ${event.type}`);
     }
 
     return { received: true };

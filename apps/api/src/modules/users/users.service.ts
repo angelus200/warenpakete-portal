@@ -93,6 +93,14 @@ export class UsersService {
     return this.prisma.user.delete({ where: { id } });
   }
 
+  async removeByClerkId(clerkId: string) {
+    const user = await this.findByClerkId(clerkId);
+    if (user) {
+      return this.prisma.user.delete({ where: { id: user.id } });
+    }
+    return null;
+  }
+
   async syncWithClerk(clerkId: string, clerkData: any) {
     const existingUser = await this.findByClerkId(clerkId);
 
