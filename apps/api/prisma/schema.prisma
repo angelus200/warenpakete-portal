@@ -8,37 +8,55 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  clerkId   String   @unique
-  email     String   @unique
-  name      String?
-  role      UserRole @default(CUSTOMER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(uuid())
+  clerkId       String   @unique
+  email         String   @unique
+  name          String?
+  firstName     String?
+  lastName      String?
+  company       String?
+  vatId         String?
+  role          UserRole @default(BUYER)
+  walletBalance Decimal  @default(0) @db.Decimal(10, 2)
+  referralCode  String?  @unique
+  referredBy    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  orders Order[]
+  orders            Order[]
+  commissionsEarned Commission[] @relation("ResellerCommissions")
 
   @@map("users")
 }
 
 enum UserRole {
+  BUYER
+  RESELLER
   ADMIN
-  CUSTOMER
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  price       Decimal  @db.Decimal(10, 2)
-  stock       Int      @default(0)
-  active      Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String        @id @default(uuid())
+  name         String
+  description  String?
+  price        Decimal       @db.Decimal(10, 2)
+  retailValue  Decimal       @db.Decimal(10, 2)
+  stock        Int           @default(0)
+  palletCount  Int           @default(1)
+  status       ProductStatus @default(AVAILABLE)
+  images       String[]      @default([])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 
   orderItems OrderItem[]
 
   @@map("products")
+}
+
+enum ProductStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
 }
 
 model Order {
@@ -50,8 +68,9 @@ model Order {
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
-  user  User        @relation(fields: [userId], references: [id])
-  items OrderItem[]
+  user       User         @relation(fields: [userId], references: [id])
+  items      OrderItem[]
+  commission Commission?
 
   @@map("orders")
 }
@@ -77,4 +96,24 @@ model OrderItem {
   product Product @relation(fields: [productId], references: [id])
 
   @@map("order_items")
+}
+
+model Commission {
+  id         String           @id @default(uuid())
+  orderId    String           @unique
+  resellerId String
+  amount     Decimal          @db.Decimal(10, 2)
+  status     CommissionStatus @default(PENDING)
+  paidAt     DateTime?
+  createdAt  DateTime         @default(now())
+
+  order    Order @relation(fields: [orderId], references: [id])
+  reseller User  @relation("ResellerCommissions", fields: [resellerId], references: [id])
+
+  @@map("commissions")
+}
+
+enum CommissionStatus {
+  PENDING
+  PAID
 }

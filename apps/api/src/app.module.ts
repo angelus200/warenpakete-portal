@@ -4,6 +4,11 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './common/prisma/prisma.module';
+import { UsersModule } from './modules/users/users.module';
+import { ProductsModule } from './modules/products/products.module';
+import { OrdersModule } from './modules/orders/orders.module';
+import { PaymentsModule } from './modules/payments/payments.module';
+import { CommissionsModule } from './modules/commissions/commissions.module';
 
 @Module({
   imports: [
@@ -17,6 +22,11 @@ import { PrismaModule } from './common/prisma/prisma.module';
       },
     ]),
     PrismaModule,
+    UsersModule,
+    ProductsModule,
+    OrdersModule,
+    PaymentsModule,
+    CommissionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
