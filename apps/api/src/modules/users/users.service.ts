@@ -1,12 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
+import { EmailService } from '../email/email.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { nanoid } from 'nanoid';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private emailService: EmailService,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     // Generate unique referral code
@@ -22,12 +26,18 @@ export class UsersService {
       }
     }
 
-    return this.prisma.user.create({
+    const user = await this.prisma.user.create({
       data: {
         ...createUserDto,
         referralCode,
       },
     });
+
+    // Send welcome email
+    const userName = user.firstName || user.name || user.email.split('@')[0];
+    await this.emailService.sendWelcome(user.email, userName);
+
+    return user;
   }
 
   async findAll() {
@@ -115,11 +125,14 @@ export class UsersService {
       });
     }
 
-    return this.create({
+    // Create new user and send welcome email
+    const newUser = await this.create({
       clerkId,
       email: clerkData.emailAddresses[0]?.emailAddress,
       firstName: clerkData.firstName,
       lastName: clerkData.lastName,
     });
+
+    return newUser;
   }
 }

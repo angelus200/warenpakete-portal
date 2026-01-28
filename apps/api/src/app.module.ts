@@ -9,6 +9,7 @@ import { ProductsModule } from './modules/products/products.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { CommissionsModule } from './modules/commissions/commissions.module';
+import { EmailModule } from './modules/email/email.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CommissionsModule } from './modules/commissions/commissions.module';
       },
     ]),
     PrismaModule,
+    EmailModule,
     UsersModule,
     ProductsModule,
     OrdersModule,

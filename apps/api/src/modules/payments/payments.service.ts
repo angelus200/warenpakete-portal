@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { OrdersService } from '../orders/orders.service';
+import { EmailService } from '../email/email.service';
 import { OrderStatus } from '@prisma/client';
 import Stripe from 'stripe';
 
@@ -11,6 +12,7 @@ export class PaymentsService {
   constructor(
     private prisma: PrismaService,
     private ordersService: OrdersService,
+    private emailService: EmailService,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2023-10-16',
@@ -91,9 +93,44 @@ export class PaymentsService {
 
         if (orderId) {
           console.log(`Processing checkout.session.completed for order ${orderId}`);
+
+          // Update order status to PAID
           await this.ordersService.updateStatus(orderId, {
             status: OrderStatus.PAID,
           });
+
+          // Get order with user data
+          const order = await this.ordersService.findOne(orderId, undefined, true);
+
+          // Send order confirmation email
+          await this.emailService.sendOrderConfirmation(order.user.email, order);
+
+          // Send payment success email
+          const userName = order.user.firstName || order.user.email.split('@')[0];
+          await this.emailService.sendPaymentSuccess(order.user.email, order, userName);
+
+          // Check if there's a commission and send email to reseller
+          const commission = await this.prisma.commission.findUnique({
+            where: { orderId },
+            include: {
+              reseller: {
+                select: {
+                  email: true,
+                  firstName: true,
+                  name: true,
+                },
+              },
+            },
+          });
+
+          if (commission) {
+            const resellerName = commission.reseller.firstName || commission.reseller.name || commission.reseller.email.split('@')[0];
+            await this.emailService.sendCommissionEarned(
+              commission.reseller.email,
+              commission,
+              resellerName,
+            );
+          }
         }
         break;
       }
