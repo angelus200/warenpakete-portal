@@ -11,6 +11,7 @@ import { PaymentsModule } from './modules/payments/payments.module';
 import { CommissionsModule } from './modules/commissions/commissions.module';
 import { EmailModule } from './modules/email/email.module';
 import { StorageModule } from './modules/storage/storage.module';
+import { WalletModule } from './modules/wallet/wallet.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { StorageModule } from './modules/storage/storage.module';
     PrismaModule,
     EmailModule,
     StorageModule,
+    WalletModule,
     UsersModule,
     ProductsModule,
     OrdersModule,

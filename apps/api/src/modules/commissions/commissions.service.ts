@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
+import { WalletService } from '../wallet/wallet.service';
 import { CreateCommissionDto } from './dto/create-commission.dto';
 import { CommissionStatus, UserRole } from '@prisma/client';
 
@@ -7,7 +8,10 @@ import { CommissionStatus, UserRole } from '@prisma/client';
 export class CommissionsService {
   private readonly COMMISSION_RATE = 0.20; // 20%
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private walletService: WalletService,
+  ) {}
 
   async create(createCommissionDto: CreateCommissionDto) {
     return this.prisma.commission.create({
@@ -148,11 +152,25 @@ export class CommissionsService {
       return existingCommission;
     }
 
-    return this.create({
+    const commission = await this.create({
       orderId,
       resellerId: referrer.id,
       amount: commissionAmount,
       status: CommissionStatus.PENDING,
     });
+
+    // Add commission to reseller's wallet
+    try {
+      await this.walletService.addCommission(
+        referrer.id,
+        commission.id,
+        commissionAmount,
+      );
+    } catch (error) {
+      console.error('Failed to add commission to wallet:', error);
+      // Don't fail the commission creation if wallet update fails
+    }
+
+    return commission;
   }
 }
