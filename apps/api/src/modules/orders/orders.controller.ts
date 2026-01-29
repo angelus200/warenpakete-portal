@@ -16,13 +16,20 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UserRole } from '@prisma/client';
+import { UsersService } from '../users/users.service';
+import { Clerk } from '@clerk/backend';
 
 @ApiTags('orders')
 @ApiBearerAuth()
 @Controller('orders')
 @UseGuards(ClerkAuthGuard, RolesGuard)
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  private clerk = Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
+
+  constructor(
+    private readonly ordersService: OrdersService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create order' })
@@ -30,18 +37,36 @@ export class OrdersController {
     @Body() createOrderDto: CreateOrderDto,
     @CurrentUser() user: { clerkId: string },
   ) {
-    const userRecord = await this.ordersService['prisma'].user.findUnique({
-      where: { clerkId: user.clerkId },
-    });
+    // Try to find existing user
+    let userRecord = await this.usersService.findByClerkId(user.clerkId);
+
+    // If user doesn't exist, create from Clerk data
+    if (!userRecord) {
+      console.log('⚠️ User not found in DB, creating from Clerk:', user.clerkId);
+
+      try {
+        const clerkUser = await this.clerk.users.getUser(user.clerkId);
+        userRecord = await this.usersService.syncWithClerk(user.clerkId, clerkUser);
+        console.log('✅ User created successfully:', userRecord.id);
+      } catch (error) {
+        console.error('❌ Failed to sync user from Clerk:', error);
+        throw error;
+      }
+    }
+
     return this.ordersService.create(createOrderDto, userRecord.id);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all orders (own orders or all for Admin)' })
   async findAll(@CurrentUser() user: { clerkId: string }) {
-    const userRecord = await this.ordersService['prisma'].user.findUnique({
-      where: { clerkId: user.clerkId },
-    });
+    let userRecord = await this.usersService.findByClerkId(user.clerkId);
+
+    if (!userRecord) {
+      const clerkUser = await this.clerk.users.getUser(user.clerkId);
+      userRecord = await this.usersService.syncWithClerk(user.clerkId, clerkUser);
+    }
+
     const isAdmin = userRecord.role === UserRole.ADMIN;
     return this.ordersService.findAll(
       isAdmin ? undefined : userRecord.id,
@@ -55,9 +80,13 @@ export class OrdersController {
     @Param('id') id: string,
     @CurrentUser() user: { clerkId: string },
   ) {
-    const userRecord = await this.ordersService['prisma'].user.findUnique({
-      where: { clerkId: user.clerkId },
-    });
+    let userRecord = await this.usersService.findByClerkId(user.clerkId);
+
+    if (!userRecord) {
+      const clerkUser = await this.clerk.users.getUser(user.clerkId);
+      userRecord = await this.usersService.syncWithClerk(user.clerkId, clerkUser);
+    }
+
     const isAdmin = userRecord.role === UserRole.ADMIN;
     return this.ordersService.findOne(
       id,
