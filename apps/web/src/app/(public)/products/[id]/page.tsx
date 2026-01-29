@@ -44,8 +44,8 @@ export default function ProductDetailPage({
       items: [
         {
           productId: product.id,
-          quantity,
-          price: product.price,
+          quantity: Number(quantity),
+          price: Number(product.price),
         },
       ],
     });
