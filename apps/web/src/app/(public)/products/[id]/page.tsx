@@ -1,12 +1,11 @@
 'use client';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { useApiClient } from '@/lib/api-client';
+import { useApi } from '@/hooks/useApi';
 import { Product, ProductStatus } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@clerk/nextjs';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -15,27 +14,26 @@ export default function ProductDetailPage({
 }: {
   params: { id: string };
 }) {
-  const apiClient = useApiClient();
+  const api = useApi();
   const router = useRouter();
-  const { isSignedIn } = useAuth();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
 
   const { data: product, isLoading } = useQuery<Product>({
     queryKey: ['product', params.id],
-    queryFn: () => apiClient.get(`/products/${params.id}`),
+    queryFn: () => api.get(`/products/${params.id}`),
   });
 
   const createOrderMutation = useMutation({
     mutationFn: (orderData: { items: Array<{ productId: string; quantity: number; price: number }> }) =>
-      apiClient.post('/orders', orderData),
+      api.post('/orders', orderData),
     onSuccess: (data: any) => {
       router.push(`/checkout?orderId=${data.id}`);
     },
   });
 
   const handleBuyNow = () => {
-    if (!isSignedIn) {
+    if (!api.isSignedIn) {
       router.push('/sign-in');
       return;
     }

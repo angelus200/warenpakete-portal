@@ -14,8 +14,22 @@ export class ApiClient {
     options?: RequestInit,
   ): Promise<T> {
     try {
+      console.log('=== API REQUEST START ===');
+      console.log('Endpoint:', endpoint);
+      console.log('Calling getToken()...');
+
       const token = await this.getToken();
+
+      console.log('Token vorhanden:', !!token);
+      if (token) {
+        console.log('Token Anfang:', token.substring(0, 50) + '...');
+        console.log('Token Länge:', token.length);
+      } else {
+        console.log('⚠️ KEIN TOKEN ERHALTEN!');
+      }
+
       const url = `${this.baseUrl}${endpoint}`;
+      console.log('URL:', url);
 
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
@@ -23,26 +37,30 @@ export class ApiClient {
 
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
-        console.log('API Request:', { endpoint, hasToken: !!token });
+        console.log('✅ Authorization Header gesetzt');
       } else {
-        console.log('API Request (no auth):', { endpoint });
+        console.log('❌ Kein Authorization Header (kein Token)');
       }
 
       if (options?.headers) {
         Object.assign(headers, options.headers);
       }
 
+      console.log('Sending request...');
       const response = await fetch(url, {
         ...options,
         headers,
         credentials: 'include',
       });
 
+      console.log('Response Status:', response.status);
+      console.log('=== API REQUEST END ===');
+
       if (!response.ok) {
         const error = await response.json().catch(() => ({
           message: response.statusText,
         }));
-        console.error('API Error:', {
+        console.error('❌ API Error:', {
           endpoint,
           status: response.status,
           error,
@@ -52,7 +70,7 @@ export class ApiClient {
 
       return response.json();
     } catch (error) {
-      console.error('API Request failed:', { endpoint, error });
+      console.error('❌ API Request failed:', { endpoint, error });
       throw error;
     }
   }
