@@ -17,6 +17,7 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UserRole } from '@prisma/client';
 import { UsersService } from '../users/users.service';
+import { ContractsService } from '../contracts/contracts.service';
 import { Clerk } from '@clerk/backend';
 
 @ApiTags('orders')
@@ -29,6 +30,7 @@ export class OrdersController {
   constructor(
     private readonly ordersService: OrdersService,
     private readonly usersService: UsersService,
+    private readonly contractsService: ContractsService,
   ) {}
 
   @Post()
@@ -103,5 +105,21 @@ export class OrdersController {
     @Body() updateOrderStatusDto: UpdateOrderStatusDto,
   ) {
     return this.ordersService.updateStatus(id, updateOrderStatusDto);
+  }
+
+  @Post(':id/choose-delivery')
+  @ApiOperation({ summary: 'Choose delivery fulfillment for order' })
+  async chooseDelivery(
+    @Param('id') orderId: string,
+    @CurrentUser() user: { clerkId: string },
+  ) {
+    let userRecord = await this.usersService.findByClerkId(user.clerkId);
+
+    if (!userRecord) {
+      const clerkUser = await this.clerk.users.getUser(user.clerkId);
+      userRecord = await this.usersService.syncWithClerk(user.clerkId, clerkUser);
+    }
+
+    return this.contractsService.chooseDelivery(orderId, userRecord.id);
   }
 }

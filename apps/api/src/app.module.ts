@@ -13,6 +13,7 @@ import { EmailModule } from './modules/email/email.module';
 import { StorageModule } from './modules/storage/storage.module';
 import { WalletModule } from './modules/wallet/wallet.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
+import { ContractsModule } from './modules/contracts/contracts.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { InvoicesModule } from './modules/invoices/invoices.module';
     StorageModule,
     WalletModule,
     InvoicesModule,
+    ContractsModule,
     UsersModule,
     ProductsModule,
     OrdersModule,
