@@ -4,7 +4,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
-import { useApiClient } from '@/lib/api-client';
+import { useApi } from '@/hooks/useApi';
 import { Order } from '@/types';
 import { Button } from '@/components/ui/button';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -15,20 +15,20 @@ const stripePromise = loadStripe(
 );
 
 export default function CheckoutPage() {
-  const apiClient = useApiClient();
+  const api = useApi();
   const searchParams = useSearchParams();
   const router = useRouter();
   const orderId = searchParams.get('orderId');
 
   const { data: order, isLoading } = useQuery<Order>({
     queryKey: ['order', orderId],
-    queryFn: () => apiClient.get(`/orders/${orderId}`),
+    queryFn: () => api.get(`/orders/${orderId}`),
     enabled: !!orderId,
   });
 
   const checkoutMutation = useMutation({
     mutationFn: (orderId: string) =>
-      apiClient.post<{ sessionId: string; url: string }>(
+      api.post<{ sessionId: string; url: string }>(
         '/payments/create-checkout-session',
         { orderId }
       ),

@@ -1,27 +1,27 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useApiClient } from '@/lib/api-client';
+import { useApi } from '@/hooks/useApi';
 import { User, Order, CommissionEarnings, UserRole } from '@/types';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 
 export default function DashboardPage() {
-  const apiClient = useApiClient();
+  const api = useApi();
 
   const { data: user } = useQuery<User>({
     queryKey: ['user', 'me'],
-    queryFn: () => apiClient.get('/users/me'),
+    queryFn: () => api.get('/users/me'),
   });
 
   const { data: orders } = useQuery<Order[]>({
     queryKey: ['orders'],
-    queryFn: () => apiClient.get('/orders'),
+    queryFn: () => api.get('/orders'),
   });
 
   const { data: earnings } = useQuery<CommissionEarnings>({
     queryKey: ['commissions', 'total', user?.id],
-    queryFn: () => apiClient.get(`/commissions/reseller/${user?.id}/total`),
+    queryFn: () => api.get(`/commissions/reseller/${user?.id}/total`),
     enabled: !!user && user.role === UserRole.RESELLER,
   });
 

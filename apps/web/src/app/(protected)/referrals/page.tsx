@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useApiClient } from '@/lib/api-client';
+import { useApi } from '@/hooks/useApi';
 import { Card } from '@/components/ui/card';
 import { User, CommissionEarnings } from '@/types';
 
@@ -20,22 +20,22 @@ interface Commission {
 }
 
 export default function ReferralsPage() {
-  const apiClient = useApiClient();
+  const api = useApi();
 
   const { data: user } = useQuery<User>({
     queryKey: ['user', 'me'],
-    queryFn: () => apiClient.get('/users/me'),
+    queryFn: () => api.get('/users/me'),
   });
 
   const { data: earnings } = useQuery<CommissionEarnings>({
     queryKey: ['commissions', 'total', user?.id],
-    queryFn: () => apiClient.get(`/commissions/reseller/${user?.id}/total`),
+    queryFn: () => api.get(`/commissions/reseller/${user?.id}/total`),
     enabled: !!user,
   });
 
   const { data: commissions } = useQuery<Commission[]>({
     queryKey: ['commissions', user?.id],
-    queryFn: () => apiClient.get(`/commissions/reseller/${user?.id}`),
+    queryFn: () => api.get(`/commissions/reseller/${user?.id}`),
     enabled: !!user,
   });
 

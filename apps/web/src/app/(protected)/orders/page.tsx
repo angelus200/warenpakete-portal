@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 export const dynamic = 'force-dynamic';
-import { useApiClient } from '@/lib/api-client';
+import { useApi } from '@/hooks/useApi';
 import { Order } from '@/types';
 import { Card } from '@/components/ui/card';
 import { useSearchParams } from 'next/navigation';
@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function OrdersPage() {
-  const apiClient = useApiClient();
+  const api = useApi();
   const searchParams = useSearchParams();
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -24,7 +24,7 @@ export default function OrdersPage() {
 
   const { data: orders, isLoading } = useQuery<Order[]>({
     queryKey: ['orders'],
-    queryFn: () => apiClient.get('/orders'),
+    queryFn: () => api.get('/orders'),
   });
 
   return (

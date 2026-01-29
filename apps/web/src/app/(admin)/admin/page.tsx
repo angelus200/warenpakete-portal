@@ -1,27 +1,27 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useApiClient } from '@/lib/api-client';
+import { useApi } from '@/hooks/useApi';
 import { User, Order, Commission } from '@/types';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 
 export default function AdminDashboardPage() {
-  const apiClient = useApiClient();
+  const api = useApi();
 
   const { data: users } = useQuery<User[]>({
     queryKey: ['users'],
-    queryFn: () => apiClient.get('/users'),
+    queryFn: () => api.get('/users'),
   });
 
   const { data: orders } = useQuery<Order[]>({
     queryKey: ['orders'],
-    queryFn: () => apiClient.get('/orders'),
+    queryFn: () => api.get('/orders'),
   });
 
   const { data: pendingCommissions } = useQuery<Commission[]>({
     queryKey: ['commissions', 'pending'],
-    queryFn: () => apiClient.get('/commissions/pending'),
+    queryFn: () => api.get('/commissions/pending'),
   });
 
   const totalRevenue =

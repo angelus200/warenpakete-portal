@@ -1,14 +1,14 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useApiClient } from '@/lib/api-client';
+import { useApi } from '@/hooks/useApi';
 import { Product, ProductStatus, PaginatedResponse } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useState } from 'react';
 
 export default function AdminProductsPage() {
-  const apiClient = useApiClient();
+  const api = useApi();
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,11 +22,11 @@ export default function AdminProductsPage() {
 
   const { data, isLoading } = useQuery<PaginatedResponse<Product>>({
     queryKey: ['products', 'admin'],
-    queryFn: () => apiClient.get('/products?limit=100'),
+    queryFn: () => api.get('/products?limit=100'),
   });
 
   const createMutation = useMutation({
-    mutationFn: (productData: any) => apiClient.post('/products', productData),
+    mutationFn: (productData: any) => api.post('/products', productData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
       setShowForm(false);
@@ -42,7 +42,7 @@ export default function AdminProductsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => apiClient.delete(`/products/${id}`),
+    mutationFn: (id: string) => api.delete(`/products/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
     },

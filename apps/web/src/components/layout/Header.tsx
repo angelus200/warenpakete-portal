@@ -1,24 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuth, UserButton, useUser } from '@clerk/nextjs';
+import { UserButton, useUser } from '@clerk/nextjs';
 import { useQuery } from '@tanstack/react-query';
-import { useApiClient } from '@/lib/api-client';
+import { useApi } from '@/hooks/useApi';
 import { User, UserRole } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Logo } from './Logo';
 import { usePathname } from 'next/navigation';
 
 export function Header() {
-  const { isSignedIn } = useAuth();
   const { user: clerkUser } = useUser();
-  const apiClient = useApiClient();
+  const api = useApi();
   const pathname = usePathname();
 
   const { data: dbUser } = useQuery<User>({
     queryKey: ['user', 'me'],
-    queryFn: () => apiClient.get('/users/me'),
-    enabled: isSignedIn,
+    queryFn: () => api.get('/users/me'),
+    enabled: api.api.isSignedIn,
   });
 
   const isAdmin = dbUser?.role === UserRole.ADMIN;
@@ -53,7 +52,7 @@ export function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <NavLink href="/products">Produkte</NavLink>
 
-            {isSignedIn && (
+            {api.isSignedIn && (
               <>
                 <NavLink href="/dashboard">Dashboard</NavLink>
                 <NavLink href="/orders">Bestellungen</NavLink>
@@ -64,7 +63,7 @@ export function Header() {
 
           {/* User Actions */}
           <div className="flex items-center space-x-4">
-            {isSignedIn ? (
+            {api.isSignedIn ? (
               <div className="flex items-center space-x-4">
                 {dbUser && (
                   <div className="hidden lg:block text-sm text-right">
@@ -112,7 +111,7 @@ export function Header() {
         </div>
 
         {/* Mobile Navigation */}
-        {isSignedIn && (
+        {api.isSignedIn && (
           <div className="md:hidden border-t border-gold/20 py-3 flex space-x-4 overflow-x-auto">
             <NavLink href="/products">Produkte</NavLink>
             <NavLink href="/dashboard">Dashboard</NavLink>

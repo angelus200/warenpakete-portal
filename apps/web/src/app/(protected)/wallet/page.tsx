@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useApiClient } from '@/lib/api-client';
+import { useApi } from '@/hooks/useApi';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
@@ -26,7 +26,7 @@ interface PayoutRequest {
 }
 
 export default function WalletPage() {
-  const apiClient = useApiClient();
+  const api = useApi();
   const queryClient = useQueryClient();
   const [amount, setAmount] = useState('');
   const [iban, setIban] = useState('');
@@ -34,22 +34,22 @@ export default function WalletPage() {
 
   const { data: balance } = useQuery<{ balance: number }>({
     queryKey: ['wallet', 'balance'],
-    queryFn: () => apiClient.get('/wallet/balance'),
+    queryFn: () => api.get('/wallet/balance'),
   });
 
   const { data: transactions } = useQuery<WalletTransaction[]>({
     queryKey: ['wallet', 'transactions'],
-    queryFn: () => apiClient.get('/wallet/transactions'),
+    queryFn: () => api.get('/wallet/transactions'),
   });
 
   const { data: payoutRequests } = useQuery<PayoutRequest[]>({
     queryKey: ['wallet', 'payouts'],
-    queryFn: () => apiClient.get('/wallet/payouts'),
+    queryFn: () => api.get('/wallet/payouts'),
   });
 
   const requestPayoutMutation = useMutation({
     mutationFn: (data: { amount: number; iban: string; bankName?: string }) =>
-      apiClient.post('/wallet/request-payout', data),
+      api.post('/wallet/request-payout', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wallet'] });
       setAmount('');

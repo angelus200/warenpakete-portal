@@ -1,18 +1,18 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useApiClient } from '@/lib/api-client';
+import { useApi } from '@/hooks/useApi';
 import { Product, PaginatedResponse, ProductStatus } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 
 export default function ProductsPage() {
-  const apiClient = useApiClient();
+  const api = useApi();
 
   const { data, isLoading, error } = useQuery<PaginatedResponse<Product>>({
     queryKey: ['products'],
-    queryFn: () => apiClient.get('/products?limit=50'),
+    queryFn: () => api.get('/products?limit=50'),
   });
 
   if (isLoading) {
