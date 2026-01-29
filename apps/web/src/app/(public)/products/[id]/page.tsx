@@ -135,15 +135,15 @@ export default function ProductDetailPage({
               <Card className="p-6 bg-dark-light border-gold/30 mb-8">
                 <div className="flex items-baseline gap-4 mb-4">
                   <span className="text-5xl font-bold text-gold">
-                    €{product.price.toFixed(2)}
+                    €{Number(product.price).toFixed(2)}
                   </span>
                   <span className="text-2xl text-gray-500 line-through">
-                    €{product.retailValue.toFixed(2)}
+                    €{Number(product.retailValue).toFixed(2)}
                   </span>
                 </div>
                 <div className="inline-block px-4 py-2 bg-gold/10 border border-gold/40 rounded-full">
                   <span className="text-gold font-bold text-lg">
-                    Sie sparen {discount}% • €{(product.retailValue - product.price).toFixed(2)}
+                    Sie sparen {discount}% • €{(Number(product.retailValue) - Number(product.price)).toFixed(2)}
                   </span>
                 </div>
               </Card>
@@ -182,7 +182,7 @@ export default function ProductDetailPage({
                       </svg>
                       <span className="text-gray-400">UVP Gesamtwert:</span>
                     </div>
-                    <span className="font-bold text-white text-lg">€{product.retailValue.toFixed(2)}</span>
+                    <span className="font-bold text-white text-lg">€{Number(product.retailValue).toFixed(2)}</span>
                   </div>
                 </div>
               </Card>
@@ -215,7 +215,7 @@ export default function ProductDetailPage({
                         Wird verarbeitet...
                       </span>
                     ) : (
-                      <>Jetzt kaufen • €{(product.price * quantity).toFixed(2)}</>
+                      <>Jetzt kaufen • €{(Number(product.price) * quantity).toFixed(2)}</>
                     )}
                   </Button>
 

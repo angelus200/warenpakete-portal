@@ -92,10 +92,10 @@ export default function ProductsPage() {
                   <div className="space-y-3 mb-6">
                     <div className="flex items-baseline gap-3">
                       <span className="text-3xl font-bold text-gold">
-                        €{product.price.toFixed(2)}
+                        €{Number(product.price).toFixed(2)}
                       </span>
                       <span className="text-sm text-gray-500 line-through">
-                        UVP: €{product.retailValue.toFixed(2)}
+                        UVP: €{Number(product.retailValue).toFixed(2)}
                       </span>
                     </div>
                     <div className="inline-block px-3 py-1 bg-gold/10 border border-gold/30 rounded-full">

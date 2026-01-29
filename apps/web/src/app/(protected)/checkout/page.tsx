@@ -78,11 +78,11 @@ export default function CheckoutPage() {
                 <div>
                   <h3 className="font-semibold">{item.product.name}</h3>
                   <p className="text-sm text-gray-600">
-                    Menge: {item.quantity} × €{item.price.toFixed(2)}
+                    Menge: {item.quantity} × €{Number(item.price).toFixed(2)}
                   </p>
                 </div>
                 <div className="font-semibold">
-                  €{(item.price * item.quantity).toFixed(2)}
+                  €{(Number(item.price) * item.quantity).toFixed(2)}
                 </div>
               </div>
             ))}
@@ -91,7 +91,7 @@ export default function CheckoutPage() {
           <div className="mt-6 pt-4 border-t">
             <div className="flex justify-between items-center text-xl font-bold">
               <span>Gesamt:</span>
-              <span>€{order.totalAmount.toFixed(2)}</span>
+              <span>€{Number(order.totalAmount).toFixed(2)}</span>
             </div>
           </div>
         </div>

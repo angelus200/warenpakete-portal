@@ -115,7 +115,7 @@ export default function WalletPage() {
           <div className="text-center">
             <p className="text-gray-400 mb-2 text-lg">Verfügbares Guthaben</p>
             <p className="text-6xl font-bold text-gold mb-4">
-              €{balance?.balance.toFixed(2) || '0.00'}
+              €{balance?.balance ? Number(balance.balance).toFixed(2) : '0.00'}
             </p>
             <p className="text-sm text-gray-500">
               Mindestauszahlung: €10.00 • Auszahlung innerhalb von 30 Tagen
@@ -185,7 +185,7 @@ export default function WalletPage() {
                   <div key={request.id} className="p-4 bg-dark rounded-lg border border-gold/10">
                     <div className="flex justify-between items-start mb-2">
                       <div>
-                        <p className="font-bold text-gold text-lg">€{request.amount.toFixed(2)}</p>
+                        <p className="font-bold text-gold text-lg">€{Number(request.amount).toFixed(2)}</p>
                         <p className="text-sm text-gray-400">{request.iban}</p>
                       </div>
                       <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getStatusColor(request.status)}`}>
@@ -228,7 +228,7 @@ export default function WalletPage() {
                   </div>
                   <div className="text-right">
                     <p className={`text-lg font-bold ${tx.type.includes('PAYOUT') || tx.type.includes('FEE') ? 'text-red-400' : 'text-green-400'}`}>
-                      {tx.type.includes('PAYOUT') || tx.type.includes('FEE') ? '-' : '+'}€{tx.amount.toFixed(2)}
+                      {tx.type.includes('PAYOUT') || tx.type.includes('FEE') ? '-' : '+'}€{Number(tx.amount).toFixed(2)}
                     </p>
                     <span className={`text-xs px-2 py-1 rounded-full border ${getStatusColor(tx.status)}`}>
                       {tx.status}

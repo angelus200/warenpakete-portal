@@ -123,7 +123,7 @@ export default function ReferralsPage() {
               </div>
             </div>
             <p className="text-3xl font-bold text-yellow-400">
-              €{earnings?.pending.toFixed(2) || '0.00'}
+              €{earnings?.pending ? Number(earnings.pending).toFixed(2) : '0.00'}
             </p>
           </Card>
 
@@ -137,7 +137,7 @@ export default function ReferralsPage() {
               </div>
             </div>
             <p className="text-3xl font-bold text-green-400">
-              €{earnings?.paid.toFixed(2) || '0.00'}
+              €{earnings?.paid ? Number(earnings.paid).toFixed(2) : '0.00'}
             </p>
           </Card>
 
@@ -152,7 +152,7 @@ export default function ReferralsPage() {
               </div>
             </div>
             <p className="text-3xl font-bold text-gold">
-              €{earnings?.total.toFixed(2) || '0.00'}
+              €{earnings?.total ? Number(earnings.total).toFixed(2) : '0.00'}
             </p>
           </Card>
         </div>
@@ -171,12 +171,12 @@ export default function ReferralsPage() {
                       </p>
                       <p className="text-sm text-gray-400">Kunde: {commission.order.user.email}</p>
                       <p className="text-sm text-gray-400">
-                        Bestellwert: €{commission.order.totalAmount.toFixed(2)}
+                        Bestellwert: €{Number(commission.order.totalAmount).toFixed(2)}
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold text-gold mb-1">
-                        €{commission.amount.toFixed(2)}
+                        €{Number(commission.amount).toFixed(2)}
                       </p>
                       <span
                         className={`inline-block px-3 py-1 rounded-full text-xs font-bold border ${

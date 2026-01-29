@@ -97,11 +97,11 @@ export default function OrdersPage() {
                       <div className="flex-1">
                         <p className="font-semibold text-white mb-1">{item.product.name}</p>
                         <p className="text-sm text-gray-400">
-                          {item.quantity} × €{item.price.toFixed(2)}
+                          {item.quantity} × €{Number(item.price).toFixed(2)}
                         </p>
                       </div>
                       <p className="font-bold text-gold text-lg">
-                        €{(item.price * item.quantity).toFixed(2)}
+                        €{(Number(item.price) * item.quantity).toFixed(2)}
                       </p>
                     </div>
                   ))}
@@ -110,7 +110,7 @@ export default function OrdersPage() {
                 <div className="flex justify-between items-center">
                   <span className="text-xl font-semibold text-white">Gesamt:</span>
                   <span className="text-3xl font-bold text-gold">
-                    €{order.totalAmount.toFixed(2)}
+                    €{Number(order.totalAmount).toFixed(2)}
                   </span>
                 </div>
               </Card>

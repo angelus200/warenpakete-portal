@@ -46,13 +46,13 @@ export default function AdminDashboardPage() {
 
         <Card className="p-6">
           <h3 className="text-sm text-gray-600 mb-2">Total Revenue</h3>
-          <p className="text-3xl font-bold">€{totalRevenue.toFixed(2)}</p>
+          <p className="text-3xl font-bold">€{Number(totalRevenue).toFixed(2)}</p>
         </Card>
 
         <Card className="p-6">
           <h3 className="text-sm text-gray-600 mb-2">Pending Commissions</h3>
           <p className="text-3xl font-bold">
-            €{pendingCommissionAmount.toFixed(2)}
+            €{Number(pendingCommissionAmount).toFixed(2)}
           </p>
         </Card>
       </div>

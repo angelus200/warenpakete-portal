@@ -51,7 +51,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <p className="text-3xl font-bold text-gold">
-              €{user?.walletBalance.toFixed(2) || '0.00'}
+              €{user?.walletBalance ? Number(user.walletBalance).toFixed(2) : '0.00'}
             </p>
             <p className="text-xs text-gray-500 mt-2">Verfügbares Guthaben</p>
           </Card>
@@ -81,7 +81,7 @@ export default function DashboardPage() {
                 </div>
               </div>
               <p className="text-3xl font-bold text-gold">
-                €{earnings?.pending.toFixed(2) || '0.00'}
+                €{earnings?.pending ? Number(earnings.pending).toFixed(2) : '0.00'}
               </p>
               <p className="text-xs text-gray-500 mt-2">Ausstehend (20%)</p>
             </Card>
@@ -160,7 +160,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="text-right">
                     <p className="font-bold text-gold text-lg mb-1">
-                      €{order.totalAmount.toFixed(2)}
+                      €{Number(order.totalAmount).toFixed(2)}
                     </p>
                     <span
                       className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${

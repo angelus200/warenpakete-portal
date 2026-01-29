@@ -31,6 +31,7 @@ export class ApiClient {
     const response = await fetch(url, {
       ...options,
       headers,
+      credentials: 'include', // CRITICAL: Include credentials for CORS
     });
 
     if (!response.ok) {
