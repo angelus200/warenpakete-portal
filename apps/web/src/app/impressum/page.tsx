@@ -2,7 +2,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Impressum | E-Commerce Rente',
+  title: 'Impressum | Warenpakete Portal',
   description: 'Impressum und rechtliche Angaben',
 };
 
@@ -14,99 +14,59 @@ export default function ImpressumPage() {
           <h1 className="text-4xl font-bold text-gold mb-8">Impressum</h1>
 
           <div className="prose prose-invert max-w-none">
-            <div className="bg-gold/10 border-l-4 border-gold p-4 mb-6">
-              <p className="text-gold font-semibold">
-                ⚠️ WICHTIG: Diese Angaben müssen vom Betreiber ausgefüllt werden!
-              </p>
-            </div>
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gold mb-4">
+                Angaben gemäß schweizerischem Recht:
+              </h2>
+              <div className="bg-dark p-4 rounded border border-gold/20">
+                <p className="text-white"><strong>Trademark24-7 AG</strong></p>
+                <p className="text-white">Kantonsstrasse 1</p>
+                <p className="text-white">8807 Freienbach SZ</p>
+                <p className="text-white">Schweiz</p>
+              </div>
+            </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-gold mb-4">
-                Angaben gemäß § 5 TMG
+                Handelsregister
               </h2>
               <div className="bg-dark p-4 rounded border border-gold/20">
-                <p className="text-white"><strong>Firmenname:</strong> [FIRMA EINTRAGEN]</p>
-                <p className="text-white"><strong>Geschäftsführer:</strong> [NAME EINTRAGEN]</p>
-                <p className="text-white"><strong>Anschrift:</strong></p>
-                <p className="text-white ml-4">
-                  [STRASSE UND HAUSNUMMER]<br />
-                  [PLZ ORT]<br />
-                  [LAND]
-                </p>
+                <p className="text-white"><strong>Handelsregister:</strong> CHE-246.473.858</p>
+                <p className="text-white"><strong>Registergericht:</strong> Handelsregisteramt Kanton Schwyz</p>
               </div>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-gold mb-4">Kontakt</h2>
               <div className="bg-dark p-4 rounded border border-gold/20">
-                <p className="text-white"><strong>Telefon:</strong> [TELEFONNUMMER EINTRAGEN]</p>
-                <p className="text-white"><strong>E-Mail:</strong> [EMAIL EINTRAGEN]</p>
-                <p className="text-white"><strong>Website:</strong> https://www.ecommercerente.com</p>
-              </div>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
-                Registereintrag
-              </h2>
-              <div className="bg-dark p-4 rounded border border-gold/20">
-                <p className="text-white"><strong>Registergericht:</strong> [GERICHT EINTRAGEN]</p>
-                <p className="text-white"><strong>Registernummer:</strong> [HRB-NUMMER EINTRAGEN]</p>
-              </div>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
-                Umsatzsteuer-ID
-              </h2>
-              <div className="bg-dark p-4 rounded border border-gold/20">
                 <p className="text-white">
-                  Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:
+                  <strong>E-Mail:</strong>{' '}
+                  <a
+                    href="mailto:info@ecommercerente.com"
+                    className="text-gold hover:text-gold/80 underline"
+                  >
+                    info@ecommercerente.com
+                  </a>
                 </p>
-                <p className="text-white font-mono mt-2">[UST-ID EINTRAGEN, z.B. DE123456789]</p>
               </div>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-gold mb-4">
-                Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
+                Vertretungsberechtigte Geschäftsführung
               </h2>
               <div className="bg-dark p-4 rounded border border-gold/20">
-                <p className="text-white">[NAME EINTRAGEN]</p>
-                <p className="text-white">[ADRESSE EINTRAGEN]</p>
+                <p className="text-white">[Name des Geschäftsführers einfügen]</p>
               </div>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-gold mb-4">
-                EU-Streitschlichtung
+                Umsatzsteuer-Identifikationsnummer
               </h2>
-              <p className="text-white">
-                Die Europäische Kommission stellt eine Plattform zur
-                Online-Streitbeilegung (OS) bereit:{' '}
-                <a
-                  href="https://ec.europa.eu/consumers/odr"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gold hover:text-gold/80 underline"
-                >
-                  https://ec.europa.eu/consumers/odr
-                </a>
-              </p>
-              <p className="text-white mt-2">
-                Unsere E-Mail-Adresse finden Sie oben im Impressum.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gold mb-4">
-                Verbraucherstreitbeilegung
-              </h2>
-              <p className="text-white">
-                Wir sind nicht bereit oder verpflichtet, an
-                Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
-                teilzunehmen.
-              </p>
+              <div className="bg-dark p-4 rounded border border-gold/20">
+                <p className="text-white">CHE-246.473.858 MWST</p>
+              </div>
             </section>
           </div>
         </div>

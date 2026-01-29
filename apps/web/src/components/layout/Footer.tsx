@@ -62,24 +62,36 @@ export function Footer() {
             <h3 className="font-semibold text-white mb-4">Rechtliches</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-gray-400 hover:text-gold transition-colors">
+                <Link
+                  href="/impressum"
+                  className="text-gray-400 hover:text-gold transition-colors"
+                >
                   Impressum
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-gold transition-colors">
+                <Link
+                  href="/datenschutz"
+                  className="text-gray-400 hover:text-gold transition-colors"
+                >
                   Datenschutz
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-gold transition-colors">
+                <Link
+                  href="/agb"
+                  className="text-gray-400 hover:text-gold transition-colors"
+                >
                   AGB
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-gold transition-colors">
+                <Link
+                  href="/widerrufsrecht"
+                  className="text-gray-400 hover:text-gold transition-colors"
+                >
                   Widerrufsrecht
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
