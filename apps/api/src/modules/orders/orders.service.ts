@@ -125,9 +125,18 @@ export class OrdersService {
   ) {
     const order = await this.findOne(id, undefined, true);
 
+    // Set paidAt timestamp when status changes to PAID
+    const updateData: any = { status: updateOrderStatusDto.status };
+    if (
+      updateOrderStatusDto.status === OrderStatus.PAID &&
+      order.status !== OrderStatus.PAID
+    ) {
+      updateData.paidAt = new Date();
+    }
+
     const updatedOrder = await this.prisma.order.update({
       where: { id },
-      data: { status: updateOrderStatusDto.status },
+      data: updateData,
       include: {
         items: {
           include: {

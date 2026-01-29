@@ -10,6 +10,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { CommissionsModule } from './modules/commissions/commissions.module';
 import { EmailModule } from './modules/email/email.module';
+import { StorageModule } from './modules/storage/storage.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { EmailModule } from './modules/email/email.module';
     ]),
     PrismaModule,
     EmailModule,
+    StorageModule,
     UsersModule,
     ProductsModule,
     OrdersModule,

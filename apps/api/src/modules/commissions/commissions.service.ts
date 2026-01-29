@@ -5,7 +5,7 @@ import { CommissionStatus, UserRole } from '@prisma/client';
 
 @Injectable()
 export class CommissionsService {
-  private readonly COMMISSION_RATE = 0.05; // 5%
+  private readonly COMMISSION_RATE = 0.20; // 20%
 
   constructor(private prisma: PrismaService) {}
 

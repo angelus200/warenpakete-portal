@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 dotenv.config();
 
 const prisma = new PrismaClient();
-const COMMISSION_RATE = 0.05; // 5%
+const COMMISSION_RATE = 0.20; // 20%
 
 interface TestResult {
   test: string;
