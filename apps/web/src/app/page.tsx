@@ -141,10 +141,10 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-white mb-3">
-                5% Reseller-Provision
+                20% Reseller-Provision
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                Als Premium-Reseller verdienen Sie 5% Provision auf jeden vermittelten Verkauf. Exklusives Partnerprogramm
+                Als Premium-Reseller verdienen Sie 20% Provision auf jeden vermittelten Verkauf. Exklusives Partnerprogramm
               </p>
             </Card>
           </div>
