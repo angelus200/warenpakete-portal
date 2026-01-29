@@ -53,7 +53,31 @@ export class PaymentsService {
       cancel_url: `${process.env.FRONTEND_URL}/checkout?orderId=${orderId}`,
       metadata: {
         orderId,
+        userId,
       },
+      // B2B: Sammle Firmendaten
+      custom_fields: [
+        {
+          key: 'company_name',
+          label: {
+            type: 'custom',
+            custom: 'Firmenname',
+          },
+          type: 'text',
+          optional: false,
+        },
+        {
+          key: 'vat_id',
+          label: {
+            type: 'custom',
+            custom: 'USt-IdNr. (optional)',
+          },
+          type: 'text',
+          optional: true, // USt-IdNr kann optional sein für Kleinunternehmer
+        },
+      ],
+      // Rechnungsadresse erforderlich für B2B
+      billing_address_collection: 'required',
     });
 
     await this.prisma.order.update({
@@ -90,9 +114,30 @@ export class PaymentsService {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
         const orderId = session.metadata?.orderId;
+        const userId = session.metadata?.userId;
 
         if (orderId) {
           console.log(`Processing checkout.session.completed for order ${orderId}`);
+
+          // Extrahiere B2B-Daten aus Custom Fields
+          const customFields = session.custom_fields || [];
+          const companyName = customFields.find(f => f.key === 'company_name')?.text?.value;
+          const vatId = customFields.find(f => f.key === 'vat_id')?.text?.value;
+
+          console.log('📋 B2B Data from checkout:', { companyName, vatId });
+
+          // Speichere B2B-Daten im User wenn vorhanden
+          if (userId && (companyName || vatId)) {
+            await this.prisma.user.update({
+              where: { id: userId },
+              data: {
+                companyName: companyName || undefined,
+                company: companyName || undefined,
+                vatId: vatId || undefined,
+              },
+            });
+            console.log('✅ Updated user B2B data');
+          }
 
           // Update order status to PAID
           await this.ordersService.updateStatus(orderId, {
