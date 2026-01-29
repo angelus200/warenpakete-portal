@@ -221,9 +221,9 @@ export default function AdminProductsPage() {
                       {product.description?.slice(0, 50)}
                     </div>
                   </td>
-                  <td className="px-6 py-4">€{product.price.toFixed(2)}</td>
+                  <td className="px-6 py-4">€{Number(product.price || 0).toFixed(2)}</td>
                   <td className="px-6 py-4">
-                    €{product.retailValue.toFixed(2)}
+                    €{Number(product.retailValue || 0).toFixed(2)}
                   </td>
                   <td className="px-6 py-4">{product.stock}</td>
                   <td className="px-6 py-4">

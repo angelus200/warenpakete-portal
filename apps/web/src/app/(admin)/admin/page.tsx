@@ -81,7 +81,7 @@ export default function AdminDashboardPage() {
                   </div>
                   <div className="text-right">
                     <p className="font-semibold">
-                      €{order.totalAmount.toFixed(2)}
+                      €{Number(order.totalAmount || 0).toFixed(2)}
                     </p>
                     <span className="text-xs bg-gray-100 px-2 py-1 rounded">
                       {order.status}
