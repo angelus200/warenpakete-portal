@@ -12,13 +12,27 @@ export default function AGBPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-dark-light rounded-lg shadow-xl p-8 border border-gold/20">
           <h1 className="text-4xl font-bold text-gold mb-8">
-            Allgemeine Geschäftsbedingungen (AGB)
+            Allgemeine Geschäftsbedingungen (AGB) - B2B
           </h1>
 
           <div className="prose prose-invert max-w-none">
+            <div className="bg-gold/10 border-2 border-gold/40 rounded-lg p-6 mb-8">
+              <h2 className="text-2xl font-bold text-gold mb-4">§1 Geltungsbereich - B2B</h2>
+              <p className="text-white mb-3">
+                Diese AGB gelten <strong className="text-gold">ausschließlich für Unternehmer im Sinne von § 14 BGB</strong>.
+              </p>
+              <p className="text-white">
+                <strong className="text-gold">Verbraucher im Sinne von § 13 BGB sind von der Nutzung ausgeschlossen.</strong>
+              </p>
+              <p className="text-gray-400 text-sm mt-4">
+                Ein Unternehmer ist eine natürliche oder juristische Person, die bei Abschluss eines Rechtsgeschäfts
+                in Ausübung ihrer gewerblichen oder selbständigen beruflichen Tätigkeit handelt.
+              </p>
+            </div>
+
             <div className="bg-orange/20 border-l-4 border-orange p-4 mb-6">
               <p className="text-orange font-semibold">
-                ⚠️ WICHTIGER HINWEIS
+                ⚠️ RECHTLICHER HINWEIS
               </p>
               <p className="text-white mt-2">
                 Diese AGB sind Platzhalter und müssen von einem Fachanwalt für

@@ -15,13 +15,13 @@ export class ClerkAuthGuard implements CanActivate {
     const authHeader = request.headers.authorization;
 
     if (!authHeader?.startsWith('Bearer ')) {
-      throw new UnauthorizedException('Missing or invalid authorization header');
+      throw new UnauthorizedException('No token provided');
     }
 
-    const token = authHeader.substring(7);
+    const token = authHeader.replace('Bearer ', '');
 
     try {
-      // Decode JWT to get session ID (without verification)
+      // Decode JWT to get session ID
       const payload = JSON.parse(
         Buffer.from(token.split('.')[1], 'base64').toString(),
       );

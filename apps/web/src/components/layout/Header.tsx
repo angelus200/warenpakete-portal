@@ -17,7 +17,7 @@ export function Header() {
   const { data: dbUser } = useQuery<User>({
     queryKey: ['user', 'me'],
     queryFn: () => api.get('/users/me'),
-    enabled: api.api.isSignedIn,
+    enabled: api.isSignedIn,
   });
 
   const isAdmin = dbUser?.role === UserRole.ADMIN;

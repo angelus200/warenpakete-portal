@@ -14,8 +14,20 @@ model User {
   name              String?
   firstName         String?
   lastName          String?
-  company           String?
-  vatId             String?
+
+  // B2B Pflichtfelder
+  company           String?  // Company name
+  companyName       String?  // Alternative field name
+  vatId             String?  // USt-IdNr.
+  companyStreet     String?
+  companyZip        String?
+  companyCity       String?
+  companyCountry    String?  @default("DE")
+
+  // B2B Bestätigung
+  isBusinessCustomer Boolean  @default(false)
+  acceptedB2BTermsAt DateTime?
+
   role              UserRole @default(BUYER)
   walletBalance     Decimal  @default(0) @db.Decimal(10, 2)
   iban              String?

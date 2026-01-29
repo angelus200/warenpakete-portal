@@ -215,7 +215,7 @@ export class InvoicesService {
     const invoices = [];
 
     // Generate list of months from first commission to now
-    let current = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+    const current = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
     while (current <= now) {
       invoices.push({
         year: current.getFullYear(),

@@ -50,6 +50,33 @@ export class UsersController {
     return this.usersService.findByClerkId(user.clerkId);
   }
 
+  @Post('onboarding')
+  @ApiOperation({ summary: 'Complete B2B onboarding' })
+  async completeOnboarding(
+    @CurrentUser() user: { clerkId: string },
+    @Body() onboardingData: {
+      companyName: string;
+      vatId: string;
+      street: string;
+      zip: string;
+      city: string;
+      country: string;
+    },
+  ) {
+    const dbUser = await this.usersService.findByClerkId(user.clerkId);
+    return this.usersService.update(dbUser.id, {
+      companyName: onboardingData.companyName,
+      company: onboardingData.companyName,
+      vatId: onboardingData.vatId,
+      companyStreet: onboardingData.street,
+      companyZip: onboardingData.zip,
+      companyCity: onboardingData.city,
+      companyCountry: onboardingData.country,
+      isBusinessCustomer: true,
+      acceptedB2BTermsAt: new Date(),
+    });
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get user by ID' })
   findOne(@Param('id') id: string) {
