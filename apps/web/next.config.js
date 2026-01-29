@@ -6,6 +6,14 @@ const nextConfig = {
       allowedOrigins: ['localhost:3000'],
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'brands-wanted.com',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

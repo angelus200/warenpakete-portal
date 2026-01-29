@@ -73,9 +73,16 @@ export default function ProductsPage() {
                     <img
                       src={product.images[0]}
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 group-hover:opacity-0"
                     />
-                    <div className="absolute top-4 right-4 bg-gold text-dark px-3 py-1 rounded-full font-bold text-sm shadow-lg">
+                    {product.images.length > 1 && (
+                      <img
+                        src={product.images[1]}
+                        alt={`${product.name} - Bild 2`}
+                        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      />
+                    )}
+                    <div className="absolute top-4 right-4 bg-gold text-dark px-3 py-1 rounded-full font-bold text-sm shadow-lg z-10">
                       -{discount}%
                     </div>
                   </div>

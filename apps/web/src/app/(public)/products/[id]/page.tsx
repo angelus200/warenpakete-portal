@@ -19,6 +19,7 @@ export default function ProductDetailPage({
   const router = useRouter();
   const { isSignedIn } = useAuth();
   const [quantity, setQuantity] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(0);
 
   const { data: product, isLoading } = useQuery<Product>({
     queryKey: ['product', params.id],
@@ -99,18 +100,41 @@ export default function ProductDetailPage({
 
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Product Image */}
+            {/* Product Image Gallery */}
             <div className="relative">
               {product.images.length > 0 ? (
-                <div className="relative rounded-xl overflow-hidden bg-dark-light border border-gold/20">
-                  <img
-                    src={product.images[0]}
-                    alt={product.name}
-                    className="w-full h-auto"
-                  />
-                  <div className="absolute top-6 right-6 bg-gold text-dark px-4 py-2 rounded-full font-bold text-lg shadow-xl">
-                    -{discount}%
+                <div className="space-y-4">
+                  <div className="relative rounded-xl overflow-hidden bg-dark-light border border-gold/20">
+                    <img
+                      src={product.images[selectedImage]}
+                      alt={product.name}
+                      className="w-full h-auto"
+                    />
+                    <div className="absolute top-6 right-6 bg-gold text-dark px-4 py-2 rounded-full font-bold text-lg shadow-xl">
+                      -{discount}%
+                    </div>
                   </div>
+                  {product.images.length > 1 && (
+                    <div className="grid grid-cols-4 gap-3">
+                      {product.images.map((image, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setSelectedImage(index)}
+                          className={`relative rounded-lg overflow-hidden border-2 transition-all ${
+                            selectedImage === index
+                              ? 'border-gold shadow-lg shadow-gold/30'
+                              : 'border-gold/20 hover:border-gold/50'
+                          }`}
+                        >
+                          <img
+                            src={image}
+                            alt={`${product.name} - Bild ${index + 1}`}
+                            className="w-full h-20 object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="w-full h-96 bg-dark-light rounded-xl border border-gold/20 flex flex-col items-center justify-center">
