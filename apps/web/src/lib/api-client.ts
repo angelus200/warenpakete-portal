@@ -13,35 +13,48 @@ export class ApiClient {
     endpoint: string,
     options?: RequestInit,
   ): Promise<T> {
-    const token = await this.getToken();
-    const url = `${this.baseUrl}${endpoint}`;
+    try {
+      const token = await this.getToken();
+      const url = `${this.baseUrl}${endpoint}`;
 
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
 
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+        console.log('API Request:', { endpoint, hasToken: !!token });
+      } else {
+        console.log('API Request (no auth):', { endpoint });
+      }
+
+      if (options?.headers) {
+        Object.assign(headers, options.headers);
+      }
+
+      const response = await fetch(url, {
+        ...options,
+        headers,
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({
+          message: response.statusText,
+        }));
+        console.error('API Error:', {
+          endpoint,
+          status: response.status,
+          error,
+        });
+        throw new Error(error.message || `HTTP error ${response.status}`);
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error('API Request failed:', { endpoint, error });
+      throw error;
     }
-
-    if (options?.headers) {
-      Object.assign(headers, options.headers);
-    }
-
-    const response = await fetch(url, {
-      ...options,
-      headers,
-      credentials: 'include', // CRITICAL: Include credentials for CORS
-    });
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({
-        message: response.statusText,
-      }));
-      throw new Error(error.message || `HTTP error ${response.status}`);
-    }
-
-    return response.json();
   }
 
   async get<T>(endpoint: string): Promise<T> {

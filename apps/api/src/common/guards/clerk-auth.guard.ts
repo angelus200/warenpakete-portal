@@ -18,25 +18,33 @@ export class ClerkAuthGuard implements CanActivate {
       throw new UnauthorizedException('Missing or invalid authorization header');
     }
 
-    const sessionToken = authHeader.substring(7);
+    const token = authHeader.substring(7);
 
     try {
-      const sessionClaims = await this.clerk.sessions.verifySession(
-        sessionToken,
-        sessionToken,
+      // Decode JWT to get session ID (without verification)
+      const payload = JSON.parse(
+        Buffer.from(token.split('.')[1], 'base64').toString(),
       );
 
-      if (!sessionClaims) {
-        throw new UnauthorizedException('Invalid session');
+      if (!payload || !payload.sub || !payload.sid) {
+        throw new UnauthorizedException('Invalid token format');
+      }
+
+      // Verify the session using Clerk
+      const session = await this.clerk.sessions.getSession(payload.sid);
+
+      if (!session || session.status !== 'active') {
+        throw new UnauthorizedException('Invalid or expired session');
       }
 
       request.user = {
-        clerkId: sessionClaims.userId,
-        sessionId: sessionClaims.id,
+        clerkId: payload.sub,
+        sessionId: payload.sid,
       };
 
       return true;
     } catch (error) {
+      console.error('Clerk token verification failed:', error);
       throw new UnauthorizedException('Invalid or expired token');
     }
   }
