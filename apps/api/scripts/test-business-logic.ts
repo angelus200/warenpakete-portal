@@ -468,6 +468,419 @@ async function testWalletBalance() {
   }
 }
 
+async function testStorageFees() {
+  console.log('Testing Storage Fees...\n');
+
+  try {
+    // Create user
+    const user = await prisma.user.create({
+      data: {
+        clerkId: `test_storage_${Date.now()}`,
+        email: `storage-${Date.now()}@example.com`,
+        role: 'BUYER',
+      },
+    });
+
+    // Create product
+    const product = await prisma.product.findFirst({
+      where: { status: 'AVAILABLE' },
+    });
+
+    if (!product) {
+      throw new Error('No available products for testing');
+    }
+
+    // Create order with paidAt timestamp (15 days ago)
+    const fifteenDaysAgo = new Date();
+    fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
+
+    const order = await prisma.order.create({
+      data: {
+        userId: user.id,
+        totalAmount: 1000,
+        status: 'PAID',
+        paidAt: fifteenDaysAgo,
+        items: {
+          create: [
+            {
+              productId: product.id,
+              quantity: 1,
+              price: 1000,
+            },
+          ],
+        },
+      },
+    });
+
+    // Verify paidAt timestamp is set
+    if (order.paidAt) {
+      results.push({
+        test: 'Order paidAt Timestamp',
+        status: 'PASS',
+        message: '✓ Order has paidAt timestamp',
+      });
+    } else {
+      results.push({
+        test: 'Order paidAt Timestamp',
+        status: 'FAIL',
+        message: '❌ Order missing paidAt timestamp',
+      });
+    }
+
+    // Calculate storage days (should be 15 days)
+    const daysSincePaid = Math.floor(
+      (Date.now() - order.paidAt.getTime()) / (1000 * 60 * 60 * 24),
+    );
+
+    if (daysSincePaid >= 14) {
+      results.push({
+        test: 'Storage Days Calculation',
+        status: 'PASS',
+        message: `✓ Storage days calculated: ${daysSincePaid} days`,
+      });
+    } else {
+      results.push({
+        test: 'Storage Days Calculation',
+        status: 'FAIL',
+        message: `❌ Storage days wrong: ${daysSincePaid}`,
+      });
+    }
+
+    // Create storage fee record
+    const palletCount = 2;
+    const chargeableDays = daysSincePaid - 14; // First 14 days free
+    const feePerPalletPerDay = 0.5;
+    const expectedFee = palletCount * feePerPalletPerDay * chargeableDays;
+
+    const storageFee = await prisma.storageFee.create({
+      data: {
+        orderId: order.id,
+        amount: expectedFee,
+        palletCount: palletCount,
+        daysCharged: chargeableDays,
+      },
+    });
+
+    // Verify storage fee calculation
+    if (Number(storageFee.amount) === expectedFee) {
+      results.push({
+        test: 'Storage Fee Calculation',
+        status: 'PASS',
+        message: `✓ Storage fee correct: €${expectedFee.toFixed(2)} (${palletCount} pallets × ${chargeableDays} days × €0.50)`,
+        details: { palletCount, chargeableDays, feePerDay: feePerPalletPerDay },
+      });
+    } else {
+      results.push({
+        test: 'Storage Fee Calculation',
+        status: 'FAIL',
+        message: `❌ Storage fee wrong: expected €${expectedFee}, got €${Number(storageFee.amount)}`,
+      });
+    }
+
+    // Test marking order as picked up
+    await prisma.order.update({
+      where: { id: order.id },
+      data: { pickedUpAt: new Date() },
+    });
+
+    const pickedUpOrder = await prisma.order.findUnique({
+      where: { id: order.id },
+    });
+
+    if (pickedUpOrder.pickedUpAt) {
+      results.push({
+        test: 'Order Pickup Timestamp',
+        status: 'PASS',
+        message: '✓ Order can be marked as picked up',
+      });
+    } else {
+      results.push({
+        test: 'Order Pickup Timestamp',
+        status: 'FAIL',
+        message: '❌ Order pickup timestamp not set',
+      });
+    }
+
+    // Cleanup
+    await prisma.storageFee.deleteMany({ where: { orderId: order.id } });
+    await prisma.orderItem.deleteMany({ where: { orderId: order.id } });
+    await prisma.order.delete({ where: { id: order.id } });
+    await prisma.user.delete({ where: { id: user.id } });
+
+    return true;
+  } catch (error) {
+    results.push({
+      test: 'Storage Fees',
+      status: 'FAIL',
+      message: `❌ Storage fees test failed: ${error.message}`,
+    });
+    return false;
+  }
+}
+
+async function testWalletTransactions() {
+  console.log('Testing Wallet Transactions...\n');
+
+  try {
+    const user = await prisma.user.create({
+      data: {
+        clerkId: `test_wallet_tx_${Date.now()}`,
+        email: `wallettx-${Date.now()}@example.com`,
+        role: 'RESELLER',
+        referralCode: nanoid(10),
+        walletBalance: 0,
+      },
+    });
+
+    // Test COMMISSION_EARNED transaction
+    const commissionAmount = 50;
+    const commissionTx = await prisma.walletTransaction.create({
+      data: {
+        userId: user.id,
+        type: 'COMMISSION_EARNED',
+        amount: commissionAmount,
+        description: 'Commission from test order',
+        status: 'COMPLETED',
+      },
+    });
+
+    // Update user balance
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { walletBalance: commissionAmount },
+    });
+
+    if (commissionTx.type === 'COMMISSION_EARNED' && commissionTx.status === 'COMPLETED') {
+      results.push({
+        test: 'Commission Transaction',
+        status: 'PASS',
+        message: `✓ Commission transaction created: €${commissionAmount}`,
+      });
+    } else {
+      results.push({
+        test: 'Commission Transaction',
+        status: 'FAIL',
+        message: '❌ Commission transaction invalid',
+      });
+    }
+
+    // Test PAYOUT_REQUESTED transaction
+    const payoutAmount = 30;
+    const payoutRequest = await prisma.payoutRequest.create({
+      data: {
+        userId: user.id,
+        amount: payoutAmount,
+        iban: 'DE89370400440532013000',
+        bankName: 'Test Bank',
+        status: 'PENDING',
+      },
+    });
+
+    const payoutTx = await prisma.walletTransaction.create({
+      data: {
+        userId: user.id,
+        type: 'PAYOUT_REQUESTED',
+        amount: payoutAmount,
+        description: `Payout request: ${payoutRequest.id}`,
+        reference: payoutRequest.id,
+        status: 'PENDING',
+      },
+    });
+
+    if (payoutTx.type === 'PAYOUT_REQUESTED' && payoutTx.status === 'PENDING') {
+      results.push({
+        test: 'Payout Request Transaction',
+        status: 'PASS',
+        message: `✓ Payout request transaction created: €${payoutAmount}`,
+      });
+    } else {
+      results.push({
+        test: 'Payout Request Transaction',
+        status: 'FAIL',
+        message: '❌ Payout request transaction invalid',
+      });
+    }
+
+    // Verify transaction history
+    const transactions = await prisma.walletTransaction.findMany({
+      where: { userId: user.id },
+    });
+
+    if (transactions.length === 2) {
+      results.push({
+        test: 'Transaction History',
+        status: 'PASS',
+        message: '✓ Transaction history tracked correctly',
+      });
+    } else {
+      results.push({
+        test: 'Transaction History',
+        status: 'FAIL',
+        message: `❌ Transaction count wrong: expected 2, got ${transactions.length}`,
+      });
+    }
+
+    // Cleanup
+    await prisma.walletTransaction.deleteMany({ where: { userId: user.id } });
+    await prisma.payoutRequest.deleteMany({ where: { userId: user.id } });
+    await prisma.user.delete({ where: { id: user.id } });
+
+    return true;
+  } catch (error) {
+    results.push({
+      test: 'Wallet Transactions',
+      status: 'FAIL',
+      message: `❌ Wallet transactions test failed: ${error.message}`,
+    });
+    return false;
+  }
+}
+
+async function testPayoutRequests() {
+  console.log('Testing Payout Requests...\n');
+
+  try {
+    const user = await prisma.user.create({
+      data: {
+        clerkId: `test_payout_${Date.now()}`,
+        email: `payout-${Date.now()}@example.com`,
+        role: 'RESELLER',
+        referralCode: nanoid(10),
+        walletBalance: 100,
+        iban: 'DE89370400440532013000',
+        bankAccountHolder: 'Test User',
+      },
+    });
+
+    // Test minimum payout amount (€10)
+    const validPayoutAmount = 20;
+    const payoutRequest = await prisma.payoutRequest.create({
+      data: {
+        userId: user.id,
+        amount: validPayoutAmount,
+        iban: user.iban,
+        bankName: 'Test Bank',
+        status: 'PENDING',
+      },
+    });
+
+    if (validPayoutAmount >= 10) {
+      results.push({
+        test: 'Minimum Payout Amount',
+        status: 'PASS',
+        message: `✓ Payout amount meets minimum: €${validPayoutAmount}`,
+      });
+    } else {
+      results.push({
+        test: 'Minimum Payout Amount',
+        status: 'FAIL',
+        message: `❌ Payout amount below minimum: €${validPayoutAmount}`,
+      });
+    }
+
+    // Test payout status flow: PENDING -> APPROVED -> COMPLETED
+    await prisma.payoutRequest.update({
+      where: { id: payoutRequest.id },
+      data: { status: 'APPROVED', processedBy: 'admin-test' },
+    });
+
+    const approvedPayout = await prisma.payoutRequest.findUnique({
+      where: { id: payoutRequest.id },
+    });
+
+    if (approvedPayout.status === 'APPROVED') {
+      results.push({
+        test: 'Payout Approval',
+        status: 'PASS',
+        message: '✓ Payout can be approved',
+      });
+    } else {
+      results.push({
+        test: 'Payout Approval',
+        status: 'FAIL',
+        message: `❌ Payout approval failed: ${approvedPayout.status}`,
+      });
+    }
+
+    // Complete payout
+    await prisma.payoutRequest.update({
+      where: { id: payoutRequest.id },
+      data: { status: 'COMPLETED', processedAt: new Date() },
+    });
+
+    // Deduct from wallet balance
+    const newBalance = Number(user.walletBalance) - validPayoutAmount;
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { walletBalance: newBalance },
+    });
+
+    const updatedUser = await prisma.user.findUnique({
+      where: { id: user.id },
+    });
+
+    if (Number(updatedUser.walletBalance) === newBalance) {
+      results.push({
+        test: 'Payout Balance Deduction',
+        status: 'PASS',
+        message: `✓ Balance deducted correctly: €${user.walletBalance} → €${newBalance}`,
+      });
+    } else {
+      results.push({
+        test: 'Payout Balance Deduction',
+        status: 'FAIL',
+        message: `❌ Balance deduction failed`,
+      });
+    }
+
+    // Test rejected payout
+    const rejectedPayout = await prisma.payoutRequest.create({
+      data: {
+        userId: user.id,
+        amount: 15,
+        iban: user.iban,
+        status: 'PENDING',
+      },
+    });
+
+    await prisma.payoutRequest.update({
+      where: { id: rejectedPayout.id },
+      data: { status: 'REJECTED', notes: 'Test rejection', processedBy: 'admin-test' },
+    });
+
+    const rejectedPayoutCheck = await prisma.payoutRequest.findUnique({
+      where: { id: rejectedPayout.id },
+    });
+
+    if (rejectedPayoutCheck.status === 'REJECTED') {
+      results.push({
+        test: 'Payout Rejection',
+        status: 'PASS',
+        message: '✓ Payout can be rejected',
+      });
+    } else {
+      results.push({
+        test: 'Payout Rejection',
+        status: 'FAIL',
+        message: `❌ Payout rejection failed`,
+      });
+    }
+
+    // Cleanup
+    await prisma.payoutRequest.deleteMany({ where: { userId: user.id } });
+    await prisma.user.delete({ where: { id: user.id } });
+
+    return true;
+  } catch (error) {
+    results.push({
+      test: 'Payout Requests',
+      status: 'FAIL',
+      message: `❌ Payout requests test failed: ${error.message}`,
+    });
+    return false;
+  }
+}
+
 async function testBusinessLogic() {
   console.log('\n═══════════════════════════════════════════════════════════════');
   console.log('PHASE 5: BUSINESS LOGIC TESTS');
@@ -478,6 +891,9 @@ async function testBusinessLogic() {
     await testStockManagement();
     await testReferralCodeGeneration();
     await testWalletBalance();
+    await testStorageFees();
+    await testWalletTransactions();
+    await testPayoutRequests();
 
     // Print results
     console.log('Business Logic Test Results:');

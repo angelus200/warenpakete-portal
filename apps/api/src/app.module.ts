@@ -12,6 +12,7 @@ import { CommissionsModule } from './modules/commissions/commissions.module';
 import { EmailModule } from './modules/email/email.module';
 import { StorageModule } from './modules/storage/storage.module';
 import { WalletModule } from './modules/wallet/wallet.module';
+import { InvoicesModule } from './modules/invoices/invoices.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { WalletModule } from './modules/wallet/wallet.module';
     EmailModule,
     StorageModule,
     WalletModule,
+    InvoicesModule,
     UsersModule,
     ProductsModule,
     OrdersModule,

@@ -207,26 +207,26 @@ async function runFullFlow() {
     // Step 8: Simulate Payment Success
     await prisma.order.update({
       where: { id: order.id },
-      data: { status: 'PAID' },
+      data: { status: 'PAID', paidAt: new Date() },
     });
 
     const paidOrder = await prisma.order.findUnique({
       where: { id: order.id },
     });
 
-    if (paidOrder.status === 'PAID') {
+    if (paidOrder.status === 'PAID' && paidOrder.paidAt) {
       steps.push({
         step: 8,
         name: 'Simulate Payment',
         status: 'PASS',
-        message: '✓ Order marked as PAID',
+        message: '✓ Order marked as PAID with paidAt timestamp',
       });
     } else {
       steps.push({
         step: 8,
         name: 'Simulate Payment',
         status: 'FAIL',
-        message: '❌ Order status not updated to PAID',
+        message: '❌ Order status not updated to PAID or paidAt missing',
       });
       throw new Error('Payment simulation failed');
     }

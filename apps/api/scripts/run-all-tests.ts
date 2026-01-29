@@ -146,7 +146,7 @@ async function runAllTests() {
   const dbChecks = dbPass ? '5/5' : 'FAILED';
   const apiChecks = apiPass ? '4/4' : 'FAILED';
   const authChecks = authPass ? '5/5' : 'FAILED';
-  const businessChecks = businessPass ? '4/4' : 'FAILED';
+  const businessChecks = businessPass ? '7/7' : 'FAILED'; // Updated: added storage fees, wallet transactions, payout requests tests
   const webhooksChecks = webhooksPass ? '2/2' : 'FAILED';
   const emailChecks = emailPass ? '4/4' : 'FAILED';
   const e2eChecks = e2ePass ? '13/13' : 'FAILED';
