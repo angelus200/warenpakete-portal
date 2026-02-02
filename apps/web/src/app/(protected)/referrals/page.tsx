@@ -25,18 +25,19 @@ export default function ReferralsPage() {
   const { data: user } = useQuery<User>({
     queryKey: ['user', 'me'],
     queryFn: () => api.get('/users/me'),
+    enabled: api.isLoaded && api.isSignedIn,
   });
 
   const { data: earnings } = useQuery<CommissionEarnings>({
     queryKey: ['commissions', 'total', user?.id],
     queryFn: () => api.get(`/commissions/reseller/${user?.id}/total`),
-    enabled: !!user,
+    enabled: api.isLoaded && api.isSignedIn && !!user,
   });
 
   const { data: commissions } = useQuery<Commission[]>({
     queryKey: ['commissions', user?.id],
     queryFn: () => api.get(`/commissions/reseller/${user?.id}`),
-    enabled: !!user,
+    enabled: api.isLoaded && api.isSignedIn && !!user,
   });
 
   const referralUrl = user?.referralCode

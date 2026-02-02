@@ -25,6 +25,7 @@ export default function FulfillmentPage() {
   const { data: order, isLoading } = useQuery<Order>({
     queryKey: ['order', orderId],
     queryFn: () => api.get(`/orders/${orderId}`),
+    enabled: api.isLoaded && api.isSignedIn,
   });
 
   const deliveryMutation = useMutation({

@@ -12,11 +12,13 @@ export default function DashboardPage() {
   const { data: user } = useQuery<User>({
     queryKey: ['user', 'me'],
     queryFn: () => api.get('/users/me'),
+    enabled: api.isLoaded && api.isSignedIn,
   });
 
   const { data: orders } = useQuery<Order[]>({
     queryKey: ['orders'],
     queryFn: () => api.get('/orders'),
+    enabled: api.isLoaded && api.isSignedIn,
   });
 
   const { data: earnings } = useQuery<CommissionEarnings>({

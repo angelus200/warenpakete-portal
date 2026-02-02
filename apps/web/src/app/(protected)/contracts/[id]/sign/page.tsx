@@ -43,12 +43,13 @@ export default function SignContractPage() {
   const { data: contract, isLoading } = useQuery<Contract>({
     queryKey: ['contract', contractId],
     queryFn: () => api.get(`/contracts/${contractId}`),
+    enabled: api.isLoaded && api.isSignedIn,
   });
 
   const { data: contractText } = useQuery<{ text: string }>({
     queryKey: ['contract-text', contractId],
     queryFn: () => api.get(`/contracts/${contractId}/text`),
-    enabled: !!contract,
+    enabled: api.isLoaded && api.isSignedIn && !!contract,
   });
 
   const signMutation = useMutation({

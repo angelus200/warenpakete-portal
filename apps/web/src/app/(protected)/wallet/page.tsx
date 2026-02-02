@@ -35,16 +35,19 @@ export default function WalletPage() {
   const { data: balance } = useQuery<{ balance: number }>({
     queryKey: ['wallet', 'balance'],
     queryFn: () => api.get('/wallet/balance'),
+    enabled: api.isLoaded && api.isSignedIn,
   });
 
   const { data: transactions } = useQuery<WalletTransaction[]>({
     queryKey: ['wallet', 'transactions'],
     queryFn: () => api.get('/wallet/transactions'),
+    enabled: api.isLoaded && api.isSignedIn,
   });
 
   const { data: payoutRequests } = useQuery<PayoutRequest[]>({
     queryKey: ['wallet', 'payouts'],
     queryFn: () => api.get('/wallet/payouts'),
+    enabled: api.isLoaded && api.isSignedIn,
   });
 
   const requestPayoutMutation = useMutation({
