@@ -56,6 +56,7 @@ export function Header() {
               <>
                 <NavLink href="/dashboard">Dashboard</NavLink>
                 <NavLink href="/orders">Bestellungen</NavLink>
+                <NavLink href="/contracts">Verträge</NavLink>
                 {isAdmin && <NavLink href="/admin" isAdminLink>Admin</NavLink>}
               </>
             )}
@@ -116,6 +117,7 @@ export function Header() {
             <NavLink href="/products">Produkte</NavLink>
             <NavLink href="/dashboard">Dashboard</NavLink>
             <NavLink href="/orders">Bestellungen</NavLink>
+            <NavLink href="/contracts">Verträge</NavLink>
             {isAdmin && <NavLink href="/admin" isAdminLink>Admin</NavLink>}
           </div>
         )}

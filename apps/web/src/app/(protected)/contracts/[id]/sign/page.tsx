@@ -57,7 +57,7 @@ export default function SignContractPage() {
       api.post(`/contracts/${contractId}/sign`, { signatureData }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['contract', contractId] });
-      router.push('/orders?success=contract-signed');
+      router.push(`/contracts/${contractId}?success=signed`);
     },
     onError: (err: any) => {
       setError(err.message || 'Fehler beim Signieren');
@@ -94,6 +94,12 @@ export default function SignContractPage() {
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    // Set drawing style for this context
+    ctx.strokeStyle = '#D4AF37';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
 
     ctx.beginPath();
     ctx.moveTo(x, y);
