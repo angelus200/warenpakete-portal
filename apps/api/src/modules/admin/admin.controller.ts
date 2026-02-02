@@ -70,4 +70,31 @@ export class AdminController {
   ) {
     return this.adminService.triggerPayout(id, dto.notes);
   }
+
+  @Get('users')
+  @ApiBearerAuth('admin')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Get all users' })
+  async getAllUsers() {
+    return this.adminService.getAllUsers();
+  }
+
+  @Patch('users/:id/role')
+  @ApiBearerAuth('admin')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Update user role' })
+  async updateUserRole(
+    @Param('id') id: string,
+    @Body() dto: { role: string },
+  ) {
+    return this.adminService.updateUserRole(id, dto.role);
+  }
+
+  @Get('products')
+  @ApiBearerAuth('admin')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Get all products' })
+  async getAllProducts() {
+    return this.adminService.getAllProducts();
+  }
 }

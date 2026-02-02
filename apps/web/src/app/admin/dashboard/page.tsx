@@ -120,7 +120,7 @@ export default function AdminDashboardPage() {
           <Card className="p-6 bg-zinc-900 border-amber-500/20 hover:border-amber-500/40 transition-colors">
             <h3 className="text-sm text-gray-400 font-medium mb-2">Warenwert</h3>
             <p className="text-4xl font-bold text-white mb-1">
-              €{stats?.totalGoodsValue.toLocaleString('de-DE') || 0}
+              {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(stats?.totalGoodsValue || 0)}
             </p>
             <p className="text-sm text-gray-500">Gesamtwert aller Waren</p>
           </Card>
@@ -128,7 +128,7 @@ export default function AdminDashboardPage() {
           <Card className="p-6 bg-zinc-900 border-amber-500/20 hover:border-amber-500/40 transition-colors">
             <h3 className="text-sm text-gray-400 font-medium mb-2">Kommission Verdient</h3>
             <p className="text-4xl font-bold text-amber-500 mb-1">
-              €{stats?.totalCommissionEarned.toLocaleString('de-DE', { minimumFractionDigits: 2 }) || '0.00'}
+              {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(stats?.totalCommissionEarned || 0)}
             </p>
             <p className="text-sm text-gray-500">20% vom Verkaufspreis</p>
           </Card>
@@ -158,7 +158,7 @@ export default function AdminDashboardPage() {
               {stats?.totalPayoutsCompleted || 0}
             </p>
             <p className="text-sm text-gray-400 mb-2">
-              Ausgezahlt: €{stats?.totalPayoutAmount.toLocaleString('de-DE', { minimumFractionDigits: 2 }) || '0.00'}
+              Ausgezahlt: {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(stats?.totalPayoutAmount || 0)}
             </p>
             <p className="text-xs text-gray-500">
               80% vom Verkaufspreis (nach Lagerkosten)
@@ -176,6 +176,27 @@ export default function AdminDashboardPage() {
             >
               <p className="text-white font-semibold">Alle Verträge</p>
               <p className="text-sm text-gray-400 mt-1">Übersicht & Verwaltung</p>
+            </Link>
+            <Link
+              href="/admin/users"
+              className="p-4 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-all text-center"
+            >
+              <p className="text-white font-semibold">Benutzer</p>
+              <p className="text-sm text-gray-400 mt-1">Rollen & Verwaltung</p>
+            </Link>
+            <Link
+              href="/admin/commissions"
+              className="p-4 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-all text-center"
+            >
+              <p className="text-white font-semibold">Kommissionen</p>
+              <p className="text-sm text-gray-400 mt-1">Auszahlungen & Übersicht</p>
+            </Link>
+            <Link
+              href="/admin/products"
+              className="p-4 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-all text-center"
+            >
+              <p className="text-white font-semibold">Produkte</p>
+              <p className="text-sm text-gray-400 mt-1">Lager & Bestand</p>
             </Link>
             <a
               href="https://dashboard.stripe.com"

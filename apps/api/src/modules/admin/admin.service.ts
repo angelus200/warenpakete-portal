@@ -210,4 +210,54 @@ export class AdminService {
 
     return stats;
   }
+
+  async getAllUsers() {
+    return this.prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        company: true,
+        companyName: true,
+        role: true,
+        walletBalance: true,
+        createdAt: true,
+        _count: {
+          select: {
+            orders: true,
+            commissionsEarned: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async updateUserRole(userId: string, role: string) {
+    const validRoles = ['BUYER', 'RESELLER', 'ADMIN'];
+
+    if (!validRoles.includes(role)) {
+      throw new BadRequestException(`Invalid role. Must be one of: ${validRoles.join(', ')}`);
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { role: role as any },
+    });
+  }
+
+  async getAllProducts() {
+    return this.prisma.product.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 }
