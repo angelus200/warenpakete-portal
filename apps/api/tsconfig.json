@@ -28,5 +28,5 @@
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "test", "src/modules/_admin_disabled"]
+  "exclude": ["node_modules", "dist", "test"]
 }

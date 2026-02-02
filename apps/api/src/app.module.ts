@@ -14,7 +14,7 @@ import { StorageModule } from './modules/storage/storage.module';
 import { WalletModule } from './modules/wallet/wallet.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
 import { ContractsModule } from './modules/contracts/contracts.module';
-// import { AdminModule } from './modules/admin/admin.module'; // Temporarily disabled - missing dependencies
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -33,7 +33,7 @@ import { ContractsModule } from './modules/contracts/contracts.module';
     WalletModule,
     InvoicesModule,
     ContractsModule,
-    // AdminModule, // Temporarily disabled - missing dependencies
+    AdminModule,
     UsersModule,
     ProductsModule,
     OrdersModule,
