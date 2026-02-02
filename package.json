@@ -28,6 +28,9 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@clerk/backend": "^2.29.5"
+    "@clerk/backend": "^2.29.5",
+    "@nestjs/jwt": "^11.0.2",
+    "@types/bcrypt": "^6.0.0",
+    "bcrypt": "^6.0.0"
   }
 }

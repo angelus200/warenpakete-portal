@@ -1,0 +1,73 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Body,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { AdminService } from './admin.service';
+import { AdminLoginDto } from './dto/admin-login.dto';
+import { UpdateContractDto } from './dto/update-contract.dto';
+import { TriggerPayoutDto } from './dto/trigger-payout.dto';
+import { AdminAuthGuard } from './admin-auth.guard';
+
+@ApiTags('admin')
+@Controller('admin')
+export class AdminController {
+  constructor(private readonly adminService: AdminService) {}
+
+  @Post('login')
+  @ApiOperation({ summary: 'Admin login - returns JWT token' })
+  async login(@Body() dto: AdminLoginDto) {
+    return this.adminService.login(dto.email, dto.password);
+  }
+
+  @Get('dashboard')
+  @ApiBearerAuth('admin')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Get dashboard statistics' })
+  async getDashboard() {
+    return this.adminService.getDashboardStats();
+  }
+
+  @Get('contracts')
+  @ApiBearerAuth('admin')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Get all commission contracts' })
+  async getAllContracts() {
+    return this.adminService.getAllContracts();
+  }
+
+  @Get('contracts/:id')
+  @ApiBearerAuth('admin')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Get single contract with details' })
+  async getContract(@Param('id') id: string) {
+    return this.adminService.getContractById(id);
+  }
+
+  @Patch('contracts/:id')
+  @ApiBearerAuth('admin')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Update contract status and/or sales price' })
+  async updateContract(
+    @Param('id') id: string,
+    @Body() dto: UpdateContractDto,
+  ) {
+    return this.adminService.updateContract(id, dto);
+  }
+
+  @Post('contracts/:id/payout')
+  @ApiBearerAuth('admin')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Trigger payout for sold contract' })
+  async triggerPayout(
+    @Param('id') id: string,
+    @Body() dto: TriggerPayoutDto,
+  ) {
+    return this.adminService.triggerPayout(id, dto.notes);
+  }
+}
