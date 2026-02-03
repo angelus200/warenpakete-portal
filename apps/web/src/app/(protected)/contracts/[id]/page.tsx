@@ -65,7 +65,7 @@ export default function ContractDetailPage() {
       case 'active':
         return 'bg-blue-500/20 text-blue-400 border-blue-500/50';
       default:
-        return 'bg-gray-500/20 text-gray-400 border-gray-500/50';
+        return 'bg-gray-500/20 text-gray-600 border-gray-500/50';
     }
   };
 
@@ -84,10 +84,10 @@ export default function ContractDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold mx-auto mb-4"></div>
-          <p className="text-gray-400">Lade Vertrag...</p>
+          <p className="text-gray-600">Lade Vertrag...</p>
         </div>
       </div>
     );
@@ -95,17 +95,17 @@ export default function ContractDetailPage() {
 
   if (!contract) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
-        <p className="text-gray-400">Vertrag nicht gefunden</p>
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
+        <p className="text-gray-600">Vertrag nicht gefunden</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-dark">
-      <div className="container mx-auto px-4 py-12 max-w-5xl">
+    <div className="min-h-screen bg-[#ebebeb]">
+      <div className="container mx-auto px-4 py-3 max-w-5xl">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-4">
           <Link
             href="/contracts"
             className="inline-flex items-center text-gold hover:text-gold-light mb-4 transition-colors"
@@ -127,10 +127,10 @@ export default function ContractDetailPage() {
           </Link>
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+              <h1 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
                 Verkaufskommissionsvertrag
               </h1>
-              <p className="text-gray-400">
+              <p className="text-gray-600">
                 Vertragsnummer: {contract.contractNumber}
               </p>
             </div>
@@ -145,22 +145,22 @@ export default function ContractDetailPage() {
         </div>
 
         {/* Contract Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
           {/* Product Info */}
-          <Card className="p-6 bg-dark-light border-gold/20">
-            <h3 className="text-xl font-bold text-white mb-4">Produktinformationen</h3>
+          <Card className="p-3 bg-white border-gray-300">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Produktinformationen</h3>
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-gray-400">Produkt</p>
-                <p className="text-white font-medium">{contract.productName}</p>
+                <p className="text-sm text-gray-600">Produkt</p>
+                <p className="text-gray-900 font-medium">{contract.productName}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-400">Menge</p>
-                <p className="text-white">{contract.productQuantity} Stück</p>
+                <p className="text-sm text-gray-600">Menge</p>
+                <p className="text-gray-900">{contract.productQuantity} Stück</p>
               </div>
               <div>
-                <p className="text-sm text-gray-400">Einkaufspreis</p>
-                <p className="text-white font-semibold">
+                <p className="text-sm text-gray-600">Einkaufspreis</p>
+                <p className="text-gray-900 font-semibold">
                   {new Intl.NumberFormat('de-DE', {
                     style: 'currency',
                     currency: 'EUR',
@@ -168,7 +168,7 @@ export default function ContractDetailPage() {
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-400">Kommissionsrate</p>
+                <p className="text-sm text-gray-600">Kommissionsrate</p>
                 <p className="text-amber-500 font-semibold">
                   {(contract.commissionRate * 100).toFixed(0)}%
                 </p>
@@ -177,12 +177,12 @@ export default function ContractDetailPage() {
           </Card>
 
           {/* Sales Info */}
-          <Card className="p-6 bg-dark-light border-gold/20">
-            <h3 className="text-xl font-bold text-white mb-4">Verkaufsinformationen</h3>
+          <Card className="p-3 bg-white border-gray-300">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Verkaufsinformationen</h3>
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-gray-400">Verkaufsstatus</p>
-                <p className="text-white font-medium">
+                <p className="text-sm text-gray-600">Verkaufsstatus</p>
+                <p className="text-gray-900 font-medium">
                   {contract.salesStatus === 'pending' && 'Noch nicht gelistet'}
                   {contract.salesStatus === 'listed' && 'Im Verkauf'}
                   {contract.salesStatus === 'sold' && 'Verkauft'}
@@ -190,7 +190,7 @@ export default function ContractDetailPage() {
               </div>
               {contract.salesPrice && (
                 <div>
-                  <p className="text-sm text-gray-400">Verkaufspreis</p>
+                  <p className="text-sm text-gray-600">Verkaufspreis</p>
                   <p className="text-green-400 font-semibold">
                     {new Intl.NumberFormat('de-DE', {
                       style: 'currency',
@@ -201,15 +201,15 @@ export default function ContractDetailPage() {
               )}
               {contract.soldAt && (
                 <div>
-                  <p className="text-sm text-gray-400">Verkauft am</p>
-                  <p className="text-white">
+                  <p className="text-sm text-gray-600">Verkauft am</p>
+                  <p className="text-gray-900">
                     {new Date(contract.soldAt).toLocaleDateString('de-DE')}
                   </p>
                 </div>
               )}
               <div>
-                <p className="text-sm text-gray-400">Auszahlungsstatus</p>
-                <p className="text-white">
+                <p className="text-sm text-gray-600">Auszahlungsstatus</p>
+                <p className="text-gray-900">
                   {contract.payoutStatus === 'pending' && 'Ausstehend'}
                   {contract.payoutStatus === 'processing' && 'In Bearbeitung'}
                   {contract.payoutStatus === 'completed' && 'Ausgezahlt'}
@@ -217,7 +217,7 @@ export default function ContractDetailPage() {
               </div>
               {contract.payoutAmount && (
                 <div>
-                  <p className="text-sm text-gray-400">Auszahlungsbetrag</p>
+                  <p className="text-sm text-gray-600">Auszahlungsbetrag</p>
                   <p className="text-amber-500 font-semibold">
                     {new Intl.NumberFormat('de-DE', {
                       style: 'currency',
@@ -230,51 +230,51 @@ export default function ContractDetailPage() {
           </Card>
 
           {/* Bank Details */}
-          <Card className="p-6 bg-dark-light border-gold/20">
-            <h3 className="text-xl font-bold text-white mb-4">Bankverbindung</h3>
+          <Card className="p-3 bg-white border-gray-300">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Bankverbindung</h3>
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-gray-400">IBAN</p>
-                <p className="text-white font-mono">{contract.iban}</p>
+                <p className="text-sm text-gray-600">IBAN</p>
+                <p className="text-gray-900 font-mono">{contract.iban}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-400">BIC</p>
-                <p className="text-white font-mono">{contract.bic}</p>
+                <p className="text-sm text-gray-600">BIC</p>
+                <p className="text-gray-900 font-mono">{contract.bic}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-400">Kontoinhaber</p>
-                <p className="text-white">{contract.accountHolder}</p>
+                <p className="text-sm text-gray-600">Kontoinhaber</p>
+                <p className="text-gray-900">{contract.accountHolder}</p>
               </div>
             </div>
           </Card>
 
           {/* Dates */}
-          <Card className="p-6 bg-dark-light border-gold/20">
-            <h3 className="text-xl font-bold text-white mb-4">Vertragsdaten</h3>
+          <Card className="p-3 bg-white border-gray-300">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Vertragsdaten</h3>
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-gray-400">Erstellt am</p>
-                <p className="text-white">
+                <p className="text-sm text-gray-600">Erstellt am</p>
+                <p className="text-gray-900">
                   {new Date(contract.createdAt).toLocaleDateString('de-DE')}
                 </p>
               </div>
               {contract.signedAt && (
                 <div>
-                  <p className="text-sm text-gray-400">Signiert am</p>
-                  <p className="text-white">
+                  <p className="text-sm text-gray-600">Signiert am</p>
+                  <p className="text-gray-900">
                     {new Date(contract.signedAt).toLocaleDateString('de-DE')}
                   </p>
                 </div>
               )}
               <div>
-                <p className="text-sm text-gray-400">Lagerung seit</p>
-                <p className="text-white">
+                <p className="text-sm text-gray-600">Lagerung seit</p>
+                <p className="text-gray-900">
                   {new Date(contract.storageStartDate).toLocaleDateString('de-DE')}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-400">Lagerkosten</p>
-                <p className="text-white">
+                <p className="text-sm text-gray-600">Lagerkosten</p>
+                <p className="text-gray-900">
                   14 Tage kostenlos, danach{' '}
                   {new Intl.NumberFormat('de-DE', {
                     style: 'currency',
@@ -289,9 +289,9 @@ export default function ContractDetailPage() {
 
         {/* Signature */}
         {contract.signatureData && (
-          <Card className="p-6 bg-dark-light border-gold/20 mb-8">
-            <h3 className="text-xl font-bold text-white mb-4">Unterschrift</h3>
-            <div className="bg-dark border-2 border-gold/40 rounded-lg p-4 inline-block">
+          <Card className="p-3 bg-white border-gray-300 mb-4">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Unterschrift</h3>
+            <div className="bg-white border-2 border-gray-300 rounded-lg p-4 inline-block">
               <img
                 src={contract.signatureData}
                 alt="Unterschrift"
@@ -302,10 +302,10 @@ export default function ContractDetailPage() {
         )}
 
         {/* Contract Text */}
-        <Card className="p-6 bg-dark-light border-gold/20 mb-8">
-          <h3 className="text-xl font-bold text-white mb-4">Vertragstext</h3>
+        <Card className="p-3 bg-white border-gray-300 mb-4">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Vertragstext</h3>
           <div className="max-h-[600px] overflow-y-auto pr-4 custom-scrollbar">
-            <pre className="text-sm text-gray-300 whitespace-pre-wrap font-mono leading-relaxed">
+            <pre className="text-sm text-gray-700 whitespace-pre-wrap font-mono leading-relaxed">
               {contractText?.text || 'Lade Vertragstext...'}
             </pre>
           </div>
@@ -316,7 +316,7 @@ export default function ContractDetailPage() {
           <div className="flex justify-center">
             <Link
               href={`/contracts/${contract.id}/sign`}
-              className="px-8 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold rounded-lg shadow-lg shadow-gold/20 transition-all"
+              className="px-4 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold rounded-lg shadow-lg shadow-gold/20 transition-all"
             >
               Vertrag jetzt signieren
             </Link>

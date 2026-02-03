@@ -32,7 +32,7 @@ export function Header() {
             ? 'text-gold-light hover:text-gold'
             : isActive
             ? 'text-gold'
-            : 'text-gray-300 hover:text-gold'
+            : 'text-gray-700 hover:text-gold'
         }`}
       >
         {children}
@@ -42,14 +42,14 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gold/20 bg-dark/95 backdrop-blur supports-[backdrop-filter]:bg-dark/90">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-300 bg-dark/95 backdrop-blur supports-[backdrop-filter]:bg-dark/90">
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Logo />
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-4">
             <NavLink href="/products">Produkte</NavLink>
 
             {api.isSignedIn && (
@@ -93,7 +93,7 @@ export function Header() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-gray-300 hover:text-gold hover:bg-gold/10"
+                    className="text-gray-700 hover:text-gold hover:bg-gold/10"
                   >
                     Anmelden
                   </Button>
@@ -113,7 +113,7 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {api.isSignedIn && (
-          <div className="md:hidden border-t border-gold/20 py-3 flex space-x-4 overflow-x-auto">
+          <div className="md:hidden border-t border-gray-300 py-3 flex space-x-4 overflow-x-auto">
             <NavLink href="/products">Produkte</NavLink>
             <NavLink href="/dashboard">Dashboard</NavLink>
             <NavLink href="/orders">Bestellungen</NavLink>

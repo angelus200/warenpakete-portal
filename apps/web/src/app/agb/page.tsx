@@ -8,24 +8,24 @@ export const metadata: Metadata = {
 
 export default function AGBPage() {
   return (
-    <div className="min-h-screen bg-dark py-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-dark-light rounded-lg shadow-xl p-8 border border-gold/20">
-          <h1 className="text-4xl font-bold text-gold mb-4">
+    <div className="min-h-screen bg-[#ebebeb] py-3">
+      <div className="max-w-4xl mx-auto px-4 sm:px-3 lg:px-4">
+        <div className="bg-white rounded-lg shadow-xl p-4 border border-gray-300">
+          <h1 className="text-lg font-bold text-gold mb-4">
             Allgemeine Geschäftsbedingungen (AGB)
           </h1>
-          <p className="text-gold/80 text-lg mb-8">
+          <p className="text-gold/80 text-lg mb-4">
             Trademark24-7 AG - Warenpakete Portal
           </p>
-          <p className="text-gray-400 mb-8">Stand: Januar 2026</p>
+          <p className="text-gray-600 mb-4">Stand: Januar 2026</p>
 
-          <div className="prose prose-invert max-w-none space-y-8">
+          <div className="prose prose-invert max-w-none space-y-4">
             {/* § 1 */}
-            <section className="bg-red-500/10 border-2 border-red-500/40 rounded-lg p-6">
-              <h2 className="text-2xl font-bold text-red-400 mb-4">
+            <section className="bg-red-500/10 border-2 border-red-500/40 rounded-lg p-3">
+              <h2 className="text-lg font-bold text-red-400 mb-4">
                 § 1 GELTUNGSBEREICH UND VERTRAGSPARTNER
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Diese Allgemeinen Geschäftsbedingungen gelten <strong className="text-red-400">ausschließlich für Unternehmer</strong> im Sinne von Art. 2 lit. b der Richtlinie 2011/83/EU bzw. § 14 BGB.
                 </p>
@@ -48,11 +48,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 2 */}
-            <section className="bg-dark p-6 rounded border border-gold/20">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
+            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-4">
                 § 2 GEWERBENACHWEIS
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Der Kunde ist verpflichtet, bei der Registrierung seinen Gewerbenachweis durch Angabe der Umsatzsteuer-Identifikationsnummer (USt-IdNr.) oder Handelsregisternummer zu erbringen.
                 </p>
@@ -66,11 +66,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 3 */}
-            <section className="bg-dark p-6 rounded border border-gold/20">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
+            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-4">
                 § 3 VERTRAGSSCHLUSS
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Die Darstellung der Produkte im Online-Shop stellt kein rechtlich bindendes Angebot dar, sondern eine Aufforderung zur Abgabe einer Bestellung.
                 </p>
@@ -84,11 +84,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 4 */}
-            <section className="bg-dark p-6 rounded border border-gold/20">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
+            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-4">
                 § 4 PREISE UND ZAHLUNGSBEDINGUNGEN
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Alle Preise verstehen sich netto zuzüglich der jeweils geltenden gesetzlichen Mehrwertsteuer.
                 </p>
@@ -102,11 +102,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 5 */}
-            <section className="bg-dark p-6 rounded border border-gold/20">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
+            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-4">
                 § 5 LIEFERUNG UND GEFAHRÜBERGANG
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Die Lieferzeit beträgt in der Regel 5-15 Werktage, sofern nicht anders angegeben.
                 </p>
@@ -120,11 +120,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 6 */}
-            <section className="bg-dark p-6 rounded border border-gold/20">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
+            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-4">
                 § 6 EIGENTUMSVORBEHALT
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Die gelieferte Ware bleibt bis zur vollständigen Bezahlung aller Forderungen aus der Geschäftsverbindung Eigentum der Trademark24-7 AG.
                 </p>
@@ -135,11 +135,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 7 */}
-            <section className="bg-dark p-6 rounded border border-gold/20">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
+            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-4">
                 § 7 MÄNGELRÜGE UND GEWÄHRLEISTUNG
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Der Kunde ist verpflichtet, die Ware unverzüglich nach Erhalt zu untersuchen und offensichtliche Mängel innerhalb von 5 Werktagen schriftlich zu rügen.
                 </p>
@@ -156,11 +156,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 8 */}
-            <section className="bg-dark p-6 rounded border border-gold/20">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
+            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-4">
                 § 8 HAFTUNGSBESCHRÄNKUNG
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Die Trademark24-7 AG haftet unbeschränkt nur für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit sowie für Schäden, die auf Vorsatz oder grober Fahrlässigkeit beruhen.
                 </p>
@@ -177,11 +177,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 9 */}
-            <section className="bg-red-500/10 border-2 border-red-500/40 rounded-lg p-6">
-              <h2 className="text-2xl font-bold text-red-400 mb-4">
+            <section className="bg-red-500/10 border-2 border-red-500/40 rounded-lg p-3">
+              <h2 className="text-lg font-bold text-red-400 mb-4">
                 § 9 KEIN WIDERRUFSRECHT
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Da das Warenpakete Portal ausschließlich an Gewerbetreibende verkauft, besteht <strong className="text-red-400 uppercase">KEIN</strong> gesetzliches Widerrufsrecht.
                 </p>
@@ -195,11 +195,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 10 */}
-            <section className="bg-orange-500/10 border-2 border-orange-500/40 rounded-lg p-6">
-              <h2 className="text-2xl font-bold text-orange-400 mb-4">
+            <section className="bg-orange-500/10 border-2 border-orange-500/40 rounded-lg p-3">
+              <h2 className="text-lg font-bold text-orange-400 mb-4">
                 § 10 AUSSCHLUSS DES ORDENTLICHEN RECHTSWEGS
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) <strong className="text-orange-400 uppercase">FÜR ALLE STREITIGKEITEN AUS ODER IM ZUSAMMENHANG MIT DIESEM VERTRAG IST DER ORDENTLICHE RECHTSWEG AUSGESCHLOSSEN.</strong>
                 </p>
@@ -221,11 +221,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 11 */}
-            <section className="bg-dark p-6 rounded border border-gold/20">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
+            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-4">
                 § 11 ANWENDBARES RECHT
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Es gilt ausschließlich das Recht der Schweizerischen Eidgenossenschaft unter Ausschluss des UN-Kaufrechts (CISG).
                 </p>
@@ -236,11 +236,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 12 */}
-            <section className="bg-dark p-6 rounded border border-gold/20">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
+            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-4">
                 § 12 VERTRAULICHKEIT
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Der Kunde verpflichtet sich, alle im Rahmen der Geschäftsbeziehung erhaltenen Informationen über Preise, Konditionen und Lieferquellen vertraulich zu behandeln.
                 </p>
@@ -251,11 +251,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 13 */}
-            <section className="bg-dark p-6 rounded border border-gold/20">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
+            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-4">
                 § 13 SALVATORISCHE KLAUSEL
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Sollten einzelne Bestimmungen dieser AGB unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.
                 </p>
@@ -266,11 +266,11 @@ export default function AGBPage() {
             </section>
 
             {/* § 14 */}
-            <section className="bg-dark p-6 rounded border border-gold/20">
-              <h2 className="text-2xl font-semibold text-gold mb-4">
+            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-4">
                 § 14 ÄNDERUNGEN DER AGB
               </h2>
-              <div className="space-y-3 text-white">
+              <div className="space-y-3 text-gray-900">
                 <p>
                   (1) Die Trademark24-7 AG behält sich das Recht vor, diese AGB jederzeit zu ändern.
                 </p>
@@ -280,12 +280,12 @@ export default function AGBPage() {
               </div>
             </section>
 
-            <div className="mt-12 pt-6 border-t border-gold/20">
-              <p className="text-white font-semibold">Trademark24-7 AG</p>
-              <p className="text-gray-400">Kantonsstrasse 1</p>
-              <p className="text-gray-400">8807 Freienbach SZ</p>
-              <p className="text-gray-400">Schweiz</p>
-              <p className="text-gray-400 mt-4">Stand: Januar 2026</p>
+            <div className="mt-3 pt-6 border-t border-gray-300">
+              <p className="text-gray-900 font-semibold">Trademark24-7 AG</p>
+              <p className="text-gray-600">Kantonsstrasse 1</p>
+              <p className="text-gray-600">8807 Freienbach SZ</p>
+              <p className="text-gray-600">Schweiz</p>
+              <p className="text-gray-600 mt-4">Stand: Januar 2026</p>
             </div>
           </div>
         </div>

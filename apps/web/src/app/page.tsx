@@ -9,7 +9,7 @@ export default function Home() {
   const { isSignedIn } = useAuth();
 
   return (
-    <div className="flex flex-col bg-dark">
+    <div className="flex flex-col bg-[#ebebeb]">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-24 md:py-32">
         {/* Background gradient */}
@@ -18,19 +18,19 @@ export default function Home() {
 
         <div className="container relative mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block mb-6 px-4 py-2 rounded-full border border-gold/30 bg-gold/5">
+            <div className="inline-block mb-3 px-4 py-2 rounded-full border border-gold/30 bg-gold/5">
               <span className="text-gold text-sm font-semibold tracking-wider">
                 PREMIUM B2B WARENPAKETE
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-gold-light via-gold to-gold-dark bg-clip-text text-transparent">
+            <h1 className="text-xl md:text-7xl font-bold mb-3 bg-gradient-to-r from-gold-light via-gold to-gold-dark bg-clip-text text-transparent">
               Luxus-Großhandel
               <br />
-              <span className="text-white">für Ihr Business</span>
+              <span className="text-gray-900">für Ihr Business</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-400 mb-10 leading-relaxed">
+            <p className="text-xl md:text-lg text-gray-600 mb-5 leading-relaxed">
               Exklusive Warenpakete mit bis zu <span className="text-gold font-bold">70% Ersparnis</span> gegenüber UVP.
               <br />
               Premium-Qualität für anspruchsvolle B2B-Partner.
@@ -40,7 +40,7 @@ export default function Home() {
               <Link href="/products">
                 <Button
                   size="lg"
-                  className="text-lg px-10 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30 border border-gold-light/20"
+                  className="text-lg px-5 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30 border border-gold-light/20"
                 >
                   Produkte entdecken
                 </Button>
@@ -50,7 +50,7 @@ export default function Home() {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="text-lg px-10 py-7 border-2 border-gold/50 text-gold hover:bg-gold/10 hover:border-gold"
+                    className="text-lg px-5 py-7 border-2 border-gold/50 text-gold hover:bg-gold/10 hover:border-gold"
                   >
                     Premium-Zugang erhalten
                   </Button>
@@ -66,20 +66,20 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-dark-light relative">
+      <section className="py-20 bg-white relative">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
               Ihre <span className="text-gold">Premium</span> Vorteile
             </h2>
-            <p className="text-gray-400 text-lg">
+            <p className="text-gray-600 text-lg">
               Exklusiver Service für anspruchsvolle B2B-Partner
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="p-8 text-center bg-dark border-gold/20 hover:border-gold/50 transition-all hover:shadow-xl hover:shadow-gold/10">
-              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-gold/20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="p-4 text-center bg-[#ebebeb] border-gray-300 hover:border-gold/50 transition-all hover:shadow-xl hover:shadow-gold/10">
+              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-gold/20">
                 <svg
                   className="w-8 h-8 text-dark"
                   fill="none"
@@ -94,16 +94,16 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-3">
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
                 Premium-Konditionen
               </h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed">
                 Bis zu 70% unter UVP durch exklusive Herstellerpartnerschaften und direkten Zugang zu Premium-Beständen
               </p>
             </Card>
 
-            <Card className="p-8 text-center bg-dark border-gold/20 hover:border-gold/50 transition-all hover:shadow-xl hover:shadow-gold/10">
-              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-gold/20">
+            <Card className="p-4 text-center bg-[#ebebeb] border-gray-300 hover:border-gold/50 transition-all hover:shadow-xl hover:shadow-gold/10">
+              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-gold/20">
                 <svg
                   className="w-8 h-8 text-dark"
                   fill="none"
@@ -118,14 +118,14 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-3">Geprüfte Luxus-Qualität</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <h3 className="text-lg font-bold text-gray-900 mb-3">Geprüfte Luxus-Qualität</h3>
+              <p className="text-gray-600 leading-relaxed">
                 Jedes Warenpaket wird von Experten geprüft und zertifiziert. Premium-Marken, einwandfreie Funktion garantiert
               </p>
             </Card>
 
-            <Card className="p-8 text-center bg-dark border-gold/20 hover:border-gold/50 transition-all hover:shadow-xl hover:shadow-gold/10">
-              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-gold/20">
+            <Card className="p-4 text-center bg-[#ebebeb] border-gray-300 hover:border-gold/50 transition-all hover:shadow-xl hover:shadow-gold/10">
+              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-gold/20">
                 <svg
                   className="w-8 h-8 text-dark"
                   fill="none"
@@ -140,10 +140,10 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-3">
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
                 20% Reseller-Provision
               </h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed">
                 Als Premium-Reseller verdienen Sie 20% Provision auf jeden vermittelten Verkauf. Exklusives Partnerprogramm
               </p>
             </Card>
@@ -152,9 +152,9 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-gradient-to-r from-gold-dark/10 via-gold/10 to-gold-light/10 border-y border-gold/20">
+      <section className="py-16 bg-gradient-to-r from-gold-dark/10 via-gold/10 to-gold-light/10 border-y border-gray-300">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { value: '€45M+', label: 'Handelsvolumen' },
               { value: '500+', label: 'Premium-Partner' },
@@ -162,10 +162,10 @@ export default function Home() {
               { value: '24/7', label: 'VIP-Support' },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-gold mb-2">
+                <div className="text-lg md:text-xl font-bold text-gold mb-2">
                   {stat.value}
                 </div>
-                <div className="text-gray-400 font-medium">{stat.label}</div>
+                <div className="text-gray-600 font-medium">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -173,18 +173,18 @@ export default function Home() {
       </section>
 
       {/* Categories Section */}
-      <section className="py-20 bg-dark">
+      <section className="py-20 bg-[#ebebeb]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
               Premium <span className="text-gold">Kategorien</span>
             </h2>
-            <p className="text-gray-400 text-lg">
+            <p className="text-gray-600 text-lg">
               Exklusive Warenpakete in Top-Kategorien
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {[
               { name: 'Elektronik', icon: '📱' },
               { name: 'Haushalt', icon: '🏠' },
@@ -193,11 +193,11 @@ export default function Home() {
               { name: 'Werkzeug', icon: '🔨' },
             ].map((category) => (
               <Link key={category.name} href="/products">
-                <Card className="p-8 text-center bg-dark-light border-gold/20 hover:border-gold hover:shadow-xl hover:shadow-gold/20 transition-all cursor-pointer group">
-                  <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">
+                <Card className="p-4 text-center bg-white border-gray-300 hover:border-gold hover:shadow-xl hover:shadow-gold/20 transition-all cursor-pointer group">
+                  <div className="text-xl mb-4 group-hover:scale-110 transition-transform">
                     {category.icon}
                   </div>
-                  <p className="font-bold text-white group-hover:text-gold transition-colors">
+                  <p className="font-bold text-gray-900 group-hover:text-gold transition-colors">
                     {category.name}
                   </p>
                 </Card>
@@ -214,10 +214,10 @@ export default function Home() {
 
         <div className="container relative mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            <h2 className="text-lg md:text-6xl font-bold text-gray-900 mb-3">
               Bereit für <span className="text-gold">Premium-Deals?</span>
             </h2>
-            <p className="text-xl text-gray-400 mb-10 leading-relaxed">
+            <p className="text-xl text-gray-600 mb-5 leading-relaxed">
               Werden Sie Teil unserer exklusiven B2B-Community und profitieren Sie
               <br />
               von erstklassigen Warenpaketen zu unschlagbaren Konditionen
@@ -227,7 +227,7 @@ export default function Home() {
               <Link href="/products">
                 <Button
                   size="lg"
-                  className="text-lg px-12 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
+                  className="text-lg px-3 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
                 >
                   Exklusive Produkte entdecken
                 </Button>
@@ -236,7 +236,7 @@ export default function Home() {
               <Link href="/sign-up">
                 <Button
                   size="lg"
-                  className="text-lg px-12 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
+                  className="text-lg px-3 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
                 >
                   Premium-Zugang sichern
                 </Button>

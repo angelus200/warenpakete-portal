@@ -77,7 +77,7 @@ export default function AdminContractsPage() {
       case 'pending': return 'text-yellow-500';
       case 'listed': return 'text-blue-500';
       case 'sold': return 'text-green-500';
-      default: return 'text-gray-400';
+      default: return 'text-gray-600';
     }
   };
 
@@ -92,40 +92,40 @@ export default function AdminContractsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">Lade Verträge...</p>
+          <p className="text-gray-600">Lade Verträge...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="container mx-auto px-4 py-12">
+    <div className="min-h-screen bg-[#ebebeb]">
+      <div className="container mx-auto px-4 py-3">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-4">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Kommissionsverträge</h1>
-            <p className="text-gray-400">{filteredContracts.length} Verträge</p>
+            <h1 className="text-lg font-bold text-gray-900 mb-2">Kommissionsverträge</h1>
+            <p className="text-gray-600">{filteredContracts.length} Verträge</p>
           </div>
           <Link
             href="/admin/dashboard"
-            className="px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-all"
+            className="px-3 py-3 bg-white hover:bg-gray-100 text-gray-900 rounded-lg transition-all"
           >
             ← Dashboard
           </Link>
         </div>
 
         {/* Filter */}
-        <div className="flex flex-wrap gap-3 mb-8">
+        <div className="flex flex-wrap gap-3 mb-4">
           <button
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               filter === 'all'
                 ? 'bg-amber-600 text-black'
-                : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+                : 'bg-white text-gray-600 hover:bg-gray-100'
             }`}
           >
             Alle ({contracts.length})
@@ -135,7 +135,7 @@ export default function AdminContractsPage() {
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               filter === 'pending'
                 ? 'bg-amber-600 text-black'
-                : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+                : 'bg-white text-gray-600 hover:bg-gray-100'
             }`}
           >
             Offen ({contracts.filter(c => c.salesStatus === 'pending').length})
@@ -145,7 +145,7 @@ export default function AdminContractsPage() {
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               filter === 'listed'
                 ? 'bg-amber-600 text-black'
-                : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+                : 'bg-white text-gray-600 hover:bg-gray-100'
             }`}
           >
             Gelistet ({contracts.filter(c => c.salesStatus === 'listed').length})
@@ -155,7 +155,7 @@ export default function AdminContractsPage() {
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               filter === 'sold'
                 ? 'bg-amber-600 text-black'
-                : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+                : 'bg-white text-gray-600 hover:bg-gray-100'
             }`}
           >
             Verkauft ({contracts.filter(c => c.salesStatus === 'sold').length})
@@ -165,7 +165,7 @@ export default function AdminContractsPage() {
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               filter === 'needsPayout'
                 ? 'bg-amber-600 text-black'
-                : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+                : 'bg-white text-gray-600 hover:bg-gray-100'
             }`}
           >
             Auszahlung offen ({contracts.filter(c => c.salesStatus === 'sold' && c.payoutStatus === 'pending').length})
@@ -175,36 +175,36 @@ export default function AdminContractsPage() {
         {/* Contracts List */}
         <div className="space-y-4">
           {filteredContracts.length === 0 ? (
-            <Card className="p-8 bg-zinc-900 border-amber-500/20 text-center">
-              <p className="text-gray-400">Keine Verträge gefunden</p>
+            <Card className="p-4 bg-white border-amber-500/20 text-center">
+              <p className="text-gray-600">Keine Verträge gefunden</p>
             </Card>
           ) : (
             filteredContracts.map((contract) => (
               <Link key={contract.id} href={`/admin/contracts/${contract.id}`}>
-                <Card className="p-6 bg-zinc-900 border-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer">
+                <Card className="p-3 bg-white border-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer">
                   <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
                     <div>
-                      <p className="text-sm text-gray-400 mb-1">Vertrag</p>
-                      <p className="text-white font-semibold">{contract.contractNumber}</p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-sm text-gray-600 mb-1">Vertrag</p>
+                      <p className="text-gray-900 font-semibold">{contract.contractNumber}</p>
+                      <p className="text-xs text-gray-600 mt-1">
                         {new Date(contract.createdAt).toLocaleDateString('de-DE')}
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-sm text-gray-400 mb-1">Kunde</p>
-                      <p className="text-white">{contract.user.companyName || contract.user.email}</p>
+                      <p className="text-sm text-gray-600 mb-1">Kunde</p>
+                      <p className="text-gray-900">{contract.user.companyName || contract.user.email}</p>
                     </div>
 
                     <div>
-                      <p className="text-sm text-gray-400 mb-1">Produkt</p>
-                      <p className="text-white">{contract.productName}</p>
-                      <p className="text-xs text-gray-500">{contract.productQuantity} Stück</p>
+                      <p className="text-sm text-gray-600 mb-1">Produkt</p>
+                      <p className="text-gray-900">{contract.productName}</p>
+                      <p className="text-xs text-gray-600">{contract.productQuantity} Stück</p>
                     </div>
 
                     <div>
-                      <p className="text-sm text-gray-400 mb-1">Einkaufspreis</p>
-                      <p className="text-white font-semibold">
+                      <p className="text-sm text-gray-600 mb-1">Einkaufspreis</p>
+                      <p className="text-gray-900 font-semibold">
                         €{Number(contract.purchasePrice).toLocaleString('de-DE')}
                       </p>
                       {contract.salesPrice && (

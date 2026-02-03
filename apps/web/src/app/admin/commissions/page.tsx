@@ -93,71 +93,71 @@ export default function AdminCommissionsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">Lade Kommissionen...</p>
+          <p className="text-gray-600">Lade Kommissionen...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="container mx-auto px-4 py-12">
+    <div className="min-h-screen bg-[#ebebeb]">
+      <div className="container mx-auto px-4 py-3">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-4">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Kommissions-Übersicht</h1>
-            <p className="text-gray-400">{filteredContracts.length} Verträge</p>
+            <h1 className="text-lg font-bold text-gray-900 mb-2">Kommissions-Übersicht</h1>
+            <p className="text-gray-600">{filteredContracts.length} Verträge</p>
           </div>
           <Link
             href="/admin/dashboard"
-            className="px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-all"
+            className="px-3 py-3 bg-white hover:bg-gray-100 text-gray-900 rounded-lg transition-all"
           >
             ← Dashboard
           </Link>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="p-6 bg-zinc-900 border-amber-500/20">
-            <h3 className="text-sm text-gray-400 font-medium mb-2">Gesamt-Kommission</h3>
-            <p className="text-3xl font-bold text-amber-500">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+          <Card className="p-3 bg-white border-amber-500/20">
+            <h3 className="text-sm text-gray-600 font-medium mb-2">Gesamt-Kommission</h3>
+            <p className="text-xl font-bold text-amber-500">
               {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(totalCommissions)}
             </p>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-600 mt-1">
               {filteredContracts.filter(c => c.salesPrice).length} verkaufte Verträge
             </p>
           </Card>
 
-          <Card className="p-6 bg-zinc-900 border-amber-500/20">
-            <h3 className="text-sm text-gray-400 font-medium mb-2">Ausstehende Auszahlungen</h3>
-            <p className="text-3xl font-bold text-yellow-500">
+          <Card className="p-3 bg-white border-amber-500/20">
+            <h3 className="text-sm text-gray-600 font-medium mb-2">Ausstehende Auszahlungen</h3>
+            <p className="text-xl font-bold text-yellow-500">
               {filteredContracts.filter(c => c.salesStatus === 'sold' && c.payoutStatus === 'pending').length}
             </p>
-            <p className="text-xs text-gray-500 mt-1">Bereit zur Auszahlung</p>
+            <p className="text-xs text-gray-600 mt-1">Bereit zur Auszahlung</p>
           </Card>
 
-          <Card className="p-6 bg-zinc-900 border-amber-500/20">
-            <h3 className="text-sm text-gray-400 font-medium mb-2">Ausgezahlt</h3>
-            <p className="text-3xl font-bold text-green-500">
+          <Card className="p-3 bg-white border-amber-500/20">
+            <h3 className="text-sm text-gray-600 font-medium mb-2">Ausgezahlt</h3>
+            <p className="text-xl font-bold text-green-500">
               {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(totalPayouts)}
             </p>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-600 mt-1">
               {filteredContracts.filter(c => c.payoutStatus === 'completed').length} Auszahlungen
             </p>
           </Card>
         </div>
 
         {/* Filter */}
-        <div className="flex flex-wrap gap-3 mb-8">
+        <div className="flex flex-wrap gap-3 mb-4">
           <button
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               filter === 'all'
                 ? 'bg-amber-600 text-black'
-                : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+                : 'bg-white text-gray-600 hover:bg-gray-100'
             }`}
           >
             Alle ({contracts.length})
@@ -167,7 +167,7 @@ export default function AdminCommissionsPage() {
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               filter === 'sold'
                 ? 'bg-amber-600 text-black'
-                : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+                : 'bg-white text-gray-600 hover:bg-gray-100'
             }`}
           >
             Verkauft ({contracts.filter(c => c.salesStatus === 'sold').length})
@@ -177,7 +177,7 @@ export default function AdminCommissionsPage() {
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               filter === 'needsPayout'
                 ? 'bg-amber-600 text-black'
-                : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+                : 'bg-white text-gray-600 hover:bg-gray-100'
             }`}
           >
             Auszahlung offen ({contracts.filter(c => c.salesStatus === 'sold' && c.payoutStatus === 'pending').length})
@@ -187,7 +187,7 @@ export default function AdminCommissionsPage() {
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               filter === 'completed'
                 ? 'bg-amber-600 text-black'
-                : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+                : 'bg-white text-gray-600 hover:bg-gray-100'
             }`}
           >
             Ausgezahlt ({contracts.filter(c => c.payoutStatus === 'completed').length})
@@ -197,60 +197,60 @@ export default function AdminCommissionsPage() {
         {/* Commissions List */}
         <div className="space-y-4">
           {filteredContracts.length === 0 ? (
-            <Card className="p-8 bg-zinc-900 border-amber-500/20 text-center">
-              <p className="text-gray-400">Keine Kommissionen gefunden</p>
+            <Card className="p-4 bg-white border-amber-500/20 text-center">
+              <p className="text-gray-600">Keine Kommissionen gefunden</p>
             </Card>
           ) : (
             filteredContracts.map((contract) => (
               <Link key={contract.id} href={`/admin/contracts/${contract.id}`}>
-                <Card className="p-6 bg-zinc-900 border-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer">
+                <Card className="p-3 bg-white border-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer">
                   <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
                     <div>
-                      <p className="text-sm text-gray-400 mb-1">Vertrag</p>
-                      <p className="text-white font-semibold">{contract.contractNumber}</p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-sm text-gray-600 mb-1">Vertrag</p>
+                      <p className="text-gray-900 font-semibold">{contract.contractNumber}</p>
+                      <p className="text-xs text-gray-600 mt-1">
                         {new Date(contract.createdAt).toLocaleDateString('de-DE')}
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-sm text-gray-400 mb-1">Kunde</p>
-                      <p className="text-white">
+                      <p className="text-sm text-gray-600 mb-1">Kunde</p>
+                      <p className="text-gray-900">
                         {contract.user.companyName ||
                          `${contract.user.firstName || ''} ${contract.user.lastName || ''}`.trim() ||
                          contract.user.email}
                       </p>
-                      <p className="text-xs text-gray-500">{contract.user.email}</p>
+                      <p className="text-xs text-gray-600">{contract.user.email}</p>
                     </div>
 
                     <div>
-                      <p className="text-sm text-gray-400 mb-1">Produkt</p>
-                      <p className="text-white">{contract.productName}</p>
-                      <p className="text-xs text-gray-500">{contract.productQuantity} Stück</p>
+                      <p className="text-sm text-gray-600 mb-1">Produkt</p>
+                      <p className="text-gray-900">{contract.productName}</p>
+                      <p className="text-xs text-gray-600">{contract.productQuantity} Stück</p>
                     </div>
 
                     <div>
-                      <p className="text-sm text-gray-400 mb-1">Verkaufspreis</p>
+                      <p className="text-sm text-gray-600 mb-1">Verkaufspreis</p>
                       {contract.salesPrice ? (
                         <>
-                          <p className="text-white font-semibold">
+                          <p className="text-gray-900 font-semibold">
                             {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(contract.salesPrice)}
                           </p>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-gray-600">
                             Einkauf: {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(contract.purchasePrice)}
                           </p>
                         </>
                       ) : (
-                        <p className="text-gray-500">Noch nicht verkauft</p>
+                        <p className="text-gray-600">Noch nicht verkauft</p>
                       )}
                     </div>
 
                     <div>
-                      <p className="text-sm text-gray-400 mb-1">Kommission</p>
+                      <p className="text-sm text-gray-600 mb-1">Kommission</p>
                       <p className="text-amber-500 font-semibold">
                         {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(calculateCommission(contract))}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-600">
                         {(contract.commissionRate * 100).toFixed(0)}% vom Verkaufspreis
                       </p>
                     </div>
@@ -262,12 +262,12 @@ export default function AdminCommissionsPage() {
                             ✓ Ausgezahlt
                           </span>
                           {contract.payoutAmount && (
-                            <p className="text-xs text-gray-400 mt-2">
+                            <p className="text-xs text-gray-600 mt-2">
                               {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(contract.payoutAmount)}
                             </p>
                           )}
                           {contract.paidAt && (
-                            <p className="text-xs text-gray-500 mt-1">
+                            <p className="text-xs text-gray-600 mt-1">
                               {new Date(contract.paidAt).toLocaleDateString('de-DE')}
                             </p>
                           )}
@@ -277,7 +277,7 @@ export default function AdminCommissionsPage() {
                           ⚠️ Auszahlung offen
                         </span>
                       ) : (
-                        <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-gray-500/20 text-gray-400">
+                        <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-gray-500/20 text-gray-600">
                           Noch nicht verkauft
                         </span>
                       )}

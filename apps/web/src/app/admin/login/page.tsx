@@ -46,26 +46,26 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-4">
-      <Card className="w-full max-w-md p-8 bg-zinc-900 border-amber-500/20">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">
+    <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center px-4">
+      <Card className="w-full max-w-md p-4 bg-white border-amber-500/20">
+        <div className="mb-4 text-center">
+          <h1 className="text-xl font-bold text-gray-900 mb-2">
             Commercehelden Admin
           </h1>
-          <p className="text-gray-400">
+          <p className="text-gray-600">
             Melde dich mit deinen Admin-Zugangsdaten an
           </p>
         </div>
 
         {error && (
-          <div className="mb-6 bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg">
+          <div className="mb-3 bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">
+            <label className="block text-sm font-medium text-gray-600 mb-2">
               Email
             </label>
             <input
@@ -73,13 +73,13 @@ export default function AdminLoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@commercehelden.com"
-              className="w-full px-4 py-3 bg-black border border-amber-500/20 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-amber-500"
+              className="w-full px-4 py-3 bg-[#ebebeb] border border-amber-500/20 rounded-lg text-gray-900 placeholder-gray-600 focus:outline-none focus:border-amber-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">
+            <label className="block text-sm font-medium text-gray-600 mb-2">
               Passwort
             </label>
             <input
@@ -87,7 +87,7 @@ export default function AdminLoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-4 py-3 bg-black border border-amber-500/20 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-amber-500"
+              className="w-full px-4 py-3 bg-[#ebebeb] border border-amber-500/20 rounded-lg text-gray-900 placeholder-gray-600 focus:outline-none focus:border-amber-500"
               required
             />
           </div>
@@ -95,14 +95,14 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full px-6 py-4 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 hover:from-amber-700 hover:via-amber-600 hover:to-amber-500 text-black font-bold rounded-lg shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-3 py-4 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 hover:from-amber-700 hover:via-amber-600 hover:to-amber-500 text-black font-bold rounded-lg shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? 'Anmelden...' : 'Anmelden'}
           </button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-amber-500/10 text-center">
-          <p className="text-sm text-gray-500">
+        <div className="mt-4 pt-6 border-t border-amber-500/10 text-center">
+          <p className="text-sm text-gray-600">
             Nur für autorisierte Commercehelden-Mitarbeiter
           </p>
         </div>

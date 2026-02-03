@@ -4,9 +4,9 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-gold/20 bg-dark-light">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <footer className="border-t border-gray-300 bg-white">
+      <div className="container mx-auto px-4 py-3">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
           {/* Company Info */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
@@ -20,7 +20,7 @@ export function Footer() {
                 <p className="text-xs text-gold-dark font-medium">PREMIUM B2B</p>
               </div>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-md">
+            <p className="text-gray-600 text-sm leading-relaxed max-w-md">
               Ihr exklusiver B2B Partner für Premium-Warenpakete im Großhandel.
               Seit 2024 vertrauen über 500 Unternehmen auf unsere erstklassigen Konditionen.
             </p>
@@ -28,12 +28,12 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-white mb-4">Navigation</h3>
+            <h3 className="font-semibold text-gray-900 mb-4">Navigation</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
                   href="/products"
-                  className="text-gray-400 hover:text-gold transition-colors"
+                  className="text-gray-600 hover:text-gold transition-colors"
                 >
                   Produkte
                 </Link>
@@ -41,7 +41,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/dashboard"
-                  className="text-gray-400 hover:text-gold transition-colors"
+                  className="text-gray-600 hover:text-gold transition-colors"
                 >
                   Dashboard
                 </Link>
@@ -49,7 +49,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/orders"
-                  className="text-gray-400 hover:text-gold transition-colors"
+                  className="text-gray-600 hover:text-gold transition-colors"
                 >
                   Bestellungen
                 </Link>
@@ -59,12 +59,12 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold text-white mb-4">Rechtliches</h3>
+            <h3 className="font-semibold text-gray-900 mb-4">Rechtliches</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
                   href="/impressum"
-                  className="text-gray-400 hover:text-gold transition-colors"
+                  className="text-gray-600 hover:text-gold transition-colors"
                 >
                   Impressum
                 </Link>
@@ -72,7 +72,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/datenschutz"
-                  className="text-gray-400 hover:text-gold transition-colors"
+                  className="text-gray-600 hover:text-gold transition-colors"
                 >
                   Datenschutz
                 </Link>
@@ -80,7 +80,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/agb"
-                  className="text-gray-400 hover:text-gold transition-colors"
+                  className="text-gray-600 hover:text-gold transition-colors"
                 >
                   AGB
                 </Link>
@@ -88,7 +88,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/widerrufsrecht"
-                  className="text-gray-400 hover:text-gold transition-colors"
+                  className="text-gray-600 hover:text-gold transition-colors"
                 >
                   Widerrufsrecht
                 </Link>
@@ -99,11 +99,11 @@ export function Footer() {
 
         <div className="pt-8 border-t border-gold/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-600 text-sm">
               &copy; {currentYear} Warenpakete Portal. Alle Rechte vorbehalten.
             </p>
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-gray-500">Powered by</span>
+              <span className="text-gray-600">Powered by</span>
               <span className="text-gold font-semibold">Premium Technology</span>
             </div>
           </div>

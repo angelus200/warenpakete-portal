@@ -77,8 +77,12 @@ export default function SignContractPage() {
     canvas.width = rect.width;
     canvas.height = rect.height;
 
+    // Set white background
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
     // Set drawing style
-    ctx.strokeStyle = '#D4AF37';
+    ctx.strokeStyle = '#000000';
     ctx.lineWidth = 2;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
@@ -96,8 +100,8 @@ export default function SignContractPage() {
     if (!ctx) return;
 
     // Set drawing style for this context
-    ctx.strokeStyle = '#D4AF37';
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 2;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
@@ -162,10 +166,10 @@ export default function SignContractPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold mx-auto mb-4"></div>
-          <p className="text-gray-400">Lade Vertrag...</p>
+          <p className="text-gray-600">Lade Vertrag...</p>
         </div>
       </div>
     );
@@ -173,44 +177,44 @@ export default function SignContractPage() {
 
   if (!contract) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
-        <p className="text-gray-400">Vertrag nicht gefunden</p>
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
+        <p className="text-gray-600">Vertrag nicht gefunden</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-dark">
-      <div className="container mx-auto px-4 py-12 max-w-5xl">
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+    <div className="min-h-screen bg-[#ebebeb]">
+      <div className="container mx-auto px-4 py-3 max-w-5xl">
+        <div className="mb-3">
+          <h1 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
             Verkaufskommissionsvertrag
           </h1>
-          <p className="text-gray-400">Vertragsnummer: {contract.contractNumber}</p>
+          <p className="text-gray-600">Vertragsnummer: {contract.contractNumber}</p>
         </div>
 
         {error && (
-          <div className="mb-8 bg-red-500/10 border-2 border-red-500/50 text-red-400 px-6 py-4 rounded-lg">
+          <div className="mb-4 bg-red-500/10 border-2 border-red-500/50 text-red-400 px-3 py-4 rounded-lg">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Contract Text */}
-          <Card className="p-8 bg-dark-light border-gold/20">
+          <Card className="p-4 bg-white border-gray-300">
             <div className="max-h-[600px] overflow-y-auto pr-4 custom-scrollbar">
-              <pre className="text-sm text-gray-300 whitespace-pre-wrap font-mono leading-relaxed">
+              <pre className="text-sm text-gray-700 whitespace-pre-wrap font-mono leading-relaxed">
                 {contractText?.text || 'Lade Vertragstext...'}
               </pre>
             </div>
           </Card>
 
           {/* Signature Section */}
-          <Card className="p-8 bg-dark-light border-gold/20">
-            <h3 className="text-2xl font-bold text-white mb-6">Unterschrift</h3>
+          <Card className="p-4 bg-white border-gray-300">
+            <h3 className="text-lg font-bold text-gray-900 mb-3">Unterschrift</h3>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-400 mb-2">
+              <label className="block text-sm font-medium text-gray-600 mb-2">
                 Bitte unterschreiben Sie hier:
               </label>
               <div className="relative">
@@ -220,7 +224,7 @@ export default function SignContractPage() {
                   onMouseMove={draw}
                   onMouseUp={stopDrawing}
                   onMouseLeave={stopDrawing}
-                  className="w-full h-48 bg-dark border-2 border-gold/40 rounded-lg cursor-crosshair"
+                  className="w-full h-48 bg-white border-2 border-gray-300 rounded-lg cursor-crosshair"
                 />
               </div>
             </div>
@@ -228,30 +232,30 @@ export default function SignContractPage() {
             <button
               type="button"
               onClick={clearSignature}
-              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium rounded-lg transition-all"
+              className="px-4 py-2 bg-white hover:bg-gray-200 text-gray-900 text-sm font-medium rounded-lg transition-all"
             >
               Unterschrift löschen
             </button>
           </Card>
 
           {/* Acceptance Checkbox */}
-          <Card className="p-8 bg-dark-light border-gold/20">
+          <Card className="p-4 bg-white border-gray-300">
             <label className="flex items-start gap-4 cursor-pointer">
               <input
                 type="checkbox"
                 checked={accepted}
                 onChange={(e) => setAccepted(e.target.checked)}
-                className="mt-1 w-5 h-5 text-gold bg-dark border-gold/40 rounded focus:ring-gold"
+                className="mt-1 w-5 h-5 text-gold bg-[#ebebeb] border-gold rounded focus:ring-gold"
               />
               <div className="flex-1">
-                <p className="text-white font-medium mb-2">
+                <p className="text-gray-900 font-medium mb-2">
                   Ich akzeptiere die Vertragsbedingungen
                 </p>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-600">
                   Ich bestätige, dass ich den Verkaufskommissionsvertrag vollständig
                   gelesen und verstanden habe. Mir ist bewusst, dass:
                 </p>
-                <ul className="mt-2 text-sm text-gray-400 space-y-1 list-disc list-inside">
+                <ul className="mt-2 text-sm text-gray-600 space-y-1 list-disc list-inside">
                   <li>Dies ein B2B-Vertrag ist (kein Verbraucherschutz)</li>
                   <li>Die Kommission 20% des Verkaufspreises beträgt</li>
                   <li>Lagerkosten nach 14 Tagen anfallen (€0,50/Palette/Tag)</li>
@@ -267,14 +271,14 @@ export default function SignContractPage() {
             <button
               type="button"
               onClick={() => router.push('/orders')}
-              className="flex-1 px-8 py-4 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-lg transition-all"
+              className="flex-1 px-4 py-4 bg-white hover:bg-gray-200 text-gray-900 font-bold rounded-lg transition-all"
             >
               Abbrechen
             </button>
             <button
               type="submit"
               disabled={!hasSignature || !accepted || signMutation.isPending}
-              className="flex-1 px-8 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold rounded-lg shadow-lg shadow-gold/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold rounded-lg shadow-lg shadow-gold/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {signMutation.isPending ? 'Signiere...' : 'Vertrag signieren'}
             </button>

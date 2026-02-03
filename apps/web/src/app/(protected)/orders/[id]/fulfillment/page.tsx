@@ -71,10 +71,10 @@ export default function FulfillmentPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold mx-auto mb-4"></div>
-          <p className="text-gray-400">Lade Bestellung...</p>
+          <p className="text-gray-600">Lade Bestellung...</p>
         </div>
       </div>
     );
@@ -82,38 +82,38 @@ export default function FulfillmentPage() {
 
   if (!order) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
-        <p className="text-gray-400">Bestellung nicht gefunden</p>
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
+        <p className="text-gray-600">Bestellung nicht gefunden</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-dark">
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+    <div className="min-h-screen bg-[#ebebeb]">
+      <div className="container mx-auto px-4 py-3 max-w-4xl">
+        <div className="mb-3">
+          <h1 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
             Fulfillment-Optionen
           </h1>
-          <p className="text-gray-400">
+          <p className="text-gray-600">
             Bestellung #{order.id.slice(0, 8).toUpperCase()}
           </p>
         </div>
 
         {error && (
-          <div className="mb-8 bg-red-500/10 border-2 border-red-500/50 text-red-400 px-6 py-4 rounded-lg">
+          <div className="mb-4 bg-red-500/10 border-2 border-red-500/50 text-red-400 px-3 py-4 rounded-lg">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="space-y-6 mb-8">
+          <div className="space-y-3 mb-4">
             {/* Delivery Option */}
             <Card
-              className={`p-8 cursor-pointer transition-all ${
+              className={`p-4 cursor-pointer transition-all ${
                 selectedOption === 'delivery'
                   ? 'bg-gold/10 border-2 border-gold'
-                  : 'bg-dark-light border border-gold/20 hover:border-gold/40'
+                  : 'bg-white border border-gray-300 hover:border-gold'
               }`}
               onClick={() => setSelectedOption('delivery')}
             >
@@ -124,14 +124,14 @@ export default function FulfillmentPage() {
                     name="fulfillment"
                     checked={selectedOption === 'delivery'}
                     onChange={() => setSelectedOption('delivery')}
-                    className="w-5 h-5 text-gold bg-dark border-gold/40 focus:ring-gold"
+                    className="w-5 h-5 text-gold bg-[#ebebeb] border-gold focus:ring-gold"
                   />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-white mb-2">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
                     Sofortige Lieferung
                   </h3>
-                  <p className="text-gray-400 mb-4">
+                  <p className="text-gray-600 mb-4">
                     Die Ware wird direkt an Sie geliefert. Sie erhalten die Ware
                     innerhalb von 3-5 Werktagen und können sofort mit dem Verkauf
                     beginnen.
@@ -158,10 +158,10 @@ export default function FulfillmentPage() {
 
             {/* Commission Option */}
             <Card
-              className={`p-8 cursor-pointer transition-all ${
+              className={`p-4 cursor-pointer transition-all ${
                 selectedOption === 'commission'
                   ? 'bg-gold/10 border-2 border-gold'
-                  : 'bg-dark-light border border-gold/20 hover:border-gold/40'
+                  : 'bg-white border border-gray-300 hover:border-gold'
               }`}
               onClick={() => setSelectedOption('commission')}
             >
@@ -172,14 +172,14 @@ export default function FulfillmentPage() {
                     name="fulfillment"
                     checked={selectedOption === 'commission'}
                     onChange={() => setSelectedOption('commission')}
-                    className="w-5 h-5 text-gold bg-dark border-gold/40 focus:ring-gold"
+                    className="w-5 h-5 text-gold bg-[#ebebeb] border-gold focus:ring-gold"
                   />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-white mb-2">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
                     Verkaufskommission (20%)
                   </h3>
-                  <p className="text-gray-400 mb-4">
+                  <p className="text-gray-600 mb-4">
                     Wir verkaufen die Ware für Sie im eigenen Namen. Sie zahlen nur
                     20% Kommission vom Verkaufspreis. Lagerung: 14 Tage kostenlos,
                     danach €0,50/Palette/Tag.
@@ -222,13 +222,13 @@ export default function FulfillmentPage() {
               </div>
 
               {selectedOption === 'commission' && (
-                <div className="mt-6 pt-6 border-t border-gold/20 space-y-4">
-                  <h4 className="text-lg font-semibold text-white mb-4">
+                <div className="mt-3 pt-6 border-t border-gray-300 space-y-4">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">
                     Bankverbindung für Auszahlung
                   </h4>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-2">
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
                       IBAN *
                     </label>
                     <input
@@ -238,13 +238,13 @@ export default function FulfillmentPage() {
                         setBankData({ ...bankData, iban: e.target.value.toUpperCase() })
                       }
                       placeholder="DE89 3704 0044 0532 0130 00"
-                      className="w-full px-4 py-3 bg-dark border border-gold/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-gold"
+                      className="w-full px-4 py-3 bg-[#ebebeb] border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-gold"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-2">
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
                       BIC *
                     </label>
                     <input
@@ -254,13 +254,13 @@ export default function FulfillmentPage() {
                         setBankData({ ...bankData, bic: e.target.value.toUpperCase() })
                       }
                       placeholder="COBADEFFXXX"
-                      className="w-full px-4 py-3 bg-dark border border-gold/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-gold"
+                      className="w-full px-4 py-3 bg-[#ebebeb] border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-gold"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-2">
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
                       Kontoinhaber *
                     </label>
                     <input
@@ -270,7 +270,7 @@ export default function FulfillmentPage() {
                         setBankData({ ...bankData, accountHolder: e.target.value })
                       }
                       placeholder="Ihr Name oder Firmenname"
-                      className="w-full px-4 py-3 bg-dark border border-gold/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-gold"
+                      className="w-full px-4 py-3 bg-[#ebebeb] border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-gold"
                       required
                     />
                   </div>
@@ -283,7 +283,7 @@ export default function FulfillmentPage() {
             <button
               type="button"
               onClick={() => router.push('/orders')}
-              className="flex-1 px-8 py-4 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-lg transition-all"
+              className="flex-1 px-4 py-4 bg-white hover:bg-gray-200 text-gray-900 font-bold rounded-lg transition-all"
             >
               Abbrechen
             </button>
@@ -294,7 +294,7 @@ export default function FulfillmentPage() {
                 deliveryMutation.isPending ||
                 commissionMutation.isPending
               }
-              className="flex-1 px-8 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold rounded-lg shadow-lg shadow-gold/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold rounded-lg shadow-lg shadow-gold/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {deliveryMutation.isPending || commissionMutation.isPending
                 ? 'Verarbeite...'

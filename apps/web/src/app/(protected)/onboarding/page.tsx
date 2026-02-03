@@ -57,25 +57,25 @@ export default function OnboardingPage() {
     acceptedTerms.noWithdrawal;
 
   return (
-    <div className="min-h-screen bg-dark flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center px-4 py-3">
       <div className="w-full max-w-2xl">
-        <Card className="p-8 bg-dark-light border-gold/30 shadow-2xl">
-          <div className="mb-8 text-center">
+        <Card className="p-4 bg-white border-gold/30 shadow-2xl">
+          <div className="mb-4 text-center">
             <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-gold/30">
               <svg className="w-8 h-8 text-dark" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">B2B Registrierung</h1>
-            <p className="text-gray-400">
+            <h1 className="text-xl font-bold text-gray-900 mb-2">B2B Registrierung</h1>
+            <p className="text-gray-600">
               Warenpakete Portal verkauft ausschließlich an Gewerbetreibende
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {/* Company Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Firmenname *
               </label>
               <input
@@ -83,14 +83,14 @@ export default function OnboardingPage() {
                 required
                 value={formData.companyName}
                 onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                className="w-full px-4 py-3 bg-dark border-2 border-gold/40 text-white rounded-lg focus:outline-none focus:border-gold"
+                className="w-full px-4 py-3 bg-[#ebebeb] border-2 border-gold text-gray-900 rounded-lg focus:outline-none focus:border-gold"
                 placeholder="Ihre Firma GmbH"
               />
             </div>
 
             {/* VAT ID */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 USt-IdNr. (Umsatzsteuer-Identifikationsnummer) *
               </label>
               <input
@@ -98,17 +98,17 @@ export default function OnboardingPage() {
                 required
                 value={formData.vatId}
                 onChange={(e) => setFormData({ ...formData, vatId: e.target.value })}
-                className="w-full px-4 py-3 bg-dark border-2 border-gold/40 text-white rounded-lg focus:outline-none focus:border-gold"
+                className="w-full px-4 py-3 bg-[#ebebeb] border-2 border-gold text-gray-900 rounded-lg focus:outline-none focus:border-gold"
                 placeholder="DE123456789"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-600 mt-1">
                 Format: DE + 9 Ziffern (z.B. DE123456789)
               </p>
             </div>
 
             {/* Street */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Straße + Hausnummer *
               </label>
               <input
@@ -116,7 +116,7 @@ export default function OnboardingPage() {
                 required
                 value={formData.street}
                 onChange={(e) => setFormData({ ...formData, street: e.target.value })}
-                className="w-full px-4 py-3 bg-dark border-2 border-gold/40 text-white rounded-lg focus:outline-none focus:border-gold"
+                className="w-full px-4 py-3 bg-[#ebebeb] border-2 border-gold text-gray-900 rounded-lg focus:outline-none focus:border-gold"
                 placeholder="Musterstraße 123"
               />
             </div>
@@ -124,7 +124,7 @@ export default function OnboardingPage() {
             {/* ZIP and City */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   PLZ *
                 </label>
                 <input
@@ -132,12 +132,12 @@ export default function OnboardingPage() {
                   required
                   value={formData.zip}
                   onChange={(e) => setFormData({ ...formData, zip: e.target.value })}
-                  className="w-full px-4 py-3 bg-dark border-2 border-gold/40 text-white rounded-lg focus:outline-none focus:border-gold"
+                  className="w-full px-4 py-3 bg-[#ebebeb] border-2 border-gold text-gray-900 rounded-lg focus:outline-none focus:border-gold"
                   placeholder="12345"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Stadt *
                 </label>
                 <input
@@ -145,7 +145,7 @@ export default function OnboardingPage() {
                   required
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="w-full px-4 py-3 bg-dark border-2 border-gold/40 text-white rounded-lg focus:outline-none focus:border-gold"
+                  className="w-full px-4 py-3 bg-[#ebebeb] border-2 border-gold text-gray-900 rounded-lg focus:outline-none focus:border-gold"
                   placeholder="Berlin"
                 />
               </div>
@@ -153,13 +153,13 @@ export default function OnboardingPage() {
 
             {/* Country */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Land *
               </label>
               <select
                 value={formData.country}
                 onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                className="w-full px-4 py-3 bg-dark border-2 border-gold/40 text-white rounded-lg focus:outline-none focus:border-gold"
+                className="w-full px-4 py-3 bg-[#ebebeb] border-2 border-gold text-gray-900 rounded-lg focus:outline-none focus:border-gold"
               >
                 <option value="DE">Deutschland</option>
                 <option value="AT">Österreich</option>
@@ -171,8 +171,8 @@ export default function OnboardingPage() {
             </div>
 
             {/* Terms and Conditions */}
-            <div className="space-y-4 pt-4 border-t border-gold/20">
-              <h3 className="font-semibold text-white text-lg mb-4">
+            <div className="space-y-4 pt-4 border-t border-gray-300">
+              <h3 className="font-semibold text-gray-900 text-lg mb-4">
                 Bestätigungen (alle erforderlich)
               </h3>
 
@@ -181,9 +181,9 @@ export default function OnboardingPage() {
                   type="checkbox"
                   checked={acceptedTerms.businessCustomer}
                   onChange={(e) => setAcceptedTerms({ ...acceptedTerms, businessCustomer: e.target.checked })}
-                  className="mt-1 w-5 h-5 text-gold bg-dark border-2 border-gold/40 rounded focus:ring-gold"
+                  className="mt-1 w-5 h-5 text-gold bg-[#ebebeb] border-2 border-gold rounded focus:ring-gold"
                 />
-                <span className="text-sm text-gray-300 group-hover:text-white">
+                <span className="text-sm text-gray-700 group-hover:text-gray-900">
                   Ich bestätige, dass ich als <strong className="text-gold">Unternehmer im Sinne von § 14 BGB</strong> handle
                   und nicht als Verbraucher (§ 13 BGB) auftrete.
                 </span>
@@ -194,9 +194,9 @@ export default function OnboardingPage() {
                   type="checkbox"
                   checked={acceptedTerms.agb}
                   onChange={(e) => setAcceptedTerms({ ...acceptedTerms, agb: e.target.checked })}
-                  className="mt-1 w-5 h-5 text-gold bg-dark border-2 border-gold/40 rounded focus:ring-gold"
+                  className="mt-1 w-5 h-5 text-gold bg-[#ebebeb] border-2 border-gold rounded focus:ring-gold"
                 />
-                <span className="text-sm text-gray-300 group-hover:text-white">
+                <span className="text-sm text-gray-700 group-hover:text-gray-900">
                   Ich habe die <a href="/agb" target="_blank" className="text-gold hover:text-gold-light underline">AGB</a> gelesen
                   und akzeptiere diese.
                 </span>
@@ -207,9 +207,9 @@ export default function OnboardingPage() {
                   type="checkbox"
                   checked={acceptedTerms.noWithdrawal}
                   onChange={(e) => setAcceptedTerms({ ...acceptedTerms, noWithdrawal: e.target.checked })}
-                  className="mt-1 w-5 h-5 text-gold bg-dark border-2 border-gold/40 rounded focus:ring-gold"
+                  className="mt-1 w-5 h-5 text-gold bg-[#ebebeb] border-2 border-gold rounded focus:ring-gold"
                 />
-                <span className="text-sm text-gray-300 group-hover:text-white">
+                <span className="text-sm text-gray-700 group-hover:text-gray-900">
                   Mir ist bekannt, dass als Unternehmer <strong className="text-gold">kein Widerrufsrecht</strong> besteht (§ 312g BGB).
                 </span>
               </label>

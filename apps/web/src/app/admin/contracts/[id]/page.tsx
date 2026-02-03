@@ -194,10 +194,10 @@ export default function AdminContractDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">Lade Vertrag...</p>
+          <p className="text-gray-600">Lade Vertrag...</p>
         </div>
       </div>
     );
@@ -205,8 +205,8 @@ export default function AdminContractDetailPage() {
 
   if (!contract) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <p className="text-gray-400">Vertrag nicht gefunden</p>
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
+        <p className="text-gray-600">Vertrag nicht gefunden</p>
       </div>
     );
   }
@@ -216,126 +216,126 @@ export default function AdminContractDetailPage() {
   const estimatedPayout = calculatePayout();
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="container mx-auto px-4 py-12 max-w-6xl">
+    <div className="min-h-screen bg-[#ebebeb]">
+      <div className="container mx-auto px-4 py-3 max-w-6xl">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-4">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h1 className="text-xl font-bold text-gray-900 mb-2">
               Vertrag {contract.contractNumber}
             </h1>
-            <p className="text-gray-400">
+            <p className="text-gray-600">
               Erstellt am {new Date(contract.createdAt).toLocaleDateString('de-DE')}
             </p>
           </div>
           <Link
             href="/admin/contracts"
-            className="px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-all"
+            className="px-3 py-3 bg-white hover:bg-gray-100 text-gray-900 rounded-lg transition-all"
           >
             ← Zurück
           </Link>
         </div>
 
         {error && (
-          <div className="mb-6 bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg">
+          <div className="mb-3 bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="mb-6 bg-green-500/10 border border-green-500/50 text-green-400 px-4 py-3 rounded-lg">
+          <div className="mb-3 bg-green-500/10 border border-green-500/50 text-green-400 px-4 py-3 rounded-lg">
             {success}
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {/* Left Column */}
-          <div className="space-y-6">
+          <div className="space-y-3">
             {/* Customer Info */}
-            <Card className="p-6 bg-zinc-900 border-amber-500/20">
-              <h2 className="text-xl font-bold text-white mb-4">Kundendaten</h2>
+            <Card className="p-3 bg-white border-amber-500/20">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Kundendaten</h2>
               <div className="space-y-3">
                 <div>
-                  <p className="text-sm text-gray-400">Firma</p>
-                  <p className="text-white">{contract.user.companyName || '-'}</p>
+                  <p className="text-sm text-gray-600">Firma</p>
+                  <p className="text-gray-900">{contract.user.companyName || '-'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Adresse</p>
-                  <p className="text-white">
+                  <p className="text-sm text-gray-600">Adresse</p>
+                  <p className="text-gray-900">
                     {contract.user.companyStreet}<br />
                     {contract.user.companyZip} {contract.user.companyCity}<br />
                     {contract.user.companyCountry}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">USt-IdNr.</p>
-                  <p className="text-white">{contract.user.vatId || '-'}</p>
+                  <p className="text-sm text-gray-600">USt-IdNr.</p>
+                  <p className="text-gray-900">{contract.user.vatId || '-'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Email</p>
-                  <p className="text-white">{contract.user.email}</p>
+                  <p className="text-sm text-gray-600">Email</p>
+                  <p className="text-gray-900">{contract.user.email}</p>
                 </div>
               </div>
             </Card>
 
             {/* Product Info */}
-            <Card className="p-6 bg-zinc-900 border-amber-500/20">
-              <h2 className="text-xl font-bold text-white mb-4">Produktinformationen</h2>
+            <Card className="p-3 bg-white border-amber-500/20">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Produktinformationen</h2>
               <div className="space-y-3">
                 <div>
-                  <p className="text-sm text-gray-400">Produkt</p>
-                  <p className="text-white font-semibold">{contract.productName}</p>
+                  <p className="text-sm text-gray-600">Produkt</p>
+                  <p className="text-gray-900 font-semibold">{contract.productName}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Menge</p>
-                  <p className="text-white">{contract.productQuantity} Stück/Paletten</p>
+                  <p className="text-sm text-gray-600">Menge</p>
+                  <p className="text-gray-900">{contract.productQuantity} Stück/Paletten</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Einkaufspreis (Kunde bezahlt)</p>
-                  <p className="text-white text-2xl font-bold">
+                  <p className="text-sm text-gray-600">Einkaufspreis (Kunde bezahlt)</p>
+                  <p className="text-gray-900 text-lg font-bold">
                     €{Number(contract.purchasePrice).toLocaleString('de-DE')}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Kommissionsrate</p>
-                  <p className="text-white">{(Number(contract.commissionRate) * 100).toFixed(0)}%</p>
+                  <p className="text-sm text-gray-600">Kommissionsrate</p>
+                  <p className="text-gray-900">{(Number(contract.commissionRate) * 100).toFixed(0)}%</p>
                 </div>
               </div>
             </Card>
 
             {/* Bank Info */}
-            <Card className="p-6 bg-zinc-900 border-amber-500/20">
-              <h2 className="text-xl font-bold text-white mb-4">Bankdaten (Auszahlung)</h2>
+            <Card className="p-3 bg-white border-amber-500/20">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Bankdaten (Auszahlung)</h2>
               <div className="space-y-3">
                 <div>
-                  <p className="text-sm text-gray-400">IBAN</p>
-                  <p className="text-white font-mono">{contract.iban}</p>
+                  <p className="text-sm text-gray-600">IBAN</p>
+                  <p className="text-gray-900 font-mono">{contract.iban}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">BIC</p>
-                  <p className="text-white font-mono">{contract.bic}</p>
+                  <p className="text-sm text-gray-600">BIC</p>
+                  <p className="text-gray-900 font-mono">{contract.bic}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Kontoinhaber</p>
-                  <p className="text-white">{contract.accountHolder}</p>
+                  <p className="text-sm text-gray-600">Kontoinhaber</p>
+                  <p className="text-gray-900">{contract.accountHolder}</p>
                 </div>
               </div>
             </Card>
           </div>
 
           {/* Right Column */}
-          <div className="space-y-6">
+          <div className="space-y-3">
             {/* Status Management */}
-            <Card className="p-6 bg-zinc-900 border-amber-500/20">
-              <h2 className="text-xl font-bold text-white mb-4">Status & Verkauf</h2>
+            <Card className="p-3 bg-white border-amber-500/20">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Status & Verkauf</h2>
 
-              <div className="space-y-4 mb-6">
+              <div className="space-y-4 mb-3">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-2">Status</label>
+                  <label className="block text-sm text-gray-600 mb-2">Status</label>
                   <select
                     value={newStatus}
                     onChange={(e) => setNewStatus(e.target.value)}
-                    className="w-full px-4 py-3 bg-black border border-amber-500/20 rounded-lg text-white focus:outline-none focus:border-amber-500"
+                    className="w-full px-4 py-3 bg-[#ebebeb] border border-amber-500/20 rounded-lg text-gray-900 focus:outline-none focus:border-amber-500"
                   >
                     <option value="pending">Offen</option>
                     <option value="listed">Gelistet</option>
@@ -344,7 +344,7 @@ export default function AdminContractDetailPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-400 mb-2">
+                  <label className="block text-sm text-gray-600 mb-2">
                     Verkaufspreis (€)
                   </label>
                   <input
@@ -353,7 +353,7 @@ export default function AdminContractDetailPage() {
                     onChange={(e) => setNewSalesPrice(e.target.value)}
                     placeholder="6500.00"
                     step="0.01"
-                    className="w-full px-4 py-3 bg-black border border-amber-500/20 rounded-lg text-white focus:outline-none focus:border-amber-500"
+                    className="w-full px-4 py-3 bg-[#ebebeb] border border-amber-500/20 rounded-lg text-gray-900 focus:outline-none focus:border-amber-500"
                   />
                 </div>
               </div>
@@ -361,39 +361,39 @@ export default function AdminContractDetailPage() {
               <button
                 onClick={handleUpdate}
                 disabled={isUpdating}
-                className="w-full px-6 py-4 bg-amber-600 hover:bg-amber-700 text-black font-bold rounded-lg transition-all disabled:opacity-50"
+                className="w-full px-3 py-4 bg-amber-600 hover:bg-amber-700 text-black font-bold rounded-lg transition-all disabled:opacity-50"
               >
                 {isUpdating ? 'Speichere...' : 'Status/Preis Speichern'}
               </button>
             </Card>
 
             {/* Storage Costs */}
-            <Card className="p-6 bg-zinc-900 border-amber-500/20">
-              <h2 className="text-xl font-bold text-white mb-4">Lagerkosten</h2>
+            <Card className="p-3 bg-white border-amber-500/20">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Lagerkosten</h2>
               <div className="space-y-3">
                 <div>
-                  <p className="text-sm text-gray-400">Lagerung seit</p>
-                  <p className="text-white">
+                  <p className="text-sm text-gray-600">Lagerung seit</p>
+                  <p className="text-gray-900">
                     {new Date(contract.storageStartDate).toLocaleDateString('de-DE')}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Tage gelagert</p>
-                  <p className="text-white">{daysStored} Tage</p>
+                  <p className="text-sm text-gray-600">Tage gelagert</p>
+                  <p className="text-gray-900">{daysStored} Tage</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Kostenlos: 14 Tage</p>
-                  <p className="text-white">
+                  <p className="text-sm text-gray-600">Kostenlos: 14 Tage</p>
+                  <p className="text-gray-900">
                     Berechenbar: {Math.max(0, daysStored - 14)} Tage
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Kosten pro Palette/Tag</p>
-                  <p className="text-white">€{Number(contract.storageFeePerDay).toFixed(2)}</p>
+                  <p className="text-sm text-gray-600">Kosten pro Palette/Tag</p>
+                  <p className="text-gray-900">€{Number(contract.storageFeePerDay).toFixed(2)}</p>
                 </div>
                 <div className="pt-3 border-t border-amber-500/20">
-                  <p className="text-sm text-gray-400">Gesamte Lagerkosten</p>
-                  <p className="text-amber-500 text-2xl font-bold">
+                  <p className="text-sm text-gray-600">Gesamte Lagerkosten</p>
+                  <p className="text-amber-500 text-lg font-bold">
                     €{storageCosts.toFixed(2)}
                   </p>
                 </div>
@@ -402,30 +402,30 @@ export default function AdminContractDetailPage() {
 
             {/* Payout Calculation */}
             {contract.salesPrice && (
-              <Card className="p-6 bg-zinc-900 border-amber-500/20">
-                <h2 className="text-xl font-bold text-white mb-4">Auszahlungsberechnung</h2>
+              <Card className="p-3 bg-white border-amber-500/20">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Auszahlungsberechnung</h2>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-sm text-gray-400">Verkaufspreis</p>
-                    <p className="text-white text-xl">
+                    <p className="text-sm text-gray-600">Verkaufspreis</p>
+                    <p className="text-gray-900 text-xl">
                       €{Number(contract.salesPrice).toLocaleString('de-DE')}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-gray-600">
                       - Kommission (20%)
                     </p>
-                    <p className="text-white">
+                    <p className="text-gray-900">
                       -€{(Number(contract.salesPrice) * 0.2).toLocaleString('de-DE')}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-400">- Lagerkosten</p>
-                    <p className="text-white">-€{storageCosts.toFixed(2)}</p>
+                    <p className="text-sm text-gray-600">- Lagerkosten</p>
+                    <p className="text-gray-900">-€{storageCosts.toFixed(2)}</p>
                   </div>
                   <div className="pt-3 border-t border-amber-500/20">
-                    <p className="text-sm text-gray-400">Auszahlung an Kunde (80%)</p>
-                    <p className="text-green-500 text-3xl font-bold">
+                    <p className="text-sm text-gray-600">Auszahlung an Kunde (80%)</p>
+                    <p className="text-green-500 text-xl font-bold">
                       €{estimatedPayout.toLocaleString('de-DE', { minimumFractionDigits: 2 })}
                     </p>
                   </div>
@@ -435,19 +435,19 @@ export default function AdminContractDetailPage() {
                   <button
                     onClick={handleTriggerPayout}
                     disabled={isUpdating}
-                    className="w-full mt-6 px-6 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition-all disabled:opacity-50"
+                    className="w-full mt-3 px-3 py-4 bg-green-600 hover:bg-green-700 text-gray-900 font-bold rounded-lg transition-all disabled:opacity-50"
                   >
                     {isUpdating ? 'Verarbeite...' : '💰 Auszahlung auslösen'}
                   </button>
                 )}
 
                 {contract.payoutStatus === 'completed' && (
-                  <div className="mt-6 p-4 bg-green-500/10 border border-green-500/50 rounded-lg">
+                  <div className="mt-3 p-4 bg-green-500/10 border border-green-500/50 rounded-lg">
                     <p className="text-green-400 font-semibold">✓ Auszahlung abgeschlossen</p>
-                    <p className="text-sm text-gray-400 mt-1">
+                    <p className="text-sm text-gray-600 mt-1">
                       Ausgezahlt am: {contract.paidAt ? new Date(contract.paidAt).toLocaleDateString('de-DE') : '-'}
                     </p>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-gray-600">
                       Betrag: €{contract.payoutAmount ? Number(contract.payoutAmount).toLocaleString('de-DE', { minimumFractionDigits: 2 }) : '-'}
                     </p>
                   </div>
