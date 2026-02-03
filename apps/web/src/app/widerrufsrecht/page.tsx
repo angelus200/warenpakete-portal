@@ -2,7 +2,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Widerrufsrecht | Warenpakete Portal',
+  title: 'Widerrufsrecht | E-Commerce Service',
   description: 'Kein Widerrufsrecht für B2B-Kunden',
 };
 
@@ -21,7 +21,7 @@ export default function WiderrufsrechtPage() {
             </svg>
             <div>
               <h2 className="text-xl font-bold text-red-400 mb-4">
-                Das Warenpakete Portal der Trademark24-7 AG verkauft ausschließlich an Gewerbetreibende (B2B).
+                Das E-Commerce Service der Trademark24-7 AG verkauft ausschließlich an Gewerbetreibende (B2B).
               </h2>
               <p className="text-gray-700 text-lg leading-relaxed">
                 Als Unternehmer im Sinne von Art. 2 lit. b der Richtlinie 2011/83/EU bzw. § 14 BGB steht Ihnen <strong className="text-red-400 uppercase">KEIN</strong> gesetzliches Widerrufsrecht zu.

@@ -2,7 +2,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Impressum | Warenpakete Portal',
+  title: 'Impressum | E-Commerce Service',
   description: 'Impressum und rechtliche Angaben',
 };
 

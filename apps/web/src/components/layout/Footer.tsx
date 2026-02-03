@@ -15,7 +15,7 @@ export function Footer() {
               </div>
               <div>
                 <h3 className="font-bold text-gold text-lg">
-                  Warenpakete Portal
+                  E-Commerce Service
                 </h3>
                 <p className="text-xs text-gold-dark font-medium">PREMIUM B2B</p>
               </div>
@@ -100,7 +100,7 @@ export function Footer() {
         <div className="pt-8 border-t border-gold/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-600 text-sm">
-              &copy; {currentYear} Warenpakete Portal. Alle Rechte vorbehalten.
+              &copy; {currentYear} E-Commerce Service. Alle Rechte vorbehalten.
             </p>
             <div className="flex items-center gap-2 text-sm">
               <span className="text-gray-600">Powered by</span>

@@ -2,7 +2,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Datenschutz | Warenpakete Portal',
+  title: 'Datenschutz | E-Commerce Service',
   description: 'Datenschutzerklärung',
 };
 
@@ -18,7 +18,7 @@ export default function DatenschutzPage() {
           <div className="prose prose-invert max-w-none">
             <section className="mb-4">
               <p className="text-gray-900 text-lg leading-relaxed mb-4">
-                Die Datenschutzerklärung für das Warenpakete Portal finden Sie unter:
+                Die Datenschutzerklärung für das E-Commerce Service finden Sie unter:
               </p>
               <div className="bg-[#ebebeb] p-3 rounded border border-gray-300">
                 <a

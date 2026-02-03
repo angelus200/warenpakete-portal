@@ -68,7 +68,7 @@ export default function OnboardingPage() {
             </div>
             <h1 className="text-xl font-bold text-gray-900 mb-2">B2B Registrierung</h1>
             <p className="text-gray-600">
-              Warenpakete Portal verkauft ausschließlich an Gewerbetreibende
+              E-Commerce Service verkauft ausschließlich an Gewerbetreibende
             </p>
           </div>
 

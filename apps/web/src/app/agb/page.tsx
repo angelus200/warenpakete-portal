@@ -2,7 +2,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'AGB | Warenpakete Portal',
+  title: 'AGB | E-Commerce Service',
   description: 'Allgemeine Geschäftsbedingungen',
 };
 
@@ -15,7 +15,7 @@ export default function AGBPage() {
             Allgemeine Geschäftsbedingungen (AGB)
           </h1>
           <p className="text-gold/80 text-lg mb-4">
-            Trademark24-7 AG - Warenpakete Portal
+            Trademark24-7 AG - E-Commerce Service
           </p>
           <p className="text-gray-600 mb-4">Stand: Januar 2026</p>
 
@@ -183,7 +183,7 @@ export default function AGBPage() {
               </h2>
               <div className="space-y-3 text-gray-900">
                 <p>
-                  (1) Da das Warenpakete Portal ausschließlich an Gewerbetreibende verkauft, besteht <strong className="text-red-400 uppercase">KEIN</strong> gesetzliches Widerrufsrecht.
+                  (1) Da das E-Commerce Service ausschließlich an Gewerbetreibende verkauft, besteht <strong className="text-red-400 uppercase">KEIN</strong> gesetzliches Widerrufsrecht.
                 </p>
                 <p>
                   (2) Das Widerrufsrecht für Verbraucher gemäß Art. 9 ff. der Richtlinie 2011/83/EU bzw. § 312g BGB findet keine Anwendung.

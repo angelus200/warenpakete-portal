@@ -9,8 +9,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Warenpakete Portal',
-  description: 'B2B Warenpakete Portal',
+  title: 'E-Commerce Service',
+  description: 'B2B E-Commerce Service',
 };
 
 export default function RootLayout({
