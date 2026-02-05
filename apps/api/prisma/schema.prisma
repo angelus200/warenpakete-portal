@@ -37,11 +37,18 @@ model User {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
+  // CRM-Felder
+  customerStatus    String?  @default("active") // active, pending, inactive, vip
+  totalSpent        Decimal? @default(0) @db.Decimal(10, 2)
+  lastOrderAt       DateTime?
+
   orders             Order[]
   commissionsEarned  Commission[]       @relation("ResellerCommissions")
   walletTransactions WalletTransaction[]
   payoutRequests     PayoutRequest[]
   commissionContracts CommissionContract[]
+  customerNotes      CustomerNote[]
+  customerActivities CustomerActivity[]
 
   @@map("users")
 }
@@ -287,4 +294,30 @@ model DeliveryAddress {
   updatedAt DateTime @updatedAt
 
   @@map("delivery_addresses")
+}
+
+model CustomerNote {
+  id        String   @id @default(uuid())
+  userId    String
+  authorId  String   // Admin der die Notiz erstellt hat
+  content   String   @db.Text
+  noteType  String   @default("general") // general, call, meeting, issue
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("customer_notes")
+}
+
+model CustomerActivity {
+  id        String   @id @default(uuid())
+  userId    String
+  action    String   // order_placed, contract_signed, payout_requested, login, etc.
+  details   Json?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("customer_activities")
 }

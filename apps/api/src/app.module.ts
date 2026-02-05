@@ -15,6 +15,7 @@ import { WalletModule } from './modules/wallet/wallet.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
 import { ContractsModule } from './modules/contracts/contracts.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { CrmModule } from './modules/crm/crm.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { AdminModule } from './modules/admin/admin.module';
     InvoicesModule,
     ContractsModule,
     AdminModule,
+    CrmModule,
     UsersModule,
     ProductsModule,
     OrdersModule,

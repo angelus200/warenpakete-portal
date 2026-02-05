@@ -171,6 +171,13 @@ export default function AdminDashboardPage() {
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Schnellzugriff</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Link
+              href="/admin/crm"
+              className="p-4 bg-gradient-to-br from-[#D4AF37] to-[#B8960C] hover:from-[#B8960C] hover:to-[#D4AF37] rounded-lg transition-all text-center shadow-lg"
+            >
+              <p className="text-[#1a1a1a] font-bold">CRM System</p>
+              <p className="text-sm text-[#1a1a1a]/80 mt-1">Kunden, Bestellungen, Lager</p>
+            </Link>
+            <Link
               href="/admin/contracts"
               className="p-4 bg-white hover:bg-gray-100 rounded-lg transition-all text-center"
             >
