@@ -175,11 +175,11 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {[
-              { name: 'Elektronik', image: '/images/categories/elektronik.jpg' },
-              { name: 'Haushalt', image: '/images/categories/haushalt.jpg' },
-              { name: 'Fashion', image: '/images/categories/fashion.jpg' },
-              { name: 'Spielwaren', image: '/images/categories/spielwaren.jpg' },
-              { name: 'Werkzeug', image: '/images/categories/werkzeug.jpg' },
+              { name: 'Elektronik', image: '/images/categories/elektronik.jpeg' },
+              { name: 'Haushalt', image: '/images/categories/haushalt.jpeg' },
+              { name: 'Fashion', image: '/images/categories/fashion.jpeg' },
+              { name: 'Spielwaren', image: '/images/categories/spielwaren.jpeg' },
+              { name: 'Werkzeug', image: '/images/categories/werkzeug.jpeg' },
             ].map((category) => (
               <Link key={category.name} href={isSignedIn ? '/products' : '/sign-up'}>
                 <Card className="p-4 text-center bg-white border-gray-300 hover:border-gold hover:shadow-xl hover:shadow-gold/20 transition-all cursor-pointer group">
