@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -172,5 +173,55 @@ export class OrdersService {
     }
 
     return updatedOrder;
+  }
+
+  async chooseDelivery(
+    orderId: string,
+    userId: string,
+    address: {
+      street: string;
+      zipCode: string;
+      city: string;
+      country: string;
+      phone?: string;
+    },
+  ) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    if (order.userId !== userId) {
+      throw new ForbiddenException('Not your order');
+    }
+
+    if (order.fulfillmentType) {
+      throw new BadRequestException('Fulfillment type already chosen');
+    }
+
+    const [updatedOrder, deliveryAddress] = await this.prisma.$transaction([
+      this.prisma.order.update({
+        where: { id: orderId },
+        data: {
+          fulfillmentType: 'DELIVERY',
+          status: OrderStatus.PROCESSING,
+        },
+      }),
+      this.prisma.deliveryAddress.create({
+        data: {
+          orderId,
+          street: address.street,
+          zipCode: address.zipCode,
+          city: address.city,
+          country: address.country || 'AT',
+          phone: address.phone,
+        },
+      }),
+    ]);
+
+    return { order: updatedOrder, deliveryAddress };
   }
 }

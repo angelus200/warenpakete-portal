@@ -111,6 +111,7 @@ export class OrdersController {
   @ApiOperation({ summary: 'Choose delivery fulfillment for order' })
   async chooseDelivery(
     @Param('id') orderId: string,
+    @Body() body: { street: string; zipCode: string; city: string; country: string; phone?: string },
     @CurrentUser() user: { clerkId: string },
   ) {
     let userRecord = await this.usersService.findByClerkId(user.clerkId);
@@ -120,6 +121,6 @@ export class OrdersController {
       userRecord = await this.usersService.syncWithClerk(user.clerkId, clerkUser);
     }
 
-    return this.contractsService.chooseDelivery(orderId, userRecord.id);
+    return this.ordersService.chooseDelivery(orderId, userRecord.id, body);
   }
 }

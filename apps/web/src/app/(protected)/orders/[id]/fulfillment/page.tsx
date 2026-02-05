@@ -20,6 +20,13 @@ export default function FulfillmentPage() {
     bic: '',
     accountHolder: '',
   });
+  const [deliveryData, setDeliveryData] = useState({
+    street: '',
+    zipCode: '',
+    city: '',
+    country: 'AT',
+    phone: '',
+  });
   const [error, setError] = useState<string | null>(null);
 
   const { data: order, isLoading } = useQuery<Order>({
@@ -29,10 +36,10 @@ export default function FulfillmentPage() {
   });
 
   const deliveryMutation = useMutation({
-    mutationFn: () => api.post(`/orders/${orderId}/choose-delivery`, {}),
+    mutationFn: () => api.post(`/orders/${orderId}/choose-delivery`, deliveryData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['order', orderId] });
-      router.push('/orders');
+      router.push(`/orders/${orderId}/delivery-confirmation`);
     },
     onError: (err: any) => {
       setError(err.message || 'Fehler bei der Auswahl');
@@ -59,6 +66,10 @@ export default function FulfillmentPage() {
     setError(null);
 
     if (selectedOption === 'delivery') {
+      if (!deliveryData.street || !deliveryData.zipCode || !deliveryData.city) {
+        setError('Bitte füllen Sie alle Pflichtfelder der Lieferadresse aus');
+        return;
+      }
       deliveryMutation.mutate();
     } else if (selectedOption === 'commission') {
       if (!bankData.iban || !bankData.bic || !bankData.accountHolder) {
@@ -154,6 +165,97 @@ export default function FulfillmentPage() {
                   </div>
                 </div>
               </div>
+
+              {selectedOption === 'delivery' && (
+                <div className="mt-3 pt-6 border-t border-gray-300 space-y-4">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                    Lieferadresse
+                  </h4>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                      Straße & Hausnummer *
+                    </label>
+                    <input
+                      type="text"
+                      value={deliveryData.street}
+                      onChange={(e) =>
+                        setDeliveryData({ ...deliveryData, street: e.target.value })
+                      }
+                      placeholder="Musterstraße 123"
+                      className="w-full px-4 py-3 bg-[#ebebeb] border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-gold"
+                      required
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">
+                        PLZ *
+                      </label>
+                      <input
+                        type="text"
+                        value={deliveryData.zipCode}
+                        onChange={(e) =>
+                          setDeliveryData({ ...deliveryData, zipCode: e.target.value })
+                        }
+                        placeholder="1010"
+                        className="w-full px-4 py-3 bg-[#ebebeb] border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-gold"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">
+                        Ort *
+                      </label>
+                      <input
+                        type="text"
+                        value={deliveryData.city}
+                        onChange={(e) =>
+                          setDeliveryData({ ...deliveryData, city: e.target.value })
+                        }
+                        placeholder="Wien"
+                        className="w-full px-4 py-3 bg-[#ebebeb] border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-gold"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                      Land *
+                    </label>
+                    <select
+                      value={deliveryData.country}
+                      onChange={(e) =>
+                        setDeliveryData({ ...deliveryData, country: e.target.value })
+                      }
+                      className="w-full px-4 py-3 bg-[#ebebeb] border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-gold"
+                      required
+                    >
+                      <option value="AT">Österreich</option>
+                      <option value="DE">Deutschland</option>
+                      <option value="CH">Schweiz</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                      Telefonnummer (Optional, für Spedition)
+                    </label>
+                    <input
+                      type="tel"
+                      value={deliveryData.phone}
+                      onChange={(e) =>
+                        setDeliveryData({ ...deliveryData, phone: e.target.value })
+                      }
+                      placeholder="+43 123 456789"
+                      className="w-full px-4 py-3 bg-[#ebebeb] border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-gold"
+                    />
+                  </div>
+                </div>
+              )}
             </Card>
 
             {/* Commission Option */}

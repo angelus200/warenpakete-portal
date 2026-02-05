@@ -93,6 +93,7 @@ model Order {
   commission        Commission?
   storageFees       StorageFee[]
   commissionContract CommissionContract?
+  deliveryAddress   DeliveryAddress?
 
   @@map("orders")
 }
@@ -271,4 +272,19 @@ model AdminUser {
   updatedAt DateTime @updatedAt
 
   @@map("admin_users")
+}
+
+model DeliveryAddress {
+  id        String   @id @default(uuid())
+  orderId   String   @unique
+  order     Order    @relation(fields: [orderId], references: [id])
+  street    String
+  zipCode   String
+  city      String
+  country   String   @default("AT")
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("delivery_addresses")
 }
