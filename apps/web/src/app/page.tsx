@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@clerk/nextjs';
 
 export default function Home() {
@@ -175,18 +176,20 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {[
-              { name: 'Elektronik', image: '/images/categories/elektronik.jpeg' },
-              { name: 'Haushalt', image: '/images/categories/haushalt.jpeg' },
-              { name: 'Fashion', image: '/images/categories/fashion.jpeg' },
-              { name: 'Spielwaren', image: '/images/categories/spielwaren.jpeg' },
-              { name: 'Werkzeug', image: '/images/categories/werkzeug.jpeg' },
+              { name: 'Elektronik', image: '/images/categories/elektronik.webp' },
+              { name: 'Haushalt', image: '/images/categories/haushalt.webp' },
+              { name: 'Fashion', image: '/images/categories/fashion.webp' },
+              { name: 'Spielwaren', image: '/images/categories/spielwaren.webp' },
+              { name: 'Werkzeug', image: '/images/categories/werkzeug.webp' },
             ].map((category) => (
               <Link key={category.name} href={isSignedIn ? '/products' : '/sign-up'}>
                 <Card className="p-4 text-center bg-white border-gray-300 hover:border-gold hover:shadow-xl hover:shadow-gold/20 transition-all cursor-pointer group">
-                  <div className="w-full h-32 mb-4 overflow-hidden rounded-lg">
-                    <img
+                  <div className="w-full h-32 mb-4 overflow-hidden rounded-lg relative">
+                    <Image
                       src={category.image}
                       alt={category.name}
+                      width={600}
+                      height={400}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
