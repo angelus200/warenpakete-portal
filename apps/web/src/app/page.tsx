@@ -175,16 +175,20 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {[
-              { name: 'Elektronik', icon: '📱' },
-              { name: 'Haushalt', icon: '🏠' },
-              { name: 'Fashion', icon: '👔' },
-              { name: 'Spielwaren', icon: '🧸' },
-              { name: 'Werkzeug', icon: '🔨' },
+              { name: 'Elektronik', image: '/images/categories/elektronik.jpg' },
+              { name: 'Haushalt', image: '/images/categories/haushalt.jpg' },
+              { name: 'Fashion', image: '/images/categories/fashion.jpg' },
+              { name: 'Spielwaren', image: '/images/categories/spielwaren.jpg' },
+              { name: 'Werkzeug', image: '/images/categories/werkzeug.jpg' },
             ].map((category) => (
               <Link key={category.name} href={isSignedIn ? '/products' : '/sign-up'}>
                 <Card className="p-4 text-center bg-white border-gray-300 hover:border-gold hover:shadow-xl hover:shadow-gold/20 transition-all cursor-pointer group">
-                  <div className="text-xl mb-4 group-hover:scale-110 transition-transform">
-                    {category.icon}
+                  <div className="w-full h-32 mb-4 overflow-hidden rounded-lg">
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
                   <p className="font-bold text-gray-900 group-hover:text-gold transition-colors">
                     {category.name}
