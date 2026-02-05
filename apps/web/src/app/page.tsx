@@ -19,22 +19,22 @@ export default function Home() {
 
         <div className="container relative mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block mb-3 px-4 py-2 rounded-full border border-gold/40 bg-gold/10">
-              <span className="text-gold text-sm font-semibold tracking-wider">
-                PREMIUM B2B WARENPAKETE
+            <div className="inline-block mb-3 px-4 py-2 rounded-full border-2 border-gold bg-gold/20">
+              <span className="text-gold text-sm font-bold tracking-wider">
+                NUR FÜR GEWERBETREIBENDE (B2B)
               </span>
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-3 bg-gradient-to-r from-gold-light via-gold to-gold-dark bg-clip-text text-transparent">
-              Luxus-Großhandel
+              Bewährte Warenpakete
               <br />
-              <span className="text-gray-200">für Ihr Business</span>
+              <span className="text-gray-200">zu Großhandelspreisen</span>
             </h1>
 
             <p className="text-xl md:text-lg text-gray-400 mb-5 leading-relaxed">
-              Exklusive Warenpakete mit bis zu <span className="text-gold font-bold">70% Ersparnis</span> gegenüber UVP.
+              Produkte die bereits erfolgreich auf <span className="text-gold font-semibold">Amazon, eBay & Online-Shops</span> verkauft werden
               <br />
-              Premium-Qualität für anspruchsvolle B2B-Partner.
+              – jetzt zu B2B-Konditionen für Ihr Geschäft
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -43,7 +43,7 @@ export default function Home() {
                   size="lg"
                   className="text-lg px-5 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30 border border-gold-light/20"
                 >
-                  {isSignedIn ? 'Produkte entdecken' : 'Premium-Zugang sichern'}
+                  {isSignedIn ? 'Warenpakete ansehen' : 'Jetzt registrieren'}
                 </Button>
               </Link>
             </div>
@@ -55,122 +55,247 @@ export default function Home() {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold-light/5 rounded-full blur-3xl" />
       </section>
 
+      {/* So funktioniert's Section */}
+      <section className="py-24 bg-[#f5f5f0] relative">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              So <span className="text-gold">funktioniert&apos;s</span>
+            </h2>
+            <p className="text-gray-600 text-lg">
+              In drei einfachen Schritten zum Warenhandel
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <Card className="p-6 bg-white border-gray-300 hover:border-gold/40 hover:shadow-lg transition-all relative">
+              <div className="absolute -top-4 left-6 w-12 h-12 bg-gradient-to-br from-gold-light to-gold rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-dark font-bold text-xl">1</span>
+              </div>
+              <div className="mt-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Warenpaket wählen
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Wähle aus Paketen mit Produkten die nachweislich gut auf Marktplätzen laufen. Detaillierte Verkaufshistorie einsehbar.
+                </p>
+              </div>
+            </Card>
+
+            <Card className="p-6 bg-white border-gray-300 hover:border-gold/40 hover:shadow-lg transition-all relative">
+              <div className="absolute -top-4 left-6 w-12 h-12 bg-gradient-to-br from-gold-light to-gold rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-dark font-bold text-xl">2</span>
+              </div>
+              <div className="mt-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Verkaufsweg entscheiden
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Selbst über eigene Kanäle verkaufen oder per Kommissionsverkauf durch uns – du entscheidest flexibel.
+                </p>
+              </div>
+            </Card>
+
+            <Card className="p-6 bg-white border-gray-300 hover:border-gold/40 hover:shadow-lg transition-all relative">
+              <div className="absolute -top-4 left-6 w-12 h-12 bg-gradient-to-br from-gold-light to-gold rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-dark font-bold text-xl">3</span>
+              </div>
+              <div className="mt-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Verkaufserlös erhalten
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Nach Verkauf der Waren erhältst du den Erlös (abzüglich Kommission falls gewählt). Transparente Abrechnung.
+                </p>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Zwei Optionen Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Zwei <span className="text-gold">Verkaufswege</span>
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Wähle den Weg der zu deinem Geschäftsmodell passt
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Option A: Selbstverkauf */}
+            <Card className="p-8 bg-gradient-to-br from-white to-gray-50 border-2 border-gray-300 hover:border-gold hover:shadow-xl transition-all">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <svg className="w-8 h-8 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  Option A: Selbstverkauf
+                </h3>
+                <p className="text-gray-600">
+                  Du verkaufst eigenständig über deine Kanäle
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-start">
+                  <svg className="w-6 h-6 text-green-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-gray-700">Volle Kontrolle über Verkauf & Preise</span>
+                </div>
+                <div className="flex items-start">
+                  <svg className="w-6 h-6 text-green-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-gray-700">100% Marge nach Warenkosten</span>
+                </div>
+                <div className="flex items-start">
+                  <svg className="w-6 h-6 text-green-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-gray-700">Aufbau eigener Kundenbasis</span>
+                </div>
+                <div className="flex items-start">
+                  <svg className="w-6 h-6 text-orange-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-gray-700">Eigenverantwortlicher Verkauf</span>
+                </div>
+                <div className="flex items-start">
+                  <svg className="w-6 h-6 text-orange-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-gray-700">Eigene Logistik & Kundensupport</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* Option B: Kommission */}
+            <Card className="p-8 bg-gradient-to-br from-white to-gray-50 border-2 border-gray-300 hover:border-gold hover:shadow-xl transition-all">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <svg className="w-8 h-8 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  Option B: Kommissionsverkauf
+                </h3>
+                <p className="text-gray-600">
+                  Wir verkaufen für dich über etablierte Kanäle
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-start">
+                  <svg className="w-6 h-6 text-green-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-gray-700">Kein eigener Verkaufsaufwand nötig</span>
+                </div>
+                <div className="flex items-start">
+                  <svg className="w-6 h-6 text-green-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-gray-700">Professionelle Abwicklung</span>
+                </div>
+                <div className="flex items-start">
+                  <svg className="w-6 h-6 text-green-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-gray-700">Zugang zu etablierten Verkaufskanälen</span>
+                </div>
+                <div className="flex items-start">
+                  <svg className="w-6 h-6 text-orange-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-gray-700">Kommissionsgebühr wird fällig</span>
+                </div>
+                <div className="flex items-start">
+                  <svg className="w-6 h-6 text-orange-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-gray-700">Geringerer Erlös pro Verkauf</span>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-24 bg-[#f5f5f0] relative">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Ihre <span className="text-gold">Premium</span> Vorteile
+              Ihre <span className="text-gold">Vorteile</span>
             </h2>
             <p className="text-gray-600 text-lg">
-              Exklusiver Service für anspruchsvolle B2B-Partner
+              Professioneller B2B-Warenhandel mit bewährten Produkten
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="p-4 text-center bg-white border-gray-300 hover:border-gold/40 hover:shadow-lg hover:shadow-gold/5 transition-all">
-              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-gold/20">
-                <svg
-                  className="w-8 h-8 text-dark"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="p-6 text-center bg-white border-gray-300 hover:border-gold/40 hover:shadow-lg hover:shadow-gold/5 transition-all">
+              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-gold/20">
+                <svg className="w-8 h-8 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">
-                Premium-Konditionen
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                Bewährte Produkte
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Bis zu 70% unter UVP durch exklusive Herstellerpartnerschaften und direkten Zugang zu Premium-Beständen
+                Waren die bereits erfolgreich auf Amazon, eBay und anderen Marktplätzen verkauft werden. Nachvollziehbare Verkaufshistorie.
               </p>
             </Card>
 
-            <Card className="p-4 text-center bg-white border-gray-300 hover:border-gold/40 hover:shadow-lg hover:shadow-gold/5 transition-all">
-              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-gold/20">
-                <svg
-                  className="w-8 h-8 text-dark"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
+            <Card className="p-6 text-center bg-white border-gray-300 hover:border-gold/40 hover:shadow-lg hover:shadow-gold/5 transition-all">
+              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-gold/20">
+                <svg className="w-8 h-8 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Geprüfte Luxus-Qualität</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Jedes Warenpaket wird von Experten geprüft und zertifiziert. Premium-Marken, einwandfreie Funktion garantiert
-              </p>
-            </Card>
-
-            <Card className="p-4 text-center bg-white border-gray-300 hover:border-gold/40 hover:shadow-lg hover:shadow-gold/5 transition-all">
-              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-gold/20">
-                <svg
-                  className="w-8 h-8 text-dark"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">
-                20% Reseller-Provision
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                Großhandelspreise
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Als Premium-Reseller verdienen Sie 20% Provision auf jeden vermittelten Verkauf. Exklusives Partnerprogramm
+                Deutlich unter Marktpreis einkaufen. B2B-Konditionen für professionelle Händler mit transparenter Kalkulation.
               </p>
             </Card>
-          </div>
-        </div>
-      </section>
 
-      {/* Stats Section */}
-      <section className="py-20 bg-[#1a1a1a] border-y border-gold/20">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { value: '€45M+', label: 'Handelsvolumen' },
-              { value: '500+', label: 'Premium-Partner' },
-              { value: '99.8%', label: 'Zufriedenheit' },
-              { value: '24/7', label: 'VIP-Support' },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-gold mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-gray-400 font-medium">{stat.label}</div>
+            <Card className="p-6 text-center bg-white border-gray-300 hover:border-gold/40 hover:shadow-lg hover:shadow-gold/5 transition-all">
+              <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-gold/20">
+                <svg className="w-8 h-8 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
               </div>
-            ))}
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                Flexible Verkaufswege
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                Selbst verkaufen oder Kommission nutzen – du entscheidest je nach Geschäftssituation und Kapazität flexibel.
+              </p>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* Categories Section */}
-      <section className="py-24 bg-[#f5f5f0]">
+      <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Premium <span className="text-gold">Kategorien</span>
+              Produkt-<span className="text-gold">Kategorien</span>
             </h2>
             <p className="text-gray-600 text-lg">
-              Exklusive Warenpakete in Top-Kategorien
+              Warenpakete in verschiedenen Top-Kategorien
             </p>
           </div>
 
@@ -211,33 +336,56 @@ export default function Home() {
         <div className="container relative mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-100 mb-3">
-              Bereit für <span className="text-gold">Premium-Deals?</span>
+              Jetzt <span className="text-gold">Warenpakete entdecken</span>
             </h2>
             <p className="text-xl text-gray-400 mb-5 leading-relaxed">
-              Werden Sie Teil unserer exklusiven B2B-Community und profitieren Sie
+              Registriere dich als Gewerbetreibender und erhalte Zugang
               <br />
-              von erstklassigen Warenpaketen zu unschlagbaren Konditionen
+              zu bewährten Produkten zu Großhandelspreisen
             </p>
 
             {isSignedIn ? (
               <Link href="/products">
                 <Button
                   size="lg"
-                  className="text-lg px-3 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
+                  className="text-lg px-8 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
                 >
-                  Exklusive Produkte entdecken
+                  Warenpakete ansehen
                 </Button>
               </Link>
             ) : (
               <Link href="/sign-up">
                 <Button
                   size="lg"
-                  className="text-lg px-3 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
+                  className="text-lg px-8 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
                 >
-                  Premium-Zugang sichern
+                  Kostenlos registrieren
                 </Button>
               </Link>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* Legal Disclaimer Section */}
+      <section className="py-12 bg-gray-100 border-t border-gray-300">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+              <div className="flex items-start">
+                <svg className="w-6 h-6 text-gray-600 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-2">Rechtlicher Hinweis</h3>
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    <strong>Dieses Angebot richtet sich ausschließlich an Gewerbetreibende.</strong> Es handelt sich um Warenhandel, nicht um ein Anlage- oder Finanzprodukt.
+                    Vergangene Verkaufserfolge einzelner Produkte sind kein Indikator für zukünftige Ergebnisse. Jeder Kauf erfolgt auf eigenes unternehmerisches Risiko.
+                    Es werden keine Gewinn- oder Renditegarantien gegeben. Der Verkaufserfolg hängt von Marktbedingungen, Ihrer Verkaufsstrategie und weiteren Faktoren ab.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
