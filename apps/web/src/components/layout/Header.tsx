@@ -50,10 +50,9 @@ export function Header() {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-4">
-            <NavLink href="/products">Produkte</NavLink>
-
             {api.isSignedIn && (
               <>
+                <NavLink href="/products">Produkte</NavLink>
                 <NavLink href="/dashboard">Dashboard</NavLink>
                 <NavLink href="/orders">Bestellungen</NavLink>
                 <NavLink href="/contracts">Verträge</NavLink>

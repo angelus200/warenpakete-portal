@@ -37,25 +37,14 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/products">
+              <Link href={isSignedIn ? '/products' : '/sign-up'}>
                 <Button
                   size="lg"
                   className="text-lg px-5 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30 border border-gold-light/20"
                 >
-                  Produkte entdecken
+                  {isSignedIn ? 'Produkte entdecken' : 'Premium-Zugang sichern'}
                 </Button>
               </Link>
-              {!isSignedIn && (
-                <Link href="/sign-up">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="text-lg px-5 py-7 border-2 border-gold/50 text-gold hover:bg-gold/10 hover:border-gold"
-                  >
-                    Premium-Zugang erhalten
-                  </Button>
-                </Link>
-              )}
             </div>
           </div>
         </div>
@@ -192,7 +181,7 @@ export default function Home() {
               { name: 'Spielwaren', icon: '🧸' },
               { name: 'Werkzeug', icon: '🔨' },
             ].map((category) => (
-              <Link key={category.name} href="/products">
+              <Link key={category.name} href={isSignedIn ? '/products' : '/sign-up'}>
                 <Card className="p-4 text-center bg-white border-gray-300 hover:border-gold hover:shadow-xl hover:shadow-gold/20 transition-all cursor-pointer group">
                   <div className="text-xl mb-4 group-hover:scale-110 transition-transform">
                     {category.icon}
