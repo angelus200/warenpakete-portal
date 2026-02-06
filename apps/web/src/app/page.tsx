@@ -113,7 +113,7 @@ export default function Home() {
                   src="/images/press/forbes.png"
                   alt="Forbes"
                   fill
-                  className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100"
+                  className="object-contain transition-all duration-300 opacity-60 group-hover:opacity-100"
                 />
               </div>
             </a>
@@ -128,7 +128,7 @@ export default function Home() {
                   src="/images/press/focus.png"
                   alt="Focus"
                   fill
-                  className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100"
+                  className="object-contain transition-all duration-300 opacity-60 group-hover:opacity-100"
                 />
               </div>
             </a>
