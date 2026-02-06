@@ -8,6 +8,7 @@ import {
   Req,
   UseGuards,
   ForbiddenException,
+  Query,
 } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { ClerkAuthGuard } from '../../common/guards/clerk-auth.guard';
@@ -118,5 +119,37 @@ export class ChatController {
       throw new ForbiddenException('Nur Administratoren haben Zugriff');
     }
     return this.chatService.closeRoom(roomId);
+  }
+
+  /**
+   * ADMIN: Start new chat with a customer
+   */
+  @Post('admin/rooms/new')
+  @UseGuards(ClerkAuthGuard)
+  async createAdminRoom(
+    @Req() req,
+    @Body() body: { userId: string; subject: string; message: string; roomType?: string },
+  ) {
+    if (req.user.role !== 'ADMIN') {
+      throw new ForbiddenException('Nur Administratoren haben Zugriff');
+    }
+    return this.chatService.createAdminRoom(
+      body.userId,
+      body.subject,
+      body.message,
+      body.roomType || 'SUPPORT',
+    );
+  }
+
+  /**
+   * ADMIN: Search users (customers & affiliates) for new chat
+   */
+  @Get('admin/users/search')
+  @UseGuards(ClerkAuthGuard)
+  async searchUsers(@Req() req, @Query('q') query: string) {
+    if (req.user.role !== 'ADMIN') {
+      throw new ForbiddenException('Nur Administratoren haben Zugriff');
+    }
+    return this.chatService.searchUsers(query || '');
   }
 }

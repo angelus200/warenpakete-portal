@@ -237,6 +237,13 @@ export default function AdminDashboardPage() {
               <p className="text-gray-900 font-semibold">Support</p>
               <p className="text-sm text-gray-600 mt-1">Kunden-Chat & Anfragen</p>
             </Link>
+            <Link
+              href="/admin/chat"
+              className="p-4 bg-white hover:bg-gray-100 rounded-lg transition-all text-center"
+            >
+              <p className="text-gray-900 font-semibold">💬 Chat</p>
+              <p className="text-sm text-gray-600 mt-1">Kunden & Affiliates anschreiben</p>
+            </Link>
           </div>
         </Card>
       </div>

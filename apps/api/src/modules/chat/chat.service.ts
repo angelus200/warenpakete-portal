@@ -221,4 +221,92 @@ export class ChatService {
       data: { status: 'CLOSED' },
     });
   }
+
+  /**
+   * Admin starts new chat with a user
+   */
+  async createAdminRoom(userId: string, subject: string, firstMessage: string, roomType: string) {
+    // Find user
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true, firstName: true, lastName: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Benutzer nicht gefunden');
+    }
+
+    const userName = [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email;
+
+    // Create room + first message in transaction
+    const room = await this.prisma.$transaction(async (tx) => {
+      const newRoom = await tx.chatRoom.create({
+        data: {
+          userId: user.id,
+          userEmail: user.email,
+          userName,
+          subject,
+          status: 'OPEN',
+          roomType: roomType as any,
+          initiatedBy: 'ADMIN',
+        },
+      });
+
+      await tx.chatMessage.create({
+        data: {
+          roomId: newRoom.id,
+          senderType: 'ADMIN',
+          senderName: 'Support Team',
+          message: firstMessage,
+        },
+      });
+
+      return newRoom;
+    });
+
+    return room;
+  }
+
+  /**
+   * Search users for admin chat initiation
+   */
+  async searchUsers(query: string) {
+    const where: any = {};
+
+    if (query) {
+      where.OR = [
+        { email: { contains: query, mode: 'insensitive' } },
+        { firstName: { contains: query, mode: 'insensitive' } },
+        { lastName: { contains: query, mode: 'insensitive' } },
+      ];
+    }
+
+    const users = await this.prisma.user.findMany({
+      where,
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+      },
+      take: 20,
+      orderBy: { email: 'asc' },
+    });
+
+    // Check which users have affiliate links
+    const userIds = users.map(u => u.id);
+    const affiliates = await this.prisma.affiliateLink.findMany({
+      where: { userId: { in: userIds } },
+      select: { userId: true, code: true },
+    });
+    const affiliateMap = new Map(affiliates.map(a => [a.userId, a.code]));
+
+    return users.map(user => ({
+      ...user,
+      isAffiliate: affiliateMap.has(user.id),
+      affiliateCode: affiliateMap.get(user.id) || null,
+      displayName: [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email,
+    }));
+  }
 }
