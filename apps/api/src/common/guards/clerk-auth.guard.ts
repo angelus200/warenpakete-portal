@@ -68,7 +68,7 @@ export class ClerkAuthGuard implements CanActivate {
       // CRITICAL: Get user from database to get the actual user.id (not just clerkId)
       const user = await this.prisma.user.findUnique({
         where: { clerkId: payload.sub },
-        select: { id: true, clerkId: true, email: true },
+        select: { id: true, clerkId: true, email: true, role: true },
       });
 
       if (!user) {
@@ -80,6 +80,7 @@ export class ClerkAuthGuard implements CanActivate {
         id: user.id,           // Database UUID - THIS IS CRITICAL for filtering!
         clerkId: user.clerkId, // Clerk ID for reference
         email: user.email,     // Email for logging
+        role: user.role,       // User role for authorization
         sessionId: payload.sid,
       };
 

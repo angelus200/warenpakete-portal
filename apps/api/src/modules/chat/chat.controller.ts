@@ -7,10 +7,10 @@ import {
   Body,
   Req,
   UseGuards,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { ClerkAuthGuard } from '../../common/guards/clerk-auth.guard';
-import { AdminAuthGuard } from '../admin/admin-auth.guard';
 
 @Controller('chat')
 export class ChatController {
@@ -72,8 +72,11 @@ export class ChatController {
    * ADMIN: Get all chat rooms
    */
   @Get('admin/rooms')
-  @UseGuards(AdminAuthGuard)
-  async getAllRooms() {
+  @UseGuards(ClerkAuthGuard)
+  async getAllRooms(@Req() req) {
+    if (req.user.role !== 'ADMIN') {
+      throw new ForbiddenException('Nur Administratoren haben Zugriff');
+    }
     return this.chatService.getAllRooms();
   }
 
@@ -81,8 +84,11 @@ export class ChatController {
    * ADMIN: Get messages for a room
    */
   @Get('admin/rooms/:id/messages')
-  @UseGuards(AdminAuthGuard)
-  async getAdminRoomMessages(@Param('id') roomId: string) {
+  @UseGuards(ClerkAuthGuard)
+  async getAdminRoomMessages(@Req() req, @Param('id') roomId: string) {
+    if (req.user.role !== 'ADMIN') {
+      throw new ForbiddenException('Nur Administratoren haben Zugriff');
+    }
     return this.chatService.getAdminRoomMessages(roomId);
   }
 
@@ -90,11 +96,15 @@ export class ChatController {
    * ADMIN: Send message to room
    */
   @Post('admin/rooms/:id/messages')
-  @UseGuards(AdminAuthGuard)
+  @UseGuards(ClerkAuthGuard)
   async sendAdminMessage(
+    @Req() req,
     @Param('id') roomId: string,
     @Body() body: { message: string },
   ) {
+    if (req.user.role !== 'ADMIN') {
+      throw new ForbiddenException('Nur Administratoren haben Zugriff');
+    }
     return this.chatService.sendAdminMessage(roomId, body.message);
   }
 
@@ -102,8 +112,11 @@ export class ChatController {
    * ADMIN: Close chat room
    */
   @Patch('admin/rooms/:id/close')
-  @UseGuards(AdminAuthGuard)
-  async closeRoom(@Param('id') roomId: string) {
+  @UseGuards(ClerkAuthGuard)
+  async closeRoom(@Req() req, @Param('id') roomId: string) {
+    if (req.user.role !== 'ADMIN') {
+      throw new ForbiddenException('Nur Administratoren haben Zugriff');
+    }
     return this.chatService.closeRoom(roomId);
   }
 }
