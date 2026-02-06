@@ -10,15 +10,30 @@ import { useAuth } from '@clerk/nextjs';
 export default function Home() {
   const { isSignedIn } = useAuth();
 
-  // Ertragsrechner State
+  // Tab State
+  const [activeTab, setActiveTab] = useState<'single' | 'cashflow'>('single');
+
+  // Einzelkauf Rechner State
   const [einkaufspreis, setEinkaufspreis] = useState(5000);
   const [marge, setMarge] = useState(40);
 
-  // Berechnungen
+  // Berechnungen Einzelkauf
   const warenwert = einkaufspreis * 3;
   const verkaufserloes = warenwert * (1 - marge / 100);
   const ertragSelbst = verkaufserloes - einkaufspreis;
   const ertragKommission = (verkaufserloes - einkaufspreis) * 0.8;
+
+  // Cashflow Rechner State
+  const [monthlyBudget, setMonthlyBudget] = useState(3000);
+  const [salesCycle, setSalesCycle] = useState(3);
+  const [cashflowMargin, setCashflowMargin] = useState(40);
+
+  // Berechnungen Cashflow
+  const warenWertCashflow = monthlyBudget * 3;
+  const verkaufsErloesCashflow = warenWertCashflow * (cashflowMargin / 100);
+  const bruttoErtragCashflow = verkaufsErloesCashflow - monthlyBudget;
+  const cashflowSelbst = bruttoErtragCashflow;
+  const cashflowKommission = bruttoErtragCashflow * 0.8;
 
   return (
     <div className="flex flex-col">
@@ -149,16 +164,45 @@ export default function Home() {
 
         <div className="container relative z-10 mx-auto px-4">
           <div className="border-2 border-gold/30 rounded-2xl p-8 md:p-12 bg-black/20 backdrop-blur-sm">
-            <div className="text-center mb-16">
+            <div className="text-center mb-8">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">
                 <span className="text-gold">Ertragsrechner</span>
               </h2>
               <p className="text-gray-400 text-lg">
-                Berechnen Sie Ihr mögliches Verkaufspotenzial
+                {activeTab === 'single'
+                  ? 'Berechnen Sie Ihr mögliches Verkaufspotenzial'
+                  : 'Berechnen Sie Ihren möglichen monatlichen Rückfluss'
+                }
               </p>
             </div>
 
+            {/* Tabs */}
+            <div className="flex justify-center gap-4 mb-12">
+              <button
+                onClick={() => setActiveTab('single')}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                  activeTab === 'single'
+                    ? 'bg-gold text-dark'
+                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                }`}
+              >
+                Einzelkauf
+              </button>
+              <button
+                onClick={() => setActiveTab('cashflow')}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                  activeTab === 'cashflow'
+                    ? 'bg-gold text-dark'
+                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                }`}
+              >
+                Monatlicher Cashflow
+              </button>
+            </div>
+
             <div className="max-w-5xl mx-auto">
+            {activeTab === 'single' && (
+              <>
             {/* Eingabefelder */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               {/* Einkaufspreis */}
@@ -292,6 +336,183 @@ export default function Home() {
                 </div>
               </div>
             </div>
+              </>
+            )}
+
+            {activeTab === 'cashflow' && (
+              <>
+            {/* Monatlicher Cashflow Rechner */}
+            {/* Eingabefelder */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+              {/* Monatliches Budget */}
+              <Card className="p-6 bg-white/5 border-gold/20 backdrop-blur">
+                <label className="block text-gray-200 font-semibold mb-4">
+                  Monatliches Budget (€)
+                </label>
+                <input
+                  type="range"
+                  min="1000"
+                  max="20000"
+                  step="500"
+                  value={monthlyBudget}
+                  onChange={(e) => setMonthlyBudget(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-gold"
+                />
+                <div className="flex justify-between items-center mt-4">
+                  <span className="text-gray-400 text-sm">1.000 €</span>
+                  <input
+                    type="number"
+                    value={monthlyBudget}
+                    onChange={(e) => setMonthlyBudget(Number(e.target.value))}
+                    className="w-32 px-3 py-2 bg-gray-800 text-gold text-center text-xl font-bold rounded border border-gold/30 focus:outline-none focus:border-gold"
+                  />
+                  <span className="text-gray-400 text-sm">20.000 €</span>
+                </div>
+              </Card>
+
+              {/* Verkaufszyklus */}
+              <Card className="p-6 bg-white/5 border-gold/20 backdrop-blur">
+                <label className="block text-gray-200 font-semibold mb-4">
+                  Verkaufszyklus (Monate)
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="6"
+                  step="1"
+                  value={salesCycle}
+                  onChange={(e) => setSalesCycle(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-gold"
+                />
+                <div className="flex justify-between items-center mt-4">
+                  <span className="text-gray-400 text-sm">1 Mon.</span>
+                  <input
+                    type="number"
+                    value={salesCycle}
+                    onChange={(e) => setSalesCycle(Number(e.target.value))}
+                    className="w-32 px-3 py-2 bg-gray-800 text-gold text-center text-xl font-bold rounded border border-gold/30 focus:outline-none focus:border-gold"
+                  />
+                  <span className="text-gray-400 text-sm">6 Mon.</span>
+                </div>
+                <p className="text-xs text-gray-500 mt-2 text-center">Durchschnittliche Zeit bis Waren verkauft sind</p>
+              </Card>
+
+              {/* Erwartete Marge */}
+              <Card className="p-6 bg-white/5 border-gold/20 backdrop-blur">
+                <label className="block text-gray-200 font-semibold mb-4">
+                  Erwartete Marge (%)
+                </label>
+                <input
+                  type="range"
+                  min="10"
+                  max="100"
+                  step="5"
+                  value={cashflowMargin}
+                  onChange={(e) => setCashflowMargin(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-gold"
+                />
+                <div className="flex justify-between items-center mt-4">
+                  <span className="text-gray-400 text-sm">10%</span>
+                  <input
+                    type="number"
+                    value={cashflowMargin}
+                    onChange={(e) => setCashflowMargin(Number(e.target.value))}
+                    className="w-32 px-3 py-2 bg-gray-800 text-gold text-center text-xl font-bold rounded border border-gold/30 focus:outline-none focus:border-gold"
+                  />
+                  <span className="text-gray-400 text-sm">100%</span>
+                </div>
+              </Card>
+            </div>
+
+            {/* Berechnete Werte */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <Card className="p-6 text-center bg-white/5 border-gold/20 backdrop-blur">
+                <p className="text-gray-400 text-sm mb-2">Monatlicher Warenwert</p>
+                <p className="text-3xl font-bold text-gold">{warenWertCashflow.toLocaleString('de-DE')} €</p>
+                <p className="text-xs text-gray-500 mt-2">Budget × 3</p>
+              </Card>
+
+              <Card className="p-6 text-center bg-white/5 border-gold/20 backdrop-blur">
+                <p className="text-gray-400 text-sm mb-2">Monatlicher Verkaufserlös</p>
+                <p className="text-3xl font-bold text-gold">{verkaufsErloesCashflow.toLocaleString('de-DE')} €</p>
+                <p className="text-xs text-gray-500 mt-2">Nach {cashflowMargin}% Marge</p>
+              </Card>
+
+              <Card className="p-6 text-center bg-white/5 border-gold/20 backdrop-blur">
+                <p className="text-gray-400 text-sm mb-2">Monatlicher Brutto-Ertrag</p>
+                <p className="text-3xl font-bold text-gold">{bruttoErtragCashflow.toLocaleString('de-DE')} €</p>
+                <p className="text-xs text-gray-500 mt-2">Erlös - Budget</p>
+              </Card>
+            </div>
+
+            {/* Ergebnis Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              {/* Option A */}
+              <Card className="p-8 bg-white border-2 border-gold/30 hover:border-gold transition-all shadow-xl">
+                <div className="text-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <svg className="w-8 h-8 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    Option A: Selbst verkaufen
+                  </h3>
+                </div>
+                <div className="text-center">
+                  <p className="text-gray-600 mb-2">Möglicher monatlicher Rückfluss</p>
+                  <p className="text-5xl font-bold text-gold mb-4">{cashflowSelbst.toLocaleString('de-DE')} €</p>
+                  <p className="text-sm text-gray-500">Nach {salesCycle} Monaten Anlaufphase</p>
+                </div>
+              </Card>
+
+              {/* Option B */}
+              <Card className="p-8 bg-white border-2 border-gold/30 hover:border-gold transition-all shadow-xl">
+                <div className="text-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <svg className="w-8 h-8 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    Option B: Kommissionsverkauf
+                  </h3>
+                </div>
+                <div className="text-center">
+                  <p className="text-gray-600 mb-2">Möglicher monatlicher Rückfluss</p>
+                  <p className="text-5xl font-bold text-gold mb-4">{cashflowKommission.toLocaleString('de-DE')} €</p>
+                  <p className="text-sm text-gray-500">Nach 20% Kommission</p>
+                </div>
+              </Card>
+            </div>
+
+            {/* Cashflow Hinweis */}
+            <div className="mb-8 p-4 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+              <p className="text-amber-400 text-sm text-center">
+                <strong>Hinweis:</strong> Der monatliche Rückfluss entsteht erst nach der Anlaufphase von {salesCycle} Monaten.
+                Dies ist eine vereinfachte Modellrechnung – tatsächliche Verkaufszeiten und Erträge variieren.
+                Kein garantierter Cashflow – unternehmerisches Risiko.
+              </p>
+            </div>
+
+            {/* Rechtlicher Disclaimer */}
+            <div className="bg-orange-900/20 border-2 border-orange-500/40 rounded-lg p-6">
+              <div className="flex items-start">
+                <svg className="w-6 h-6 text-orange-400 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <div>
+                  <h4 className="font-bold text-orange-300 mb-2">Hinweis</h4>
+                  <p className="text-sm text-gray-300 leading-relaxed">
+                    Diese Berechnung dient nur zur Orientierung und stellt <strong>keine Gewinn- oder Renditegarantie</strong> dar.
+                    Die tatsächlichen Ergebnisse hängen von vielen Faktoren ab (Marktbedingungen, Verkaufsdauer, Nachfrage).
+                    Warenhandel ist mit unternehmerischem Risiko verbunden.
+                  </p>
+                </div>
+              </div>
+            </div>
+              </>
+            )}
           </div>
           </div>
         </div>
