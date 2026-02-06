@@ -353,7 +353,7 @@ export class InvoicesService {
     // Use delivery address if available
     if (order.deliveryAddress) {
       doc.text(order.deliveryAddress.street || '');
-      doc.text(`${order.deliveryAddress.zip || ''} ${order.deliveryAddress.city || ''}`);
+      doc.text(`${order.deliveryAddress.zipCode || ''} ${order.deliveryAddress.city || ''}`);
       doc.text(order.deliveryAddress.country || '');
     } else if (order.user.companyStreet) {
       doc.text(order.user.companyStreet);

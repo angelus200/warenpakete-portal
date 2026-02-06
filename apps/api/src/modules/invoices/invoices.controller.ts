@@ -2,7 +2,7 @@ import { Controller, Get, Param, Res, UseGuards, Req, NotFoundException, Forbidd
 import { InvoicesService } from './invoices.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { ClerkAuthGuard } from '../../common/guards/clerk-auth.guard';
 import { PrismaService } from '../../common/prisma/prisma.service';
 
 @ApiTags('invoices')
@@ -36,7 +36,7 @@ export class InvoicesController {
   }
 
   @Get('order/:orderId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(ClerkAuthGuard)
   @ApiOperation({ summary: 'Download order invoice PDF' })
   @ApiResponse({ status: 200, description: 'Returns PDF file' })
   async getOrderInvoice(
