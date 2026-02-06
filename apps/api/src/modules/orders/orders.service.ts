@@ -10,6 +10,7 @@ import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 import { OrderStatus, ProductStatus } from '@prisma/client';
 import { ProductsService } from '../products/products.service';
 import { CommissionsService } from '../commissions/commissions.service';
+import { InvoicesService } from '../invoices/invoices.service';
 
 @Injectable()
 export class OrdersService {
@@ -17,6 +18,7 @@ export class OrdersService {
     private prisma: PrismaService,
     private productsService: ProductsService,
     private commissionsService: CommissionsService,
+    private invoicesService: InvoicesService,
   ) {}
 
   async create(createOrderDto: CreateOrderDto, userId: string) {
@@ -170,6 +172,14 @@ export class OrdersService {
         id,
         Number(updatedOrder.totalAmount),
       );
+
+      // Send invoice email automatically
+      try {
+        await this.invoicesService.sendInvoiceEmail(id);
+      } catch (error) {
+        console.error('Failed to send invoice email:', error);
+        // Don't throw error, just log it - invoice can still be downloaded manually
+      }
     }
 
     return updatedOrder;
