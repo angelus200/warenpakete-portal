@@ -680,6 +680,24 @@ export default function Home() {
                 </p>
               </Card>
             </div>
+
+            {/* Partner Logos */}
+            <div className="flex justify-center items-center gap-12 mt-12 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+              <Image
+                src="/images/partners/amazon.jpeg"
+                alt="Amazon"
+                width={120}
+                height={40}
+                className="object-contain"
+              />
+              <Image
+                src="/images/partners/ebay.jpeg"
+                alt="eBay"
+                width={100}
+                height={40}
+                className="object-contain"
+              />
+            </div>
           </div>
         </div>
       </section>
