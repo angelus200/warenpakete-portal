@@ -58,6 +58,7 @@ export function Header() {
                 <NavLink href="/contracts">Verträge</NavLink>
                 <NavLink href="/affiliate">Affiliate</NavLink>
                 <NavLink href="/support">Support</NavLink>
+                {/* Admin link - only visible for admin users */}
                 {isAdmin && <NavLink href="/admin" isAdminLink>Admin</NavLink>}
               </>
             )}
@@ -121,6 +122,7 @@ export function Header() {
             <NavLink href="/contracts">Verträge</NavLink>
             <NavLink href="/affiliate">Affiliate</NavLink>
             <NavLink href="/support">Support</NavLink>
+            {/* Admin link - only visible for admin users */}
             {isAdmin && <NavLink href="/admin" isAdminLink>Admin</NavLink>}
           </div>
         )}
