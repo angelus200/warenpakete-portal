@@ -26,6 +26,59 @@ function getRelativeTime(dateString: string): string {
   return date.toLocaleDateString('de-DE');
 }
 
+/**
+ * Parse RSS feed XML using DOMParser
+ */
+function parseRSS(xmlText: string): NewsItem[] {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+  const items = xmlDoc.querySelectorAll('item');
+  const newsItems: NewsItem[] = [];
+
+  items.forEach((item) => {
+    const title = item.querySelector('title')?.textContent || '';
+    const link = item.querySelector('link')?.textContent || '';
+    const description = item.querySelector('description')?.textContent || '';
+    const pubDate = item.querySelector('pubDate')?.textContent || '';
+    const category = item.querySelector('category')?.textContent || undefined;
+
+    if (title && link) {
+      newsItems.push({
+        title: title.trim(),
+        link: link.trim(),
+        description: description.trim().substring(0, 200),
+        pubDate: pubDate.trim(),
+        category,
+      });
+    }
+  });
+
+  return newsItems;
+}
+
+/**
+ * Fetch RSS feed via CORS proxy
+ */
+async function fetchRSSFeed(feedUrl: string): Promise<NewsItem[]> {
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`;
+
+  try {
+    const response = await fetch(proxyUrl, {
+      signal: AbortSignal.timeout(5000), // 5s timeout
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const xmlText = await response.text();
+    return parseRSS(xmlText);
+  } catch (error) {
+    console.error(`Failed to fetch ${feedUrl}:`, error);
+    return [];
+  }
+}
+
 export function ECommerceNewsTicker() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,10 +87,22 @@ export function ECommerceNewsTicker() {
   useEffect(() => {
     async function fetchNews() {
       try {
-        const response = await fetch('/api/news');
-        if (!response.ok) throw new Error('Failed to fetch');
-        const data = await response.json();
-        setNews(data);
+        // Fetch both feeds in parallel
+        const [etailmentNews, t3nNews] = await Promise.all([
+          fetchRSSFeed('https://etailment.de/news/feed/'),
+          fetchRSSFeed('https://t3n.de/rss.xml'),
+        ]);
+
+        // Combine and sort
+        const allNews = [...etailmentNews, ...t3nNews];
+        allNews.sort((a, b) => {
+          const dateA = new Date(a.pubDate).getTime();
+          const dateB = new Date(b.pubDate).getTime();
+          return dateB - dateA; // Newest first
+        });
+
+        // Limit to 15 items
+        setNews(allNews.slice(0, 15));
       } catch (err) {
         console.error('Failed to load news:', err);
         setError(true);
