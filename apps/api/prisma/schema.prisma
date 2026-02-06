@@ -92,6 +92,8 @@ model Order {
   paidAt          DateTime?
   pickedUpAt      DateTime?
   fulfillmentType String?     // "delivery" oder "commission"
+  invoiceNumber   String?     @unique
+  invoiceSentAt   DateTime?
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 

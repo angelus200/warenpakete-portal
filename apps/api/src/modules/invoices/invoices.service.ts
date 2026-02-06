@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import PDFDocument from 'pdfkit';
 import { Response } from 'express';
@@ -244,5 +244,253 @@ export class InvoicesService {
       'Dezember',
     ];
     return months[month - 1];
+  }
+
+  /**
+   * Generate order invoice PDF
+   */
+  async generateOrderInvoice(orderId: string, res?: Response): Promise<Buffer | void> {
+    // Get order with all details
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        items: { include: { product: true } },
+        user: true,
+        deliveryAddress: true,
+      },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    if (order.status !== 'PAID') {
+      throw new BadRequestException('Order not paid yet');
+    }
+
+    // Generate invoice number if not exists
+    if (!order.invoiceNumber) {
+      const invoiceNumber = await this.generateInvoiceNumber();
+      await this.prisma.order.update({
+        where: { id: orderId },
+        data: { invoiceNumber },
+      });
+      order.invoiceNumber = invoiceNumber;
+    }
+
+    // Create PDF
+    const doc = new PDFDocument({ margin: 50 });
+    const chunks: Buffer[] = [];
+
+    // If no response object, collect chunks to return buffer
+    if (!res) {
+      doc.on('data', (chunk) => chunks.push(chunk));
+      doc.on('end', () => {
+        return Buffer.concat(chunks);
+      });
+    } else {
+      // Set response headers
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename=rechnung-${order.invoiceNumber}.pdf`,
+      );
+      doc.pipe(res);
+    }
+
+    // Header
+    doc
+      .fontSize(24)
+      .text('RECHNUNG', { align: 'center', underline: true })
+      .moveDown(2);
+
+    // Invoice details
+    doc.fontSize(10);
+    doc.text(`Rechnungsnummer: ${order.invoiceNumber}`);
+    doc.text(`Rechnungsdatum: ${order.paidAt ? new Date(order.paidAt).toLocaleDateString('de-DE') : new Date().toLocaleDateString('de-DE')}`);
+    doc.text(`Bestellnummer: ${order.id.substring(0, 8).toUpperCase()}`);
+    doc.moveDown(2);
+
+    // Divider
+    doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+    doc.moveDown();
+
+    // Company info (Rechnungssteller)
+    doc.fontSize(12).text('Rechnungssteller (Plattformbetreiber):', { underline: true });
+    doc.fontSize(10).moveDown(0.5);
+    doc.text('Marketplace24-7 GmbH');
+    doc.text('Kantonsstrasse 1');
+    doc.text('8807 Freienbach SZ');
+    doc.text('Schweiz');
+    doc.text('Handelsregister: CH-130.4.033.363-2');
+    doc.text('E-Mail: info@non-dom.group');
+    doc.moveDown(2);
+
+    // Divider
+    doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+    doc.moveDown();
+
+    // Customer info (Rechnungsempfänger)
+    doc.fontSize(12).text('Rechnungsempfänger:', { underline: true });
+    doc.fontSize(10).moveDown(0.5);
+
+    if (order.user.company || order.user.companyName) {
+      doc.text(order.user.company || order.user.companyName || '');
+    }
+
+    const customerName = `${order.user.firstName || ''} ${order.user.lastName || ''}`.trim();
+    if (customerName) {
+      doc.text(customerName);
+    } else {
+      doc.text(order.user.email);
+    }
+
+    // Use delivery address if available
+    if (order.deliveryAddress) {
+      doc.text(order.deliveryAddress.street || '');
+      doc.text(`${order.deliveryAddress.zip || ''} ${order.deliveryAddress.city || ''}`);
+      doc.text(order.deliveryAddress.country || '');
+    } else if (order.user.companyStreet) {
+      doc.text(order.user.companyStreet);
+      doc.text(`${order.user.companyZip || ''} ${order.user.companyCity || ''}`);
+      doc.text(order.user.companyCountry || '');
+    }
+
+    if (order.user.vatId) {
+      doc.text(`USt-IdNr.: ${order.user.vatId}`);
+    }
+    doc.moveDown(2);
+
+    // Divider
+    doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+    doc.moveDown();
+
+    // Items table
+    doc.fontSize(12).text('Positionen:', { underline: true }).moveDown();
+
+    const tableTop = doc.y;
+    const col1 = 50;  // Pos
+    const col2 = 80;  // Artikel
+    const col3 = 340; // Menge
+    const col4 = 390; // Einzelpreis
+    const col5 = 480; // Gesamt
+
+    // Table header
+    doc.fontSize(9)
+      .text('Pos', col1, tableTop, { width: 25 })
+      .text('Artikel', col2, tableTop, { width: 250 })
+      .text('Menge', col3, tableTop, { width: 40 })
+      .text('Einzelpreis', col4, tableTop, { width: 80 })
+      .text('Gesamt', col5, tableTop, { width: 70 });
+
+    doc.moveTo(50, doc.y + 5).lineTo(550, doc.y + 5).stroke();
+    doc.moveDown();
+
+    // Table rows
+    order.items.forEach((item, index) => {
+      const y = doc.y;
+      const itemTotal = Number(item.price) * item.quantity;
+
+      doc.fontSize(8)
+        .text((index + 1).toString(), col1, y, { width: 25 })
+        .text(item.product.name, col2, y, { width: 250 })
+        .text(item.quantity.toString(), col3, y, { width: 40 })
+        .text(`€${Number(item.price).toLocaleString('de-DE', { minimumFractionDigits: 2 })}`, col4, y, { width: 80 })
+        .text(`€${itemTotal.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`, col5, y, { width: 70 });
+
+      doc.moveDown(0.8);
+    });
+
+    doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+    doc.moveDown(2);
+
+    // Totals
+    const totalNet = Number(order.totalAmount);
+    const vat = 0; // Reverse charge
+    const totalGross = totalNet;
+
+    doc.fontSize(10);
+    doc.text(`Nettobetrag: €${totalNet.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`, { align: 'right' });
+    doc.text('MwSt (0% - Schweizer Unternehmen, Reverse Charge): €0,00', { align: 'right' });
+    doc.fontSize(12)
+      .text(`Gesamtbetrag: €${totalGross.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`, { align: 'right', bold: true });
+
+    doc.moveDown(2);
+
+    // Divider
+    doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+    doc.moveDown();
+
+    // B2B notice
+    doc.fontSize(9).text(
+      'Hinweis: Diese Rechnung richtet sich ausschließlich an Gewerbetreibende (B2B). Bei EU-Kunden mit gültiger USt-IdNr. gilt das Reverse-Charge-Verfahren.',
+      { align: 'left' }
+    );
+
+    doc.moveDown();
+    doc.fontSize(10).text(
+      `Zahlungsstatus: BEZAHLT am ${order.paidAt ? new Date(order.paidAt).toLocaleDateString('de-DE') : new Date().toLocaleDateString('de-DE')}`,
+      { bold: true }
+    );
+
+    doc.moveDown(2);
+
+    // Divider
+    doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+    doc.moveDown();
+
+    // Footer
+    doc.fontSize(8).text(
+      'Marketplace24-7 GmbH | Kantonsstrasse 1, 8807 Freienbach SZ',
+      { align: 'center' }
+    );
+
+    // Finalize PDF
+    doc.end();
+
+    if (!res) {
+      return new Promise((resolve) => {
+        doc.on('end', () => resolve(Buffer.concat(chunks)));
+      });
+    }
+  }
+
+  /**
+   * Generate unique invoice number
+   */
+  private async generateInvoiceNumber(): Promise<string> {
+    const year = new Date().getFullYear();
+    const count = await this.prisma.order.count({
+      where: {
+        invoiceNumber: { startsWith: `RE-${year}` },
+      },
+    });
+    return `RE-${year}-${String(count + 1).padStart(5, '0')}`;
+  }
+
+  /**
+   * Send invoice email (placeholder)
+   */
+  async sendInvoiceEmail(orderId: string) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: { user: true },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    // Generate PDF as buffer
+    const pdfBuffer = await this.generateOrderInvoice(orderId);
+
+    // TODO: Implement email sending with PDF attachment
+    // For now, just mark as sent
+    console.log(`TODO: Send invoice email to ${order.user.email}`);
+
+    await this.prisma.order.update({
+      where: { id: orderId },
+      data: { invoiceSentAt: new Date() },
+    });
   }
 }
