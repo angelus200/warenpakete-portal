@@ -57,28 +57,39 @@ function parseRSS(xmlText: string): NewsItem[] {
 }
 
 /**
- * Fetch RSS feed via CORS proxy
- * WICHTIG: Alle Feeds MÜSSEN über den CORS-Proxy gehen!
+ * Fetch RSS feed via CORS proxy with fallback
+ * Versucht mehrere Proxies, falls einer ausfällt
  */
 async function fetchRSSFeed(feedUrl: string): Promise<NewsItem[]> {
-  // CORS-Proxy URL - niemals direkt fetchen!
-  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`;
+  const proxies = [
+    `https://corsproxy.io/?${encodeURIComponent(feedUrl)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${feedUrl}`,
+  ];
 
-  try {
-    const response = await fetch(proxyUrl, {
-      signal: AbortSignal.timeout(10000), // 10s timeout
-    });
+  for (const proxyUrl of proxies) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+      const response = await fetch(proxyUrl, { signal: controller.signal });
+      clearTimeout(timeout);
+
+      if (!response.ok) continue;
+
+      const text = await response.text();
+
+      // Prüfe ob es valides RSS ist (enthält <item> Tags)
+      if (!text.includes('<item>') && !text.includes('<item ')) continue;
+
+      return parseRSS(text);
+    } catch (error) {
+      console.error(`Proxy ${proxyUrl} failed:`, error);
+      continue;
     }
-
-    const xmlText = await response.text();
-    return parseRSS(xmlText);
-  } catch (error) {
-    console.error(`Failed to fetch ${feedUrl}:`, error);
-    return [];
   }
+
+  console.error(`All proxies failed for ${feedUrl}`);
+  return [];
 }
 
 export function ECommerceNewsTicker() {
