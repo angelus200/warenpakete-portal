@@ -51,6 +51,7 @@ model User {
   customerActivities CustomerActivity[]
   affiliateLinks     AffiliateLink[]    @relation("UserAffiliateLinks")
   affiliateWithdrawals AffiliateWithdrawal[] @relation("UserAffiliateWithdrawals")
+  chatRooms          ChatRoom[]         @relation("UserChatRooms")
 
   @@map("users")
 }
@@ -399,4 +400,43 @@ enum AffiliateWithdrawalStatus {
   APPROVED
   PAID
   REJECTED
+}
+
+model ChatRoom {
+  id        String         @id @default(uuid())
+  userId    String
+  user      User           @relation("UserChatRooms", fields: [userId], references: [id])
+  userEmail String
+  userName  String
+  subject   String
+  status    ChatRoomStatus @default(OPEN)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  messages ChatMessage[]
+
+  @@map("chat_rooms")
+}
+
+model ChatMessage {
+  id         String           @id @default(uuid())
+  roomId     String
+  room       ChatRoom         @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  senderType ChatSenderType
+  senderName String
+  message    String           @db.Text
+  read       Boolean          @default(false)
+  createdAt  DateTime         @default(now())
+
+  @@map("chat_messages")
+}
+
+enum ChatRoomStatus {
+  OPEN
+  CLOSED
+}
+
+enum ChatSenderType {
+  USER
+  ADMIN
 }

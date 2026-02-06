@@ -17,6 +17,7 @@ import { ContractsModule } from './modules/contracts/contracts.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { CrmModule } from './modules/crm/crm.module';
 import { AffiliateModule } from './modules/affiliate/affiliate.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { AffiliateModule } from './modules/affiliate/affiliate.module';
     AdminModule,
     CrmModule,
     AffiliateModule,
+    ChatModule,
     UsersModule,
     ProductsModule,
     OrdersModule,

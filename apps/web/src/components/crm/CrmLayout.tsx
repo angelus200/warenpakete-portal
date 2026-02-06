@@ -8,6 +8,7 @@ import {
   DollarSign,
   Warehouse,
   Share2,
+  MessageSquare,
 } from 'lucide-react';
 
 const TABS = [
@@ -40,6 +41,12 @@ const TABS = [
     label: 'Affiliates',
     icon: Share2,
     href: '/admin/crm/affiliates',
+  },
+  {
+    key: 'support',
+    label: 'Support',
+    icon: MessageSquare,
+    href: '/admin/crm/support',
   },
 ];
 
