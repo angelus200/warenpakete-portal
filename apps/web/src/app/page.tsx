@@ -682,25 +682,14 @@ export default function Home() {
             </div>
 
             {/* Partner Logos */}
-            <div className="flex justify-center items-center gap-8 mt-12">
-              <div className="bg-white p-4 rounded-xl border-2 border-gold/50 hover:border-gold hover:shadow-lg hover:shadow-gold/20 transition-all">
-                <Image
-                  src="/images/partners/amazon.jpeg"
-                  alt="Amazon"
-                  width={120}
-                  height={40}
-                  className="object-contain"
-                />
-              </div>
-              <div className="bg-white p-4 rounded-xl border-2 border-gold/50 hover:border-gold hover:shadow-lg hover:shadow-gold/20 transition-all">
-                <Image
-                  src="/images/partners/ebay.jpeg"
-                  alt="eBay"
-                  width={100}
-                  height={40}
-                  className="object-contain"
-                />
-              </div>
+            <div className="mt-12 bg-white p-6 rounded-xl border-2 border-gold/50 hover:border-gold hover:shadow-lg hover:shadow-gold/20 transition-all max-w-3xl mx-auto">
+              <Image
+                src="/images/partners/marketplaces.jpeg"
+                alt="Unsere Marktplatz-Partner: Amazon, eBay, Walmart, Shopify, Etsy und mehr"
+                width={800}
+                height={200}
+                className="object-contain w-full"
+              />
             </div>
           </div>
         </div>
