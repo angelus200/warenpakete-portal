@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@clerk/nextjs';
 import { Laptop, Home as HomeIcon, Shirt } from 'lucide-react';
+import { ECommerceNewsTicker } from '@/components/ECommerceNewsTicker';
 
 export default function Home() {
   const { isSignedIn } = useAuth();
@@ -38,6 +39,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
+      <ECommerceNewsTicker />
       {/* Hero Section */}
       <section className="relative overflow-hidden py-28 md:py-40">
         {/* Background Image */}
