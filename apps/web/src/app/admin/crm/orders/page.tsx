@@ -201,9 +201,19 @@ export default function CrmOrdersPage() {
                           </div>
                         )}
                         {order.invoiceNumber && (
-                          <div className="mt-2 text-[10px] text-gray-500">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(`${process.env.NEXT_PUBLIC_API_URL}/invoices/order/${order.id}`, '_blank');
+                            }}
+                            className="mt-2 text-[10px] text-[#D4AF37] hover:text-[#B8960C] font-semibold flex items-center gap-1 transition-colors"
+                            title="Rechnung herunterladen"
+                          >
                             📄 {order.invoiceNumber}
-                          </div>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                          </button>
                         )}
                       </div>
                     ))}
