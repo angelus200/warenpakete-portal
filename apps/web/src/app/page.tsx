@@ -144,11 +144,10 @@ export default function Home() {
       </section>
 
       {/* Ertragsrechner Section */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#222222] to-[#1a1a1a]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-gold/5 via-transparent to-transparent" />
+      <section className="py-24 relative overflow-hidden bg-gradient-to-br from-[#2a2a2a] via-[#1f1f1f] to-[#2a2a2a]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold/10 via-transparent to-transparent" />
 
-        <div className="container relative mx-auto px-4">
+        <div className="container relative z-10 mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">
               <span className="text-gold">Ertragsrechner</span>
