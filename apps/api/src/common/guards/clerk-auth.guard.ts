@@ -5,10 +5,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Clerk } from '@clerk/backend';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ClerkAuthGuard implements CanActivate {
   private clerk = Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
+
+  constructor(private prisma: PrismaService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -62,12 +65,25 @@ export class ClerkAuthGuard implements CanActivate {
         throw new UnauthorizedException('Invalid or expired session');
       }
 
+      // CRITICAL: Get user from database to get the actual user.id (not just clerkId)
+      const user = await this.prisma.user.findUnique({
+        where: { clerkId: payload.sub },
+        select: { id: true, clerkId: true, email: true },
+      });
+
+      if (!user) {
+        console.log('❌ User not found in database for clerkId:', payload.sub);
+        throw new UnauthorizedException('User not found');
+      }
+
       request.user = {
-        clerkId: payload.sub,
+        id: user.id,           // Database UUID - THIS IS CRITICAL for filtering!
+        clerkId: user.clerkId, // Clerk ID for reference
+        email: user.email,     // Email for logging
         sessionId: payload.sid,
       };
 
-      console.log('✅ Auth successful for user:', payload.sub);
+      console.log('✅ Auth successful for user:', user.id, '(clerkId:', payload.sub, ')');
 
       return true;
     } catch (error) {
