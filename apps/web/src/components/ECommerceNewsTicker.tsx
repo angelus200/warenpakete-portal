@@ -58,13 +58,15 @@ function parseRSS(xmlText: string): NewsItem[] {
 
 /**
  * Fetch RSS feed via CORS proxy
+ * WICHTIG: Alle Feeds MÜSSEN über den CORS-Proxy gehen!
  */
 async function fetchRSSFeed(feedUrl: string): Promise<NewsItem[]> {
+  // CORS-Proxy URL - niemals direkt fetchen!
   const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`;
 
   try {
     const response = await fetch(proxyUrl, {
-      signal: AbortSignal.timeout(5000), // 5s timeout
+      signal: AbortSignal.timeout(10000), // 10s timeout
     });
 
     if (!response.ok) {
