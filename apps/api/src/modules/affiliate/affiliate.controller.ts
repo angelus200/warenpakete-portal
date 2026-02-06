@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
   Param,
   Body,
   Req,
@@ -75,5 +76,84 @@ export class AffiliateController {
     @Body('status') status: string,
   ) {
     return this.affiliateService.updateConversionStatus(id, status);
+  }
+
+  /**
+   * Get available withdrawal balance
+   */
+  @Get('withdrawal/balance')
+  @UseGuards(ClerkAuthGuard)
+  async getWithdrawalBalance(@Req() req) {
+    const balance = await this.affiliateService.getAvailableBalance(req.user.id);
+    return {
+      availableBalance: balance,
+      availableBalanceFormatted: `€${(balance / 100).toFixed(2)}`,
+    };
+  }
+
+  /**
+   * Request withdrawal
+   */
+  @Post('withdrawals')
+  @UseGuards(ClerkAuthGuard)
+  async requestWithdrawal(@Req() req, @Body() body: {
+    amount: number;
+    method: 'BANK' | 'PAYPAL';
+    iban?: string;
+    accountHolder?: string;
+    paypalEmail?: string;
+  }) {
+    const bankData = body.method === 'BANK'
+      ? { iban: body.iban!, accountHolder: body.accountHolder! }
+      : undefined;
+
+    const paypalData = body.method === 'PAYPAL'
+      ? { email: body.paypalEmail! }
+      : undefined;
+
+    return this.affiliateService.requestWithdrawal(
+      req.user.id,
+      body.amount,
+      body.method,
+      bankData,
+      paypalData,
+    );
+  }
+
+  /**
+   * Get user's withdrawals
+   */
+  @Get('withdrawals')
+  @UseGuards(ClerkAuthGuard)
+  async getUserWithdrawals(@Req() req) {
+    return this.affiliateService.getUserWithdrawals(req.user.id);
+  }
+
+  /**
+   * ADMIN: Get all withdrawals
+   */
+  @Get('admin/withdrawals')
+  @UseGuards(AdminAuthGuard)
+  async getAllWithdrawals() {
+    return this.affiliateService.getAllWithdrawals();
+  }
+
+  /**
+   * ADMIN: Update withdrawal status
+   */
+  @Patch('admin/withdrawals/:id/status')
+  @UseGuards(AdminAuthGuard)
+  async updateWithdrawalStatus(
+    @Param('id') id: string,
+    @Body() body: { status: 'APPROVED' | 'PAID' | 'REJECTED'; notes?: string },
+    @Req() req,
+  ) {
+    const adminId = req.admin?.id || 'admin';
+    return this.affiliateService.updateWithdrawalStatus(
+      id,
+      body.status,
+      adminId,
+      body.notes,
+    );
   }
 }

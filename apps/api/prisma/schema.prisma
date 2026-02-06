@@ -50,6 +50,7 @@ model User {
   customerNotes      CustomerNote[]
   customerActivities CustomerActivity[]
   affiliateLinks     AffiliateLink[]    @relation("UserAffiliateLinks")
+  affiliateWithdrawals AffiliateWithdrawal[] @relation("UserAffiliateWithdrawals")
 
   @@map("users")
 }
@@ -359,4 +360,43 @@ model AffiliateConversion {
   createdAt DateTime      @default(now())
 
   @@map("affiliate_conversions")
+}
+
+model AffiliateWithdrawal {
+  id             String                    @id @default(uuid())
+  userId         String
+  user           User                      @relation("UserAffiliateWithdrawals", fields: [userId], references: [id])
+  amount         Decimal                   @db.Decimal(10, 2)
+  method         AffiliatePaymentMethod    @default(BANK)
+
+  // Bank transfer fields
+  iban           String?
+  accountHolder  String?
+
+  // PayPal fields
+  paypalEmail    String?
+
+  status         AffiliateWithdrawalStatus @default(PENDING)
+
+  // Admin processing
+  processedAt    DateTime?
+  processedBy    String?
+  notes          String?                   @db.Text
+
+  createdAt      DateTime                  @default(now())
+  updatedAt      DateTime                  @updatedAt
+
+  @@map("affiliate_withdrawals")
+}
+
+enum AffiliatePaymentMethod {
+  BANK
+  PAYPAL
+}
+
+enum AffiliateWithdrawalStatus {
+  PENDING
+  APPROVED
+  PAID
+  REJECTED
 }

@@ -31,6 +31,18 @@ interface Conversion {
   };
 }
 
+interface Withdrawal {
+  id: string;
+  amount: number;
+  method: string;
+  iban?: string;
+  accountHolder?: string;
+  paypalEmail?: string;
+  status: string;
+  createdAt: string;
+  notes?: string;
+}
+
 export default function AffiliatePage() {
   const api = useApi();
   const [affiliateLink, setAffiliateLink] = useState('');
@@ -40,6 +52,16 @@ export default function AffiliatePage() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Withdrawal state
+  const [availableBalance, setAvailableBalance] = useState(0);
+  const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
+  const [withdrawalAmount, setWithdrawalAmount] = useState('');
+  const [withdrawalMethod, setWithdrawalMethod] = useState<'BANK' | 'PAYPAL'>('BANK');
+  const [iban, setIban] = useState('');
+  const [accountHolder, setAccountHolder] = useState('');
+  const [paypalEmail, setPaypalEmail] = useState('');
+  const [submittingWithdrawal, setSubmittingWithdrawal] = useState(false);
 
   useEffect(() => {
     if (api.isSignedIn && api.isLoaded) {
@@ -60,6 +82,12 @@ export default function AffiliatePage() {
 
       const conversionsData = await api.get<Conversion[]>('/affiliate/conversions');
       setConversions(conversionsData);
+
+      const balanceData = await api.get<{ availableBalance: number }>('/affiliate/withdrawal/balance');
+      setAvailableBalance(balanceData.availableBalance);
+
+      const withdrawalsData = await api.get<Withdrawal[]>('/affiliate/withdrawals');
+      setWithdrawals(withdrawalsData);
     } catch (err) {
       console.error('Failed to fetch affiliate data:', err);
       setError('Fehler beim Laden der Affiliate-Daten');
@@ -107,6 +135,75 @@ export default function AffiliatePage() {
         {labels[status] || status}
       </span>
     );
+  };
+
+  const getWithdrawalStatusBadge = (status: string) => {
+    const config: Record<string, { bg: string; text: string; label: string }> = {
+      PENDING: { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Ausstehend' },
+      APPROVED: { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Genehmigt' },
+      PAID: { bg: 'bg-green-100', text: 'text-green-800', label: 'Ausgezahlt' },
+      REJECTED: { bg: 'bg-red-100', text: 'text-red-800', label: 'Abgelehnt' },
+    };
+
+    const { bg, text, label } = config[status] || config.PENDING;
+    return (
+      <span className={`px-2 py-1 text-xs font-semibold rounded border ${bg} ${text}`}>
+        {label}
+      </span>
+    );
+  };
+
+  const handleWithdrawalSubmit = async () => {
+    try {
+      setSubmittingWithdrawal(true);
+      setError(null);
+
+      const amount = Math.round(parseFloat(withdrawalAmount) * 100);
+
+      if (amount <= 0) {
+        setError('Betrag muss größer als 0 sein');
+        return;
+      }
+
+      if (amount > availableBalance) {
+        setError('Betrag übersteigt verfügbares Guthaben');
+        return;
+      }
+
+      const payload: any = {
+        amount,
+        method: withdrawalMethod,
+      };
+
+      if (withdrawalMethod === 'BANK') {
+        if (!iban || !accountHolder) {
+          setError('Bitte IBAN und Kontoinhaber angeben');
+          return;
+        }
+        payload.iban = iban;
+        payload.accountHolder = accountHolder;
+      } else {
+        if (!paypalEmail) {
+          setError('Bitte PayPal E-Mail-Adresse angeben');
+          return;
+        }
+        payload.paypalEmail = paypalEmail;
+      }
+
+      await api.post('/affiliate/withdrawals', payload);
+
+      // Reset form and refresh
+      setWithdrawalAmount('');
+      setIban('');
+      setAccountHolder('');
+      setPaypalEmail('');
+      await fetchAffiliateData();
+    } catch (err: any) {
+      console.error('Withdrawal request failed:', err);
+      setError(err.message || 'Fehler beim Erstellen der Auszahlungsanfrage');
+    } finally {
+      setSubmittingWithdrawal(false);
+    }
   };
 
   if (!api.isLoaded || loading) {
@@ -231,6 +328,139 @@ export default function AffiliatePage() {
             <div className="text-xl font-bold text-gray-900">{formatCurrency(stats?.paidEarnings || 0)}</div>
           </div>
         </div>
+      </Card>
+
+      <Card className="p-6 mb-8 bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300">
+        <h2 className="text-lg font-bold mb-2 text-gray-900">Verfügbares Guthaben</h2>
+        <div className="text-4xl font-bold text-green-600 mb-2">
+          {formatCurrency(availableBalance)}
+        </div>
+        <p className="text-sm text-gray-600">Genehmigt und verfügbar zur Auszahlung</p>
+      </Card>
+
+      <Card className="p-6 mb-8 bg-white border-2 border-gray-200">
+        <h2 className="text-lg font-bold mb-4 text-gray-900">Auszahlung beantragen</h2>
+
+        <div className="space-y-4">
+          {/* Amount Input */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Betrag (€)</label>
+            <input
+              type="number"
+              min="0.01"
+              step="0.01"
+              value={withdrawalAmount}
+              onChange={(e) => setWithdrawalAmount(e.target.value)}
+              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg"
+              placeholder="0.00"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Verfügbar: {formatCurrency(availableBalance)}
+            </p>
+          </div>
+
+          {/* Method Selection */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Auszahlungsmethode</label>
+            <div className="flex gap-4">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  value="BANK"
+                  checked={withdrawalMethod === 'BANK'}
+                  onChange={() => setWithdrawalMethod('BANK')}
+                  className="mr-2"
+                />
+                Banküberweisung
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  value="PAYPAL"
+                  checked={withdrawalMethod === 'PAYPAL'}
+                  onChange={() => setWithdrawalMethod('PAYPAL')}
+                  className="mr-2"
+                />
+                PayPal
+              </label>
+            </div>
+          </div>
+
+          {/* Bank Fields */}
+          {withdrawalMethod === 'BANK' ? (
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">IBAN</label>
+                <input
+                  type="text"
+                  value={iban}
+                  onChange={(e) => setIban(e.target.value)}
+                  placeholder="DE89 3704 0044 0532 0130 00"
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Kontoinhaber</label>
+                <input
+                  type="text"
+                  value={accountHolder}
+                  onChange={(e) => setAccountHolder(e.target.value)}
+                  placeholder="Max Mustermann"
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg"
+                />
+              </div>
+            </>
+          ) : (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">PayPal E-Mail</label>
+              <input
+                type="email"
+                value={paypalEmail}
+                onChange={(e) => setPaypalEmail(e.target.value)}
+                placeholder="ihre-email@beispiel.de"
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg"
+              />
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <button
+            onClick={handleWithdrawalSubmit}
+            disabled={submittingWithdrawal}
+            className="w-full px-6 py-3 bg-[#D4AF37] hover:bg-[#B8960C] text-black font-bold rounded-lg disabled:opacity-50"
+          >
+            {submittingWithdrawal ? 'Wird verarbeitet...' : 'Auszahlung beantragen'}
+          </button>
+        </div>
+      </Card>
+
+      <Card className="p-6 mb-8 bg-white border-2 border-gray-200">
+        <h2 className="text-lg font-bold mb-4 text-gray-900">Auszahlungsanträge</h2>
+        {withdrawals.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">Noch keine Auszahlungsanträge</div>
+        ) : (
+          <div className="space-y-3">
+            {withdrawals.map((w) => (
+              <div key={w.id} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <p className="text-lg font-bold text-gray-900">{formatCurrency(Number(w.amount))}</p>
+                    <p className="text-sm text-gray-600">
+                      {w.method === 'BANK' ? `${w.iban} (${w.accountHolder})` : w.paypalEmail}
+                    </p>
+                  </div>
+                  {getWithdrawalStatusBadge(w.status)}
+                </div>
+                <div className="text-xs text-gray-500">
+                  Beantragt: {formatDate(w.createdAt)}
+                </div>
+                {w.notes && (
+                  <p className="mt-2 text-sm text-gray-700 bg-blue-50 p-2 rounded">{w.notes}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </Card>
 
       <Card className="p-6 bg-white border-2 border-gray-200">
