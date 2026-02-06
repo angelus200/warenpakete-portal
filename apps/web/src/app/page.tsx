@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
-import Script from 'next/script';
 import { useAuth } from '@clerk/nextjs';
 import { Laptop, Home as HomeIcon, Shirt } from 'lucide-react';
 import { ECommerceNewsTicker } from '@/components/ECommerceNewsTicker';
+import VidyardLazyVideo from '@/components/VidyardLazyVideo';
 
 export default function Home() {
   const { isSignedIn } = useAuth();
@@ -220,22 +220,11 @@ export default function Home() {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <div className="border-2 border-gold/30 rounded-2xl overflow-hidden shadow-2xl shadow-gold/10">
-              <div className="vidyard-player-embed"
-                   data-uuid="R5YaUYnT8eP2y3YTjZ7gFW"
-                   data-v="4"
-                   data-type="inline"
-                   style={{ width: '100%', margin: 'auto', display: 'block' }}>
-              </div>
-              {/* Fallback falls Vidyard-Script nicht lädt */}
-              <noscript>
-                <a href="https://share.vidyard.com/watch/R5YaUYnT8eP2y3YTjZ7gFW" target="_blank" rel="noopener noreferrer">
-                  <img src="https://play.vidyard.com/R5YaUYnT8eP2y3YTjZ7gFW.jpg"
-                       alt="Ecommerce Service Erklärvideo"
-                       style={{ width: '100%' }} />
-                </a>
-              </noscript>
-            </div>
+            <VidyardLazyVideo
+              videoId="R5YaUYnT8eP2y3YTjZ7gFW"
+              thumbnailUrl="https://play.vidyard.com/R5YaUYnT8eP2y3YTjZ7gFW.jpg"
+              className="border-2 border-gold/30 rounded-2xl overflow-hidden shadow-2xl shadow-gold/10"
+            />
           </div>
         </div>
       </section>
@@ -1052,9 +1041,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Vidyard Script */}
-      <Script src="https://play.vidyard.com/embed/v4.js" strategy="lazyOnload" />
     </div>
   );
 }
