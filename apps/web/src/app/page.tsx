@@ -64,8 +64,19 @@ export default function Home() {
       </section>
 
       {/* So funktioniert's Section */}
-      <section className="py-24 bg-[#f5f5f0] relative">
-        <div className="container mx-auto px-4">
+      <section className="py-24 bg-[#f5f5f0] relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/hero/hero-ecommerce.jpg"
+            alt=""
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-[#f5f5f0]/85" />
+        </div>
+
+        <div className="container relative z-10 mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               So <span className="text-gold">funktioniert&apos;s</span>
