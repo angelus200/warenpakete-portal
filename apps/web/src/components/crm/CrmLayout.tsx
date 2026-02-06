@@ -7,6 +7,7 @@ import {
   ShoppingCart,
   DollarSign,
   Warehouse,
+  Share2,
 } from 'lucide-react';
 
 const TABS = [
@@ -33,6 +34,12 @@ const TABS = [
     label: 'Lager & Fulfillment',
     icon: Warehouse,
     href: '/admin/crm/storage',
+  },
+  {
+    key: 'affiliates',
+    label: 'Affiliates',
+    icon: Share2,
+    href: '/admin/crm/affiliates',
   },
 ];
 
