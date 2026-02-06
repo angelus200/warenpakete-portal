@@ -144,8 +144,9 @@ export default function Home() {
       </section>
 
       {/* Ertragsrechner Section */}
-      <section className="py-24 bg-[#1a1a1a] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold/5 via-transparent to-transparent" />
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#222222] to-[#1a1a1a]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-gold/5 via-transparent to-transparent" />
 
         <div className="container relative mx-auto px-4">
           <div className="text-center mb-16">
@@ -237,40 +238,40 @@ export default function Home() {
             {/* Ergebnis Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               {/* Option A */}
-              <Card className="p-8 bg-gradient-to-br from-white/10 to-white/5 border-2 border-gold hover:border-gold-light transition-all">
+              <Card className="p-8 bg-white border-2 border-gold/30 hover:border-gold transition-all shadow-xl">
                 <div className="text-center mb-6">
                   <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                     <svg className="w-8 h-8 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-100 mb-2">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
                     Option A: Selbst verkaufen
                   </h3>
                 </div>
                 <div className="text-center">
-                  <p className="text-gray-400 mb-2">Ihr Ertrag</p>
+                  <p className="text-gray-600 mb-2">Ihr Ertrag</p>
                   <p className="text-5xl font-bold text-gold mb-4">{ertragSelbst.toLocaleString('de-DE')} €</p>
-                  <p className="text-sm text-gray-400">100% Marge für Sie</p>
+                  <p className="text-sm text-gray-500">100% Marge für Sie</p>
                 </div>
               </Card>
 
               {/* Option B */}
-              <Card className="p-8 bg-gradient-to-br from-white/10 to-white/5 border-2 border-gold/60 hover:border-gold transition-all">
+              <Card className="p-8 bg-white border-2 border-gold/30 hover:border-gold transition-all shadow-xl">
                 <div className="text-center mb-6">
                   <div className="w-16 h-16 bg-gradient-to-br from-gold-light to-gold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                     <svg className="w-8 h-8 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-100 mb-2">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
                     Option B: Kommissionsverkauf
                   </h3>
                 </div>
                 <div className="text-center">
-                  <p className="text-gray-400 mb-2">Ihr Ertrag</p>
-                  <p className="text-5xl font-bold text-gold-light mb-4">{ertragKommission.toLocaleString('de-DE')} €</p>
-                  <p className="text-sm text-gray-400">Nach 20% Kommission</p>
+                  <p className="text-gray-600 mb-2">Ihr Ertrag</p>
+                  <p className="text-5xl font-bold text-gold mb-4">{ertragKommission.toLocaleString('de-DE')} €</p>
+                  <p className="text-sm text-gray-500">Nach 20% Kommission</p>
                 </div>
               </Card>
             </div>
