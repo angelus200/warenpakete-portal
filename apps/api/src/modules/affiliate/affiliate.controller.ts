@@ -7,10 +7,10 @@ import {
   Req,
   UseGuards,
   Ip,
-  ForbiddenException,
 } from '@nestjs/common';
 import { AffiliateService } from './affiliate.service';
 import { ClerkAuthGuard } from '../../common/guards/clerk-auth.guard';
+import { AdminAuthGuard } from '../admin/admin-auth.guard';
 
 @Controller('affiliate')
 export class AffiliateController {
@@ -60,12 +60,8 @@ export class AffiliateController {
    * ADMIN: Get all affiliates
    */
   @Get('admin/all')
-  @UseGuards(ClerkAuthGuard)
-  async getAllAffiliates(@Req() req) {
-    // Check if user is admin
-    if (req.user.role !== 'ADMIN') {
-      throw new ForbiddenException('Admin access required');
-    }
+  @UseGuards(AdminAuthGuard)
+  async getAllAffiliates() {
     return this.affiliateService.getAllAffiliates();
   }
 
@@ -73,16 +69,11 @@ export class AffiliateController {
    * ADMIN: Update conversion status
    */
   @Post('admin/conversion/:id/status')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(AdminAuthGuard)
   async updateConversionStatus(
     @Param('id') id: string,
     @Body('status') status: string,
-    @Req() req,
   ) {
-    // Check if user is admin
-    if (req.user.role !== 'ADMIN') {
-      throw new ForbiddenException('Admin access required');
-    }
     return this.affiliateService.updateConversionStatus(id, status);
   }
 }

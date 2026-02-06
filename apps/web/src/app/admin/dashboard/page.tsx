@@ -223,6 +223,13 @@ export default function AdminDashboardPage() {
               <p className="text-gray-900 font-semibold">Railway Dashboard</p>
               <p className="text-sm text-gray-600 mt-1">Server & Datenbank</p>
             </a>
+            <Link
+              href="/admin/crm/affiliates"
+              className="p-4 bg-white hover:bg-gray-100 rounded-lg transition-all text-center"
+            >
+              <p className="text-gray-900 font-semibold">Affiliates</p>
+              <p className="text-sm text-gray-600 mt-1">Partnerprogramm & Provisionen</p>
+            </Link>
           </div>
         </Card>
       </div>
