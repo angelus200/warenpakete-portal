@@ -682,21 +682,25 @@ export default function Home() {
             </div>
 
             {/* Partner Logos */}
-            <div className="flex justify-center items-center gap-12 mt-12 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
-              <Image
-                src="/images/partners/amazon.jpeg"
-                alt="Amazon"
-                width={120}
-                height={40}
-                className="object-contain"
-              />
-              <Image
-                src="/images/partners/ebay.jpeg"
-                alt="eBay"
-                width={100}
-                height={40}
-                className="object-contain"
-              />
+            <div className="flex justify-center items-center gap-8 mt-12">
+              <div className="bg-white p-4 rounded-xl border-2 border-gold/50 hover:border-gold hover:shadow-lg hover:shadow-gold/20 transition-all">
+                <Image
+                  src="/images/partners/amazon.jpeg"
+                  alt="Amazon"
+                  width={120}
+                  height={40}
+                  className="object-contain"
+                />
+              </div>
+              <div className="bg-white p-4 rounded-xl border-2 border-gold/50 hover:border-gold hover:shadow-lg hover:shadow-gold/20 transition-all">
+                <Image
+                  src="/images/partners/ebay.jpeg"
+                  alt="eBay"
+                  width={100}
+                  height={40}
+                  className="object-contain"
+                />
+              </div>
             </div>
           </div>
         </div>
