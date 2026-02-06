@@ -16,13 +16,22 @@ export default function ImpressumPage() {
           <div className="prose prose-invert max-w-none">
             <section className="mb-4">
               <h2 className="text-lg font-semibold text-gold mb-4">
-                Angaben gemäß schweizerischem Recht:
+                Plattformbetreiber (kein Vertragspartner):
               </h2>
               <div className="bg-[#ebebeb] p-4 rounded border border-gray-300">
-                <p className="text-gray-900"><strong>Trademark24-7 AG</strong></p>
+                <p className="text-gray-900 mb-2"><strong>Marketplace24-7 GmbH</strong></p>
                 <p className="text-gray-900">Kantonsstrasse 1</p>
                 <p className="text-gray-900">8807 Freienbach SZ</p>
                 <p className="text-gray-900">Schweiz</p>
+                <p className="text-gray-900 mt-4">
+                  <strong>E-Mail:</strong>{' '}
+                  <a
+                    href="mailto:info@non-dom.group"
+                    className="text-gold hover:text-gold/80 underline"
+                  >
+                    info@non-dom.group
+                  </a>
+                </p>
               </div>
             </section>
 
@@ -31,41 +40,42 @@ export default function ImpressumPage() {
                 Handelsregister
               </h2>
               <div className="bg-[#ebebeb] p-4 rounded border border-gray-300">
-                <p className="text-gray-900"><strong>Handelsregister:</strong> CHE-246.473.858</p>
-                <p className="text-gray-900"><strong>Registergericht:</strong> Handelsregisteramt Kanton Schwyz</p>
+                <p className="text-gray-900"><strong>Handelsregister:</strong> CH-130.4.033.363-2</p>
+                <p className="text-gray-900"><strong>Registergericht:</strong> Kanton Schwyz</p>
               </div>
             </section>
 
             <section className="mb-4">
-              <h2 className="text-lg font-semibold text-gold mb-4">Kontakt</h2>
+              <h2 className="text-lg font-semibold text-gold mb-4">Hinweis</h2>
               <div className="bg-[#ebebeb] p-4 rounded border border-gray-300">
-                <p className="text-gray-900">
-                  <strong>E-Mail:</strong>{' '}
-                  <a
-                    href="mailto:info@ecommercerente.com"
-                    className="text-gold hover:text-gold/80 underline"
-                  >
-                    info@ecommercerente.com
-                  </a>
+                <p className="text-gray-900 leading-relaxed">
+                  Die Marketplace24-7 GmbH ist ausschließlich Betreiber dieser Plattform und vermittelt
+                  Kontakte zwischen Gewerbetreibenden. Sie ist nicht Vertragspartner der über die Plattform
+                  geschlossenen Geschäfte.
                 </p>
               </div>
             </section>
 
             <section className="mb-4">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                Vertretungsberechtigte Geschäftsführung
-              </h2>
+              <h2 className="text-lg font-semibold text-gold mb-4">Haftungsausschluss</h2>
               <div className="bg-[#ebebeb] p-4 rounded border border-gray-300">
-                <p className="text-gray-900">[Name des Geschäftsführers einfügen]</p>
+                <p className="text-gray-900 leading-relaxed">
+                  Die Marketplace24-7 GmbH übernimmt keine Haftung für die Richtigkeit, Vollständigkeit
+                  und Aktualität der bereitgestellten Inhalte. Die Plattform enthält Links zu Informationen
+                  Dritter, auf deren Inhalte die Marketplace24-7 GmbH keinen Einfluss hat und für die sie
+                  keine Gewähr übernimmt.
+                </p>
               </div>
             </section>
 
             <section className="mb-4">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                Umsatzsteuer-Identifikationsnummer
-              </h2>
+              <h2 className="text-lg font-semibold text-gold mb-4">Urheberrecht</h2>
               <div className="bg-[#ebebeb] p-4 rounded border border-gray-300">
-                <p className="text-gray-900">CHE-246.473.858 MWST</p>
+                <p className="text-gray-900 leading-relaxed">
+                  Die Inhalte dieser Webseite sind urheberrechtlich geschützt. Jegliche Vervielfältigung,
+                  Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes
+                  bedürfen der schriftlichen Zustimmung.
+                </p>
               </div>
             </section>
           </div>

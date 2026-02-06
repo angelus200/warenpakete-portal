@@ -14,278 +14,236 @@ export default function AGBPage() {
           <h1 className="text-lg font-bold text-gold mb-4">
             Allgemeine Geschäftsbedingungen (AGB)
           </h1>
-          <p className="text-gold/80 text-lg mb-4">
-            Trademark24-7 AG - E-Commerce Service
+          <p className="text-gold/80 text-lg mb-2">
+            der Marketplace24-7 GmbH für die Plattform ecommercerente.com
           </p>
-          <p className="text-gray-600 mb-4">Stand: Januar 2026</p>
+          <p className="text-gray-600 mb-6">Stand: Februar 2026</p>
 
-          <div className="prose prose-invert max-w-none space-y-4">
+          <div className="prose prose-invert max-w-none space-y-6">
             {/* § 1 */}
-            <section className="bg-red-500/10 border-2 border-red-500/40 rounded-lg p-3">
-              <h2 className="text-lg font-bold text-red-400 mb-4">
-                § 1 GELTUNGSBEREICH UND VERTRAGSPARTNER
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 1 Geltungsbereich und Begriffsbestimmungen
               </h2>
-              <div className="space-y-3 text-gray-900">
+              <div className="space-y-3 text-gray-900 text-sm">
                 <p>
-                  (1) Diese Allgemeinen Geschäftsbedingungen gelten <strong className="text-red-400">ausschließlich für Unternehmer</strong> im Sinne von Art. 2 lit. b der Richtlinie 2011/83/EU bzw. § 14 BGB.
+                  (1) Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für die Nutzung der Plattform
+                  ecommercerente.com, betrieben von der Marketplace24-7 GmbH, Kantonsstrasse 1, 8807 Freienbach SZ,
+                  Schweiz (nachfolgend "Plattformbetreiber").
                 </p>
                 <p>
-                  (2) <strong className="text-red-400 uppercase">WARENPAKETE PORTAL VERKAUFT AUSSCHLIESSLICH AN GEWERBETREIBENDE.</strong><br />
-                  Verbraucher im Sinne von Art. 2 lit. a der Richtlinie 2011/83/EU bzw. § 13 BGB sind von der Nutzung dieser Plattform ausdrücklich ausgeschlossen.
+                  (2) Die Plattform richtet sich ausschließlich an Unternehmer im Sinne von § 14 BGB bzw.
+                  Gewerbetreibende. Verbraucher im Sinne von § 13 BGB sind von der Nutzung ausgeschlossen.
                 </p>
                 <p>
-                  (3) Mit der Registrierung bestätigt der Kunde, dass er ausschließlich zu gewerblichen Zwecken handelt und kein Verbraucher ist.
-                </p>
-                <p>
-                  (4) Vertragspartner ist:<br />
-                  <strong>Trademark24-7 AG</strong><br />
-                  Kantonsstrasse 1<br />
-                  8807 Freienbach SZ<br />
-                  Schweiz<br />
-                  Handelsregister: CHE-246.473.858
+                  (3) Der Plattformbetreiber stellt lediglich die technische Infrastruktur zur Verfügung und vermittelt
+                  Kontakte zwischen Gewerbetreibenden. Der Plattformbetreiber ist nicht Vertragspartner der zwischen
+                  den Nutzern geschlossenen Geschäfte.
                 </p>
               </div>
             </section>
 
             {/* § 2 */}
-            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                § 2 GEWERBENACHWEIS
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 2 Leistungen der Plattform
               </h2>
-              <div className="space-y-3 text-gray-900">
+              <div className="space-y-3 text-gray-900 text-sm">
                 <p>
-                  (1) Der Kunde ist verpflichtet, bei der Registrierung seinen Gewerbenachweis durch Angabe der Umsatzsteuer-Identifikationsnummer (USt-IdNr.) oder Handelsregisternummer zu erbringen.
+                  (1) Der Plattformbetreiber bietet eine Online-Plattform, auf der Gewerbetreibende Warenpakete
+                  erwerben und optional Kommissionsverkauf-Dienstleistungen in Anspruch nehmen können.
                 </p>
                 <p>
-                  (2) Die Trademark24-7 AG behält sich das Recht vor, den Gewerbenachweis jederzeit zu überprüfen und bei Zweifeln an der Unternehmereigenschaft den Vertrag fristlos zu kündigen.
+                  (2) Die Darstellung der Waren auf der Plattform stellt kein rechtlich bindendes Angebot dar, sondern
+                  eine Aufforderung zur Angebotsabgabe.
                 </p>
                 <p>
-                  (3) Bei Falschangaben haftet der Kunde für alle entstehenden Schäden und stellt die Trademark24-7 AG von sämtlichen Ansprüchen Dritter frei.
+                  (3) Der Plattformbetreiber übernimmt keine Garantie für den Verkaufserfolg von Waren. Berechnungen
+                  und Prognosen auf der Plattform dienen ausschließlich der Orientierung und stellen keine Zusicherung
+                  von Ergebnissen dar.
                 </p>
               </div>
             </section>
 
             {/* § 3 */}
-            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                § 3 VERTRAGSSCHLUSS
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 3 Registrierung und Nutzerkonto
               </h2>
-              <div className="space-y-3 text-gray-900">
+              <div className="space-y-3 text-gray-900 text-sm">
                 <p>
-                  (1) Die Darstellung der Produkte im Online-Shop stellt kein rechtlich bindendes Angebot dar, sondern eine Aufforderung zur Abgabe einer Bestellung.
+                  (1) Die Nutzung der Plattform erfordert eine Registrierung. Der Nutzer versichert bei der
+                  Registrierung, dass er Gewerbetreibender ist und alle Angaben wahrheitsgemäß erfolgen.
                 </p>
                 <p>
-                  (2) Durch Anklicken des Buttons "Zahlungspflichtig bestellen" gibt der Kunde ein verbindliches Angebot ab.
+                  (2) Der Nutzer ist verpflichtet, seine Zugangsdaten geheim zu halten und vor dem Zugriff Dritter zu
+                  schützen.
                 </p>
                 <p>
-                  (3) Der Vertrag kommt erst mit der Auftragsbestätigung per E-Mail oder durch Lieferung der Ware zustande.
+                  (3) Der Plattformbetreiber ist berechtigt, Nutzerkonten bei Verstoß gegen diese AGB oder bei Verdacht
+                  auf missbräuchliche Nutzung zu sperren oder zu löschen.
                 </p>
               </div>
             </section>
 
             {/* § 4 */}
-            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                § 4 PREISE UND ZAHLUNGSBEDINGUNGEN
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 4 Vertragsschluss und Vertragspartner
               </h2>
-              <div className="space-y-3 text-gray-900">
+              <div className="space-y-3 text-gray-900 text-sm">
                 <p>
-                  (1) Alle Preise verstehen sich netto zuzüglich der jeweils geltenden gesetzlichen Mehrwertsteuer.
+                  (1) Verträge über den Kauf von Warenpaketen kommen zwischen dem jeweiligen Verkäufer und dem Käufer
+                  zustande, nicht mit dem Plattformbetreiber.
                 </p>
                 <p>
-                  (2) Die Zahlung erfolgt ausschließlich per Kreditkarte oder anderen von uns angebotenen Zahlungsmethoden über unseren Zahlungsdienstleister Stripe.
+                  (2) Der Plattformbetreiber ist lediglich Vermittler und wird nicht Vertragspartei der Kaufverträge.
                 </p>
                 <p>
-                  (3) Rechnungen sind sofort fällig. Bei Zahlungsverzug werden Verzugszinsen in Höhe von 9 Prozentpunkten über dem jeweiligen Basiszinssatz berechnet.
+                  (3) Bei Inanspruchnahme von Kommissionsverkauf-Dienstleistungen gelten gesonderte
+                  Kommissionsvereinbarungen.
                 </p>
               </div>
             </section>
 
             {/* § 5 */}
-            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                § 5 LIEFERUNG UND GEFAHRÜBERGANG
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 5 Haftungsausschluss und -begrenzung
               </h2>
-              <div className="space-y-3 text-gray-900">
+              <div className="space-y-3 text-gray-900 text-sm">
+                <p>(1) Der Plattformbetreiber haftet nicht für:</p>
+                <ul className="list-disc list-inside ml-4 space-y-1">
+                  <li>Die Qualität, Rechtmäßigkeit oder Verfügbarkeit der angebotenen Waren</li>
+                  <li>Die Erfüllung von Verträgen zwischen Nutzern</li>
+                  <li>Entgangenen Gewinn oder wirtschaftliche Verluste der Nutzer</li>
+                  <li>Den Erfolg von Verkaufsaktivitäten</li>
+                  <li>Schäden aus der Nutzung oder Unmöglichkeit der Nutzung der Plattform</li>
+                </ul>
                 <p>
-                  (1) Die Lieferzeit beträgt in der Regel 5-15 Werktage, sofern nicht anders angegeben.
-                </p>
-                <p>
-                  (2) Die Gefahr des zufälligen Untergangs und der zufälligen Verschlechterung geht mit der Übergabe an den Spediteur oder Frachtführer auf den Kunden über.
-                </p>
-                <p>
-                  (3) Teillieferungen sind zulässig, soweit sie für den Kunden zumutbar sind.
-                </p>
-              </div>
-            </section>
-
-            {/* § 6 */}
-            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                § 6 EIGENTUMSVORBEHALT
-              </h2>
-              <div className="space-y-3 text-gray-900">
-                <p>
-                  (1) Die gelieferte Ware bleibt bis zur vollständigen Bezahlung aller Forderungen aus der Geschäftsverbindung Eigentum der Trademark24-7 AG.
-                </p>
-                <p>
-                  (2) Der Kunde ist berechtigt, die Ware im ordnungsgemäßen Geschäftsverkehr weiterzuveräußern. Er tritt bereits jetzt alle Forderungen aus der Weiterveräußerung an uns ab.
-                </p>
-              </div>
-            </section>
-
-            {/* § 7 */}
-            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                § 7 MÄNGELRÜGE UND GEWÄHRLEISTUNG
-              </h2>
-              <div className="space-y-3 text-gray-900">
-                <p>
-                  (1) Der Kunde ist verpflichtet, die Ware unverzüglich nach Erhalt zu untersuchen und offensichtliche Mängel innerhalb von 5 Werktagen schriftlich zu rügen.
-                </p>
-                <p>
-                  (2) Verdeckte Mängel sind unverzüglich nach Entdeckung, spätestens jedoch innerhalb von 6 Monaten nach Lieferung zu rügen.
-                </p>
-                <p>
-                  (3) Bei berechtigten Mängelrügen steht uns das Recht zur Nacherfüllung zu. Schlägt die Nacherfüllung zweimal fehl, kann der Kunde nach seiner Wahl Minderung oder Rücktritt verlangen.
-                </p>
-                <p>
-                  (4) Schadensersatzansprüche wegen Mängeln sind ausgeschlossen, soweit nicht Vorsatz oder grobe Fahrlässigkeit vorliegt.
-                </p>
-              </div>
-            </section>
-
-            {/* § 8 */}
-            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                § 8 HAFTUNGSBESCHRÄNKUNG
-              </h2>
-              <div className="space-y-3 text-gray-900">
-                <p>
-                  (1) Die Trademark24-7 AG haftet unbeschränkt nur für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit sowie für Schäden, die auf Vorsatz oder grober Fahrlässigkeit beruhen.
-                </p>
-                <p>
-                  (2) Im Übrigen ist die Haftung auf den vertragstypischen, vorhersehbaren Schaden begrenzt.
+                  (2) Die Haftung des Plattformbetreibers ist in jedem Fall auf Vorsatz und grobe Fahrlässigkeit
+                  beschränkt.
                 </p>
                 <p>
                   (3) Die Haftung für mittelbare Schäden, Folgeschäden und entgangenen Gewinn ist ausgeschlossen.
                 </p>
                 <p>
-                  (4) Die Haftung ist der Höhe nach auf den Auftragswert begrenzt.
+                  (4) Schadensersatzansprüche gegen den Plattformbetreiber sind der Höhe nach auf die vom Nutzer
+                  gezahlten Plattformgebühren der letzten 12 Monate begrenzt.
+                </p>
+              </div>
+            </section>
+
+            {/* § 6 */}
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 6 Freistellung
+              </h2>
+              <div className="space-y-3 text-gray-900 text-sm">
+                <p>
+                  Der Nutzer stellt den Plattformbetreiber von sämtlichen Ansprüchen Dritter frei, die aufgrund einer
+                  Verletzung von Rechten durch den Nutzer oder aufgrund der vom Nutzer eingestellten Inhalte oder
+                  angebotenen Waren geltend gemacht werden, einschließlich der angemessenen Rechtsverfolgungs- und
+                  Verteidigungskosten.
+                </p>
+              </div>
+            </section>
+
+            {/* § 7 */}
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 7 Kein Anlageprodukt
+              </h2>
+              <div className="space-y-3 text-gray-900 text-sm">
+                <p>
+                  (1) Die auf der Plattform angebotenen Warenpakete sind Handelswaren und keine Finanz- oder
+                  Anlageprodukte.
+                </p>
+                <p>
+                  (2) Der Erwerb von Warenpaketen erfolgt auf eigenes unternehmerisches Risiko. Es bestehen keine
+                  Gewinn- oder Renditegarantien.
+                </p>
+                <p>(3) Vergangene Verkaufserfolge sind keine Garantie für zukünftige Ergebnisse.</p>
+              </div>
+            </section>
+
+            {/* § 8 */}
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 8 Datenschutz
+              </h2>
+              <div className="space-y-3 text-gray-900 text-sm">
+                <p>
+                  Die Verarbeitung personenbezogener Daten erfolgt gemäß der separat aufgeführten
+                  Datenschutzerklärung.
                 </p>
               </div>
             </section>
 
             {/* § 9 */}
-            <section className="bg-red-500/10 border-2 border-red-500/40 rounded-lg p-3">
-              <h2 className="text-lg font-bold text-red-400 mb-4">
-                § 9 KEIN WIDERRUFSRECHT
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 9 Änderungen der AGB
               </h2>
-              <div className="space-y-3 text-gray-900">
+              <div className="space-y-3 text-gray-900 text-sm">
+                <p>(1) Der Plattformbetreiber behält sich vor, diese AGB jederzeit zu ändern.</p>
                 <p>
-                  (1) Da das E-Commerce Service ausschließlich an Gewerbetreibende verkauft, besteht <strong className="text-red-400 uppercase">KEIN</strong> gesetzliches Widerrufsrecht.
-                </p>
-                <p>
-                  (2) Das Widerrufsrecht für Verbraucher gemäß Art. 9 ff. der Richtlinie 2011/83/EU bzw. § 312g BGB findet keine Anwendung.
-                </p>
-                <p>
-                  (3) Kulanzrücknahmen sind ausgeschlossen.
+                  (2) Änderungen werden den Nutzern per E-Mail oder bei der nächsten Anmeldung mitgeteilt. Widerspricht
+                  der Nutzer nicht innerhalb von 14 Tagen nach Zugang der Mitteilung, gelten die geänderten AGB als
+                  angenommen.
                 </p>
               </div>
             </section>
 
             {/* § 10 */}
-            <section className="bg-orange-500/10 border-2 border-orange-500/40 rounded-lg p-3">
-              <h2 className="text-lg font-bold text-orange-400 mb-4">
-                § 10 AUSSCHLUSS DES ORDENTLICHEN RECHTSWEGS
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 10 Anwendbares Recht
               </h2>
-              <div className="space-y-3 text-gray-900">
+              <div className="space-y-3 text-gray-900 text-sm">
                 <p>
-                  (1) <strong className="text-orange-400 uppercase">FÜR ALLE STREITIGKEITEN AUS ODER IM ZUSAMMENHANG MIT DIESEM VERTRAG IST DER ORDENTLICHE RECHTSWEG AUSGESCHLOSSEN.</strong>
-                </p>
-                <p>
-                  (2) Alle Streitigkeiten werden ausschließlich durch ein Schlichtungsverfahren vor der zuständigen Schlichtungsstelle in der Schweiz beigelegt.
-                </p>
-                <p>
-                  (3) Zuständige Schlichtungsstelle ist:<br />
-                  Schweizerische Kammer für Wirtschaftsmediation und Schiedsgerichtsbarkeit<br />
-                  oder eine andere von der Trademark24-7 AG benannte anerkannte Schlichtungsstelle in der Schweiz.
-                </p>
-                <p>
-                  (4) Die Kosten des Schlichtungsverfahrens trägt die unterliegende Partei, bei Teilunterliegen werden die Kosten entsprechend geteilt.
-                </p>
-                <p>
-                  (5) Das Schlichtungsverfahren ist Voraussetzung für jegliche weitere rechtliche Schritte.
+                  Auf sämtliche Rechtsbeziehungen zwischen dem Plattformbetreiber und dem Nutzer findet ausschließlich
+                  Schweizer Recht Anwendung unter Ausschluss des UN-Kaufrechts (CISG) und kollisionsrechtlicher
+                  Verweisungsnormen.
                 </p>
               </div>
             </section>
 
             {/* § 11 */}
-            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                § 11 ANWENDBARES RECHT
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 11 Schiedsgerichtsvereinbarung
               </h2>
-              <div className="space-y-3 text-gray-900">
+              <div className="space-y-3 text-gray-900 text-sm">
                 <p>
-                  (1) Es gilt ausschließlich das Recht der Schweizerischen Eidgenossenschaft unter Ausschluss des UN-Kaufrechts (CISG).
+                  (1) Alle Streitigkeiten, die sich aus oder im Zusammenhang mit diesen AGB oder der Nutzung der
+                  Plattform ergeben, werden unter Ausschluss der ordentlichen Gerichte endgültig entschieden durch ein
+                  Schiedsgericht nach der Schweizerischen Schiedsordnung der Swiss Chambers' Arbitration Institution.
                 </p>
-                <p>
-                  (2) Gerichtsstand für alle Streitigkeiten, soweit ein Gerichtsverfahren nach erfolglosem Schlichtungsverfahren zulässig ist, ist Freienbach, Kanton Schwyz, Schweiz.
-                </p>
+                <p>(2) Sitz des Schiedsgerichts ist Zürich, Schweiz.</p>
+                <p>(3) Die Sprache des Schiedsverfahrens ist Deutsch.</p>
+                <p>(4) Das Schiedsgericht besteht aus einem Einzelschiedsrichter.</p>
+                <p>(5) Diese Schiedsklausel gilt auch nach Beendigung des Vertragsverhältnisses fort.</p>
               </div>
             </section>
 
             {/* § 12 */}
-            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                § 12 VERTRAULICHKEIT
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 12 Salvatorische Klausel
               </h2>
-              <div className="space-y-3 text-gray-900">
+              <div className="space-y-3 text-gray-900 text-sm">
                 <p>
-                  (1) Der Kunde verpflichtet sich, alle im Rahmen der Geschäftsbeziehung erhaltenen Informationen über Preise, Konditionen und Lieferquellen vertraulich zu behandeln.
-                </p>
-                <p>
-                  (2) Diese Vertraulichkeitspflicht gilt auch nach Beendigung der Geschäftsbeziehung fort.
+                  Sollten einzelne Bestimmungen dieser AGB unwirksam sein oder werden, so wird hierdurch die Gültigkeit
+                  der übrigen Bestimmungen nicht berührt. Anstelle der unwirksamen Bestimmung gilt eine solche als
+                  vereinbart, die dem wirtschaftlichen Zweck der unwirksamen Bestimmung am nächsten kommt.
                 </p>
               </div>
             </section>
 
-            {/* § 13 */}
-            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                § 13 SALVATORISCHE KLAUSEL
-              </h2>
-              <div className="space-y-3 text-gray-900">
-                <p>
-                  (1) Sollten einzelne Bestimmungen dieser AGB unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.
-                </p>
-                <p>
-                  (2) Anstelle der unwirksamen Bestimmung gilt diejenige wirksame Bestimmung als vereinbart, die dem wirtschaftlichen Zweck der unwirksamen Bestimmung am nächsten kommt.
-                </p>
-              </div>
-            </section>
-
-            {/* § 14 */}
-            <section className="bg-[#ebebeb] p-3 rounded border border-gray-300">
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                § 14 ÄNDERUNGEN DER AGB
-              </h2>
-              <div className="space-y-3 text-gray-900">
-                <p>
-                  (1) Die Trademark24-7 AG behält sich das Recht vor, diese AGB jederzeit zu ändern.
-                </p>
-                <p>
-                  (2) Änderungen werden dem Kunden per E-Mail mitgeteilt und gelten als genehmigt, wenn der Kunde nicht innerhalb von 14 Tagen widerspricht.
-                </p>
-              </div>
-            </section>
-
-            <div className="mt-3 pt-6 border-t border-gray-300">
-              <p className="text-gray-900 font-semibold">Trademark24-7 AG</p>
-              <p className="text-gray-600">Kantonsstrasse 1</p>
-              <p className="text-gray-600">8807 Freienbach SZ</p>
-              <p className="text-gray-600">Schweiz</p>
-              <p className="text-gray-600 mt-4">Stand: Januar 2026</p>
+            <div className="mt-6 pt-4 border-t border-gray-300">
+              <p className="text-gray-900 font-semibold">Marketplace24-7 GmbH</p>
+              <p className="text-gray-600">Freienbach, Februar 2026</p>
             </div>
           </div>
         </div>
