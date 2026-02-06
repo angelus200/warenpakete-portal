@@ -93,6 +93,49 @@ export default function Home() {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold-light/5 rounded-full blur-3xl" />
       </section>
 
+      {/* Bekannt aus Section */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Bekannt aus
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-16">
+            <a
+              href="https://www.forbes.at/artikel/markenaufbau-im-amazon-zeitalter"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group transition-all duration-300"
+            >
+              <div className="relative w-32 h-16 md:w-40 md:h-20">
+                <Image
+                  src="/images/press/forbes.png"
+                  alt="Forbes"
+                  fill
+                  className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100"
+                />
+              </div>
+            </a>
+            <a
+              href="https://unternehmen.focus.de/amazon-markenaufbau.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group transition-all duration-300"
+            >
+              <div className="relative w-32 h-16 md:w-40 md:h-20">
+                <Image
+                  src="/images/press/focus.png"
+                  alt="Focus"
+                  fill
+                  className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100"
+                />
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* So funktioniert's Section */}
       <section className="py-24 bg-[#f5f5f0] relative overflow-hidden">
         {/* Background Image */}
