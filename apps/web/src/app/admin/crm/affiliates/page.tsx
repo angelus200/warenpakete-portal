@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useApi } from '@/hooks/useApi';
 import { CrmLayout } from '@/components/crm/CrmLayout';
 
 interface Affiliate {
@@ -21,26 +22,25 @@ interface Affiliate {
 }
 
 export default function AdminAffiliatesPage() {
+  const api = useApi();
   const [affiliates, setAffiliates] = useState<Affiliate[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchAffiliates();
-  }, []);
+    if (api.isSignedIn && api.isLoaded) {
+      fetchAffiliates();
+    }
+  }, [api.isSignedIn, api.isLoaded]);
 
   const fetchAffiliates = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/affiliate/admin/all`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const data = await res.json();
+      setError(null);
+      const data = await api.get<Affiliate[]>('/affiliate/admin/all');
       setAffiliates(data);
     } catch (error) {
       console.error('Failed to fetch affiliates:', error);
+      setError('Fehler beim Laden der Affiliate-Daten');
     } finally {
       setLoading(false);
     }
@@ -67,6 +67,26 @@ export default function AdminAffiliatesPage() {
     return user.email;
   };
 
+  if (!api.isLoaded || loading) {
+    return (
+      <CrmLayout>
+        <div className="bg-white rounded-lg shadow-sm overflow-hidden p-8">
+          <div className="text-center text-gray-500">Lade Affiliate-Daten...</div>
+        </div>
+      </CrmLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <CrmLayout>
+        <div className="bg-white rounded-lg shadow-sm overflow-hidden p-8">
+          <div className="text-center text-red-500">{error}</div>
+        </div>
+      </CrmLayout>
+    );
+  }
+
   return (
     <CrmLayout>
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
@@ -80,9 +100,7 @@ export default function AdminAffiliatesPage() {
           </p>
         </div>
 
-        {loading ? (
-          <div className="p-8 text-center text-gray-500">Lade Daten...</div>
-        ) : affiliates.length === 0 ? (
+        {affiliates.length === 0 ? (
           <div className="p-8 text-center text-gray-500">
             Noch keine Affiliates vorhanden
           </div>
