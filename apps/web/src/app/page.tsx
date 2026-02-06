@@ -148,16 +148,17 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold/10 via-transparent to-transparent" />
 
         <div className="container relative z-10 mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">
-              <span className="text-gold">Ertragsrechner</span>
-            </h2>
-            <p className="text-gray-400 text-lg">
-              Berechnen Sie Ihr mögliches Verkaufspotenzial
-            </p>
-          </div>
+          <div className="border-2 border-gold/30 rounded-2xl p-8 md:p-12 bg-black/20 backdrop-blur-sm">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">
+                <span className="text-gold">Ertragsrechner</span>
+              </h2>
+              <p className="text-gray-400 text-lg">
+                Berechnen Sie Ihr mögliches Verkaufspotenzial
+              </p>
+            </div>
 
-          <div className="max-w-5xl mx-auto">
+            <div className="max-w-5xl mx-auto">
             {/* Eingabefelder */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               {/* Einkaufspreis */}
@@ -291,6 +292,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </section>
