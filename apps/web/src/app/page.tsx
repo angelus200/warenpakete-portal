@@ -13,9 +13,19 @@ export default function Home() {
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-28 md:py-40">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#222222] to-[#1a1a1a]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-gold/10 via-transparent to-transparent" />
+        {/* Hero Background Collage */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-1/2 h-full">
+            <Image src="/images/hero/hero-ecommerce.jpg" alt="" fill className="object-cover" priority />
+          </div>
+          <div className="absolute top-0 left-1/2 w-1/2 h-full">
+            <Image src="/images/hero/hero-growth.jpg" alt="" fill className="object-cover" priority />
+          </div>
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-black/60" />
+          {/* Smooth blend in the middle */}
+          <div className="absolute top-0 left-[35%] w-[30%] h-full bg-gradient-to-r from-transparent via-black/40 to-transparent" />
+        </div>
 
         <div className="container relative mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
