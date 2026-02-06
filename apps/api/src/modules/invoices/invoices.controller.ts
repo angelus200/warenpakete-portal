@@ -14,25 +14,29 @@ export class InvoicesController {
   ) {}
 
   @Get('list')
+  @UseGuards(ClerkAuthGuard)
   @ApiOperation({ summary: 'Get list of available invoices' })
   @ApiResponse({ status: 200, description: 'Returns list of available invoices' })
-  async getAvailableInvoices(/* @CurrentUser() user: any */) {
-    // TODO: Get user from auth decorator
-    return [];
+  async getAvailableInvoices(@Req() req) {
+    return this.invoicesService.getAvailableInvoices(req.user.id);
   }
 
   @Get('monthly/:year/:month')
+  @UseGuards(ClerkAuthGuard)
   @ApiOperation({ summary: 'Download monthly invoice PDF' })
   @ApiResponse({ status: 200, description: 'Returns PDF file' })
   async downloadMonthlyInvoice(
     @Param('year') year: string,
     @Param('month') month: string,
+    @Req() req,
     @Res() res: Response,
-    /* @CurrentUser() user: any */
   ) {
-    // TODO: Get user from auth decorator
-    // For now, return error
-    res.status(401).json({ message: 'Auth not implemented yet' });
+    return this.invoicesService.generateMonthlyInvoice(
+      req.user.id,
+      parseInt(year),
+      parseInt(month),
+      res,
+    );
   }
 
   @Get('order/:orderId')
