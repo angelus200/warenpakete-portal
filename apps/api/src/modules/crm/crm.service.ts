@@ -158,6 +158,7 @@ export class CrmService {
 
   // Orders Pipeline (gruppiert nach Status)
   async getOrdersPipeline() {
+    // Fetch all orders with invoiceNumber included
     const orders = await this.prisma.order.findMany({
       where: {
         status: { not: 'CANCELLED' },
