@@ -4,6 +4,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { Providers } from './providers';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { AffiliateTracker } from '@/components/AffiliateTracker';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -23,6 +24,7 @@ export default function RootLayout({
       <html lang="de">
         <body className={`${inter.className} bg-[#f5f5f0] text-gray-900 antialiased`}>
           <Providers>
+            <AffiliateTracker />
             <div className="flex min-h-screen flex-col bg-[#f5f5f0]">
               <Header />
               <main className="flex-1">{children}</main>

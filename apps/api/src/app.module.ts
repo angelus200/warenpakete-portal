@@ -16,6 +16,7 @@ import { InvoicesModule } from './modules/invoices/invoices.module';
 import { ContractsModule } from './modules/contracts/contracts.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { CrmModule } from './modules/crm/crm.module';
+import { AffiliateModule } from './modules/affiliate/affiliate.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { CrmModule } from './modules/crm/crm.module';
     ContractsModule,
     AdminModule,
     CrmModule,
+    AffiliateModule,
     UsersModule,
     ProductsModule,
     OrdersModule,

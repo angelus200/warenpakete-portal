@@ -49,6 +49,7 @@ model User {
   commissionContracts CommissionContract[]
   customerNotes      CustomerNote[]
   customerActivities CustomerActivity[]
+  affiliateLinks     AffiliateLink[]    @relation("UserAffiliateLinks")
 
   @@map("users")
 }
@@ -103,6 +104,7 @@ model Order {
   storageFees       StorageFee[]
   commissionContract CommissionContract?
   deliveryAddress   DeliveryAddress?
+  affiliateConversion AffiliateConversion?
 
   @@map("orders")
 }
@@ -322,4 +324,39 @@ model CustomerActivity {
   user User @relation(fields: [userId], references: [id])
 
   @@map("customer_activities")
+}
+
+model AffiliateLink {
+  id          String                @id @default(uuid())
+  userId      String
+  user        User                  @relation("UserAffiliateLinks", fields: [userId], references: [id])
+  code        String                @unique // z.B. "A7xK9m" - 6 Zeichen alphanumerisch
+  clicks      AffiliateClick[]
+  conversions AffiliateConversion[]
+  createdAt   DateTime              @default(now())
+
+  @@map("affiliate_links")
+}
+
+model AffiliateClick {
+  id        String        @id @default(uuid())
+  linkId    String
+  link      AffiliateLink @relation(fields: [linkId], references: [id])
+  ipHash    String        // gehashte IP für Datenschutz
+  createdAt DateTime      @default(now())
+
+  @@map("affiliate_clicks")
+}
+
+model AffiliateConversion {
+  id        String        @id @default(uuid())
+  linkId    String
+  link      AffiliateLink @relation(fields: [linkId], references: [id])
+  orderId   String        @unique
+  order     Order         @relation(fields: [orderId], references: [id])
+  amount    Decimal       @db.Decimal(10, 2) // 5% vom Bestellwert
+  status    String        @default("PENDING") // PENDING, APPROVED, PAID
+  createdAt DateTime      @default(now())
+
+  @@map("affiliate_conversions")
 }

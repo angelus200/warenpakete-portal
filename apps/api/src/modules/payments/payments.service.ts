@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { OrdersService } from '../orders/orders.service';
 import { EmailService } from '../email/email.service';
+import { AffiliateService } from '../affiliate/affiliate.service';
 import { OrderStatus } from '@prisma/client';
 import Stripe from 'stripe';
 
@@ -13,13 +14,14 @@ export class PaymentsService {
     private prisma: PrismaService,
     private ordersService: OrdersService,
     private emailService: EmailService,
+    private affiliateService: AffiliateService,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2023-10-16',
     });
   }
 
-  async createCheckoutSession(orderId: string, userId: string) {
+  async createCheckoutSession(orderId: string, userId: string, affiliateRef?: string) {
     const order = await this.ordersService.findOne(orderId, userId, false);
 
     if (!order) {
@@ -45,16 +47,23 @@ export class PaymentsService {
       quantity: item.quantity,
     }));
 
+    const metadata: any = {
+      orderId,
+      userId,
+    };
+
+    // Add affiliate ref if provided
+    if (affiliateRef) {
+      metadata.affiliateRef = affiliateRef;
+    }
+
     const session = await this.stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
       success_url: `${process.env.FRONTEND_URL}/orders?success=true&orderId=${orderId}`,
       cancel_url: `${process.env.FRONTEND_URL}/checkout?orderId=${orderId}`,
-      metadata: {
-        orderId,
-        userId,
-      },
+      metadata,
       // B2B: Sammle Firmendaten
       custom_fields: [
         {
@@ -153,6 +162,21 @@ export class PaymentsService {
           // Send payment success email
           const userName = order.user.firstName || order.user.email.split('@')[0];
           await this.emailService.sendPaymentSuccess(order.user.email, order, userName);
+
+          // Track affiliate conversion if referral exists
+          const affiliateRef = session.metadata?.affiliateRef;
+          if (affiliateRef) {
+            try {
+              await this.affiliateService.trackConversion(
+                affiliateRef,
+                orderId,
+                Number(order.totalAmount),
+              );
+              console.log(`✅ Affiliate conversion tracked for code: ${affiliateRef}`);
+            } catch (error) {
+              console.error('Failed to track affiliate conversion:', error);
+            }
+          }
 
           // Check if there's a commission and send email to reseller
           const commission = await this.prisma.commission.findUnique({

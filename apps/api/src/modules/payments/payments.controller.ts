@@ -26,13 +26,19 @@ export class PaymentsController {
   async createCheckoutSession(
     @Body() createCheckoutSessionDto: CreateCheckoutSessionDto,
     @CurrentUser() user: { clerkId: string },
+    @Req() req: Request,
   ) {
     const userRecord = await this.paymentsService['prisma'].user.findUnique({
       where: { clerkId: user.clerkId },
     });
+
+    // Read affiliate_ref cookie if exists
+    const affiliateRef = req.cookies?.affiliate_ref;
+
     return this.paymentsService.createCheckoutSession(
       createCheckoutSessionDto.orderId,
       userRecord.id,
+      affiliateRef,
     );
   }
 
