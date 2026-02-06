@@ -11,6 +11,7 @@ interface Order {
   totalAmount: number;
   status: string;
   fulfillmentType: string;
+  invoiceNumber?: string;
   createdAt: string;
   user: {
     company: string;
@@ -197,6 +198,11 @@ export default function CrmOrdersPage() {
                             {order.fulfillmentType === 'COMMISSION'
                               ? '⚡ Kommission'
                               : '📦 Lieferung'}
+                          </div>
+                        )}
+                        {order.invoiceNumber && (
+                          <div className="mt-2 text-[10px] text-gray-500">
+                            📄 {order.invoiceNumber}
                           </div>
                         )}
                       </div>

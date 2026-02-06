@@ -160,21 +160,37 @@ export default function DashboardPage() {
                       })}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="font-bold text-gold text-lg mb-1">
-                      €{Number(order.totalAmount).toFixed(2)}
-                    </p>
-                    <span
-                      className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                        order.status === 'PAID'
-                          ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                          : order.status === 'PENDING'
-                          ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                          : 'bg-gray-500/20 text-gray-600 border border-gray-500/30'
-                      }`}
-                    >
-                      {order.status}
-                    </span>
+                  <div className="text-right flex items-center gap-3">
+                    <div>
+                      <p className="font-bold text-gold text-lg mb-1">
+                        €{Number(order.totalAmount).toFixed(2)}
+                      </p>
+                      <span
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                          order.status === 'PAID'
+                            ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                            : order.status === 'PENDING'
+                            ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                            : 'bg-gray-500/20 text-gray-600 border border-gray-500/30'
+                        }`}
+                      >
+                        {order.status}
+                      </span>
+                    </div>
+                    {order.status === 'PAID' && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(`${process.env.NEXT_PUBLIC_API_URL}/invoices/order/${order.id}`, '_blank');
+                        }}
+                        className="text-gold hover:text-gold-light transition-colors"
+                        title="Rechnung herunterladen"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

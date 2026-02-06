@@ -2,10 +2,15 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { PrismaService } from '../../common/prisma/prisma.service';
 import PDFDocument from 'pdfkit';
 import { Response } from 'express';
+import { Resend } from 'resend';
 
 @Injectable()
 export class InvoicesService {
-  constructor(private prisma: PrismaService) {}
+  private resend: Resend;
+
+  constructor(private prisma: PrismaService) {
+    this.resend = new Resend(process.env.RESEND_API_KEY);
+  }
 
   /**
    * Generate monthly invoice PDF for reseller
@@ -469,28 +474,82 @@ export class InvoicesService {
   }
 
   /**
-   * Send invoice email (placeholder)
+   * Send invoice email with PDF attachment
    */
   async sendInvoiceEmail(orderId: string) {
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
-      include: { user: true },
+      include: { user: true, items: { include: { product: true } } },
     });
 
     if (!order) {
       throw new NotFoundException('Order not found');
     }
 
+    if (!order.invoiceNumber) {
+      throw new BadRequestException('Invoice number not generated yet');
+    }
+
     // Generate PDF as buffer
     const pdfBuffer = await this.generateOrderInvoice(orderId);
 
-    // TODO: Implement email sending with PDF attachment
-    // For now, just mark as sent
-    console.log(`TODO: Send invoice email to ${order.user.email}`);
+    // Send email with Resend
+    try {
+      await this.resend.emails.send({
+        from: 'Marketplace24-7 GmbH <noreply@ecommercerente.com>',
+        to: order.user.email,
+        subject: `Ihre Rechnung ${order.invoiceNumber} - Marketplace24-7 GmbH`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #D4AF37;">Vielen Dank für Ihre Bestellung!</h2>
 
-    await this.prisma.order.update({
-      where: { id: orderId },
-      data: { invoiceSentAt: new Date() },
-    });
+            <p>Sehr geehrte/r ${order.user.firstName ? `${order.user.firstName} ${order.user.lastName || ''}` : order.user.email},</p>
+
+            <p>im Anhang finden Sie Ihre Rechnung <strong>${order.invoiceNumber}</strong> für Ihre Bestellung <strong>#${order.id.substring(0, 8).toUpperCase()}</strong>.</p>
+
+            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="margin-top: 0; color: #333;">Rechnungsdetails</h3>
+              <p style="margin: 5px 0;"><strong>Rechnungsnummer:</strong> ${order.invoiceNumber}</p>
+              <p style="margin: 5px 0;"><strong>Rechnungsdatum:</strong> ${order.paidAt ? new Date(order.paidAt).toLocaleDateString('de-DE') : new Date().toLocaleDateString('de-DE')}</p>
+              <p style="margin: 5px 0;"><strong>Gesamtbetrag:</strong> €${Number(order.totalAmount).toLocaleString('de-DE', { minimumFractionDigits: 2 })}</p>
+              <p style="margin: 5px 0; color: #5cb85c;"><strong>Status:</strong> Bezahlt ✓</p>
+            </div>
+
+            <p><strong>Bestellte Produkte:</strong></p>
+            <ul>
+              ${order.items.map(item => `<li>${item.product.name} - Menge: ${item.quantity}</li>`).join('')}
+            </ul>
+
+            <p style="color: #666; font-size: 12px; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px;">
+              Bei Fragen zu Ihrer Rechnung kontaktieren Sie uns bitte unter <a href="mailto:info@non-dom.group">info@non-dom.group</a>
+            </p>
+
+            <p style="color: #666; font-size: 12px;">
+              <strong>Marketplace24-7 GmbH</strong><br>
+              Kantonsstrasse 1<br>
+              8807 Freienbach SZ<br>
+              Schweiz
+            </p>
+          </div>
+        `,
+        attachments: [
+          {
+            filename: `rechnung-${order.invoiceNumber}.pdf`,
+            content: pdfBuffer as Buffer,
+          },
+        ],
+      });
+
+      console.log(`✓ Invoice email sent to ${order.user.email}`);
+
+      // Mark as sent
+      await this.prisma.order.update({
+        where: { id: orderId },
+        data: { invoiceSentAt: new Date() },
+      });
+    } catch (error) {
+      console.error('Failed to send invoice email:', error);
+      throw new BadRequestException('Failed to send invoice email');
+    }
   }
 }
