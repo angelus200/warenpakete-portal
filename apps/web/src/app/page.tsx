@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@clerk/nextjs';
+import { Laptop, Home as HomeIcon, Shirt } from 'lucide-react';
 
 export default function Home() {
   const { isSignedIn } = useAuth();
@@ -514,6 +515,171 @@ export default function Home() {
               </>
             )}
           </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Case Studies Section */}
+      <section className="py-24 bg-[#f5f5f0]">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Erfolgs<span className="text-gold">beispiele</span>
+            </h2>
+            <p className="text-gray-600 text-lg">
+              So nutzen Händler unsere Warenpakete
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Case Study 1: Elektronik */}
+            <Card className="p-6 bg-white border-2 border-gray-300 hover:border-gold hover:shadow-xl transition-all">
+              <div className="flex items-start mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-gold-light to-gold rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                  <Laptop className="w-6 h-6 text-dark" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    Elektronik-Paket
+                  </h3>
+                  <span className="inline-block px-3 py-1 bg-gold/20 text-gold text-xs font-bold rounded-full">
+                    Amazon FBA
+                  </span>
+                </div>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                Ein Händler aus Bayern kaufte ein Elektronik-Paket für <strong>8.500 €</strong>.
+                Über Amazon FBA innerhalb von <strong>6 Wochen vollständig abverkauft</strong>.
+              </p>
+            </Card>
+
+            {/* Case Study 2: Haushaltswaren */}
+            <Card className="p-6 bg-white border-2 border-gray-300 hover:border-gold hover:shadow-xl transition-all">
+              <div className="flex items-start mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-gold-light to-gold rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                  <HomeIcon className="w-6 h-6 text-dark" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    Haushaltswaren-Paket
+                  </h3>
+                  <span className="inline-block px-3 py-1 bg-gold/20 text-gold text-xs font-bold rounded-full">
+                    Kommissionsverkauf
+                  </span>
+                </div>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                Ein Online-Shop-Betreiber aus NRW nutzte den Kommissionsverkauf.
+                Paket für <strong>5.200 €</strong> – Abwicklung komplett durch uns,
+                Auszahlung nach <strong>10 Wochen</strong>.
+              </p>
+            </Card>
+
+            {/* Case Study 3: Fashion */}
+            <Card className="p-6 bg-white border-2 border-gray-300 hover:border-gold hover:shadow-xl transition-all">
+              <div className="flex items-start mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-gold-light to-gold rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                  <Shirt className="w-6 h-6 text-dark" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    Fashion-Paket
+                  </h3>
+                  <span className="inline-block px-3 py-1 bg-gold/20 text-gold text-xs font-bold rounded-full">
+                    Multi-Channel
+                  </span>
+                </div>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                Eine Händlerin aus Österreich verkaufte ein Fashion-Paket über eBay und den eigenen Shop.
+                Einkauf <strong>4.800 €</strong>, verkauft in <strong>8 Wochen</strong>.
+              </p>
+            </Card>
+          </div>
+
+          {/* Disclaimer */}
+          <p className="text-gray-500 text-sm text-center mt-8">
+            * Anonymisierte Beispiele aus der Praxis. Ergebnisse variieren je nach Produkt, Markt und Verkaufsstrategie.
+          </p>
+        </div>
+      </section>
+
+      {/* Vertrauen/Partner Section */}
+      <section className="py-24 relative overflow-hidden bg-gradient-to-br from-[#2a2a2a] via-[#1f1f1f] to-[#2a2a2a]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold/10 via-transparent to-transparent" />
+
+        <div className="container relative z-10 mx-auto px-4">
+          <div className="border-2 border-gold/30 rounded-2xl p-8 md:p-12 bg-black/20 backdrop-blur-sm">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">
+                Starke <span className="text-gold">Partner & Infrastruktur</span>
+              </h2>
+              <p className="text-gray-400 text-lg">
+                Professionelle Abwicklung durch etablierte Dienstleister
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {/* Box 1: Fulfillment */}
+              <Card className="p-6 bg-white/5 border-gold/20 backdrop-blur text-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-gold-light to-gold rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-gray-200 mb-2">
+                  Fulfillment durch Fly Fulfilment
+                </h3>
+                <p className="text-sm text-gray-400">
+                  Deutschlandweites Lager & Versand
+                </p>
+              </Card>
+
+              {/* Box 2: Marktplätze */}
+              <Card className="p-6 bg-white/5 border-gold/20 backdrop-blur text-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-gold-light to-gold rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-gray-200 mb-2">
+                  Verkauf auf allen Marktplätzen
+                </h3>
+                <p className="text-sm text-gray-400">
+                  Amazon, eBay, Otto & mehr
+                </p>
+              </Card>
+
+              {/* Box 3: Zahlungsabwicklung */}
+              <Card className="p-6 bg-white/5 border-gold/20 backdrop-blur text-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-gold-light to-gold rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-gray-200 mb-2">
+                  Sichere Zahlungsabwicklung
+                </h3>
+                <p className="text-sm text-gray-400">
+                  Stripe Payment Processing
+                </p>
+              </Card>
+
+              {/* Box 4: Rechtssicher */}
+              <Card className="p-6 bg-white/5 border-gold/20 backdrop-blur text-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-gold-light to-gold rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-gray-200 mb-2">
+                  Rechtssicher
+                </h3>
+                <p className="text-sm text-gray-400">
+                  Schweizer & österreichische Unternehmensstruktur
+                </p>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
