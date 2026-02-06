@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
+import Script from 'next/script';
 import { useAuth } from '@clerk/nextjs';
 import { Laptop, Home as HomeIcon, Shirt } from 'lucide-react';
 import { ECommerceNewsTicker } from '@/components/ECommerceNewsTicker';
@@ -157,6 +158,41 @@ export default function Home() {
                 </p>
               </div>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Erklärvideo Section */}
+      <section className="py-20 bg-gradient-to-br from-[#2a2a2a] via-[#1f1f1f] to-[#2a2a2a] relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold/10 via-transparent to-transparent" />
+
+        <div className="container relative z-10 mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">
+              Sehen Sie <span className="text-gold">wie es funktioniert</span>
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              In diesem kurzen Video erklären wir Ihnen den gesamten Ablauf – von der Auswahl bis zum Verkaufserlös
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="border-2 border-gold/30 rounded-2xl overflow-hidden shadow-2xl shadow-gold/10">
+              <div className="vidyard-player-embed"
+                   data-uuid="R5YaUYnT8eP2y3YTjZ7gFW"
+                   data-v="4"
+                   data-type="inline"
+                   style={{ width: '100%', margin: 'auto', display: 'block' }}>
+              </div>
+              {/* Fallback falls Vidyard-Script nicht lädt */}
+              <noscript>
+                <a href="https://share.vidyard.com/watch/R5YaUYnT8eP2y3YTjZ7gFW" target="_blank" rel="noopener noreferrer">
+                  <img src="https://play.vidyard.com/R5YaUYnT8eP2y3YTjZ7gFW.jpg"
+                       alt="Ecommerce Service Erklärvideo"
+                       style={{ width: '100%' }} />
+                </a>
+              </noscript>
+            </div>
           </div>
         </div>
       </section>
@@ -973,6 +1009,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Vidyard Script */}
+      <Script src="https://play.vidyard.com/embed/v4.js" strategy="lazyOnload" />
     </div>
   );
 }
