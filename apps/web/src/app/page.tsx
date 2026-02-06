@@ -13,18 +13,16 @@ export default function Home() {
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-28 md:py-40">
-        {/* Hero Background Collage */}
+        {/* Background Image */}
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-1/2 h-full">
-            <Image src="/images/hero/hero-ecommerce.jpg" alt="" fill className="object-cover" priority />
-          </div>
-          <div className="absolute top-0 left-1/2 w-1/2 h-full">
-            <Image src="/images/hero/hero-growth.jpg" alt="" fill className="object-cover" priority />
-          </div>
-          {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-black/60" />
-          {/* Smooth blend in the middle */}
-          <div className="absolute top-0 left-[35%] w-[30%] h-full bg-gradient-to-r from-transparent via-black/40 to-transparent" />
+          <Image
+            src="/images/hero/hero-ecommerce.jpg"
+            alt=""
+            fill
+            className="object-cover"
+          />
+          {/* Overlay for readability */}
+          <div className="absolute inset-0 bg-[#f5f5f0]/85" />
         </div>
 
         <div className="container relative mx-auto px-4">
@@ -38,10 +36,10 @@ export default function Home() {
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-3 bg-gradient-to-r from-gold-light via-gold to-gold-dark bg-clip-text text-transparent">
               Bewährte Warenpakete
               <br />
-              <span className="text-gray-200">zu Großhandelspreisen</span>
+              <span className="text-gray-900">zu Großhandelspreisen</span>
             </h1>
 
-            <p className="text-xl md:text-lg text-gray-400 mb-5 leading-relaxed">
+            <p className="text-xl md:text-lg text-gray-700 mb-5 leading-relaxed">
               Produkte die bereits erfolgreich auf <span className="text-gold font-semibold">Amazon, eBay & Online-Shops</span> verkauft werden
               <br />
               – jetzt zu B2B-Konditionen für Ihr Geschäft
