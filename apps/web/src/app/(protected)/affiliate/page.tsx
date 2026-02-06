@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useApi } from '@/hooks/useApi';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Copy, Check, TrendingUp, MousePointerClick, DollarSign, BarChart3 } from 'lucide-react';
@@ -31,53 +32,37 @@ interface Conversion {
 }
 
 export default function AffiliatePage() {
+  const api = useApi();
   const [affiliateLink, setAffiliateLink] = useState('');
   const [code, setCode] = useState('');
   const [stats, setStats] = useState<AffiliateStats | null>(null);
   const [conversions, setConversions] = useState<Conversion[]>([]);
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchAffiliateData();
-  }, []);
+    if (api.isSignedIn && api.isLoaded) {
+      fetchAffiliateData();
+    }
+  }, [api.isSignedIn, api.isLoaded]);
 
   const fetchAffiliateData = async () => {
     try {
-      const token = localStorage.getItem('__clerk_db_jwt');
+      setError(null);
 
-      // Fetch affiliate link
-      const linkRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/affiliate/my-link`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const linkData = await linkRes.json();
+      const linkData = await api.get<{ url: string; code: string; createdAt: string }>('/affiliate/my-link');
       setAffiliateLink(linkData.url);
       setCode(linkData.code);
 
-      // Fetch stats
-      const statsRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/affiliate/stats`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const statsData = await statsRes.json();
+      const statsData = await api.get<AffiliateStats>('/affiliate/stats');
       setStats(statsData);
 
-      // Fetch conversions
-      const conversionsRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/affiliate/conversions`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const conversionsData = await conversionsRes.json();
+      const conversionsData = await api.get<Conversion[]>('/affiliate/conversions');
       setConversions(conversionsData);
-    } catch (error) {
-      console.error('Failed to fetch affiliate data:', error);
+    } catch (err) {
+      console.error('Failed to fetch affiliate data:', err);
+      setError('Fehler beim Laden der Affiliate-Daten');
     } finally {
       setLoading(false);
     }
@@ -103,13 +88,13 @@ export default function AffiliatePage() {
     });
 
   const getStatusBadge = (status: string) => {
-    const styles = {
+    const styles: Record<string, string> = {
       PENDING: 'bg-yellow-100 text-yellow-800 border-yellow-300',
       APPROVED: 'bg-green-100 text-green-800 border-green-300',
       PAID: 'bg-blue-100 text-blue-800 border-blue-300',
     };
 
-    const labels = {
+    const labels: Record<string, string> = {
       PENDING: 'Ausstehend',
       APPROVED: 'Genehmigt',
       PAID: 'Ausgezahlt',
@@ -117,14 +102,14 @@ export default function AffiliatePage() {
 
     return (
       <span
-        className={`px-2 py-1 text-xs font-semibold rounded border ${styles[status as keyof typeof styles] || styles.PENDING}`}
+        className={`px-2 py-1 text-xs font-semibold rounded border ${styles[status] || styles.PENDING}`}
       >
-        {labels[status as keyof typeof labels] || status}
+        {labels[status] || status}
       </span>
     );
   };
 
-  if (loading) {
+  if (!api.isLoaded || loading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-center min-h-[400px]">
@@ -134,9 +119,18 @@ export default function AffiliatePage() {
     );
   }
 
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-red-500">{error}</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           Affiliate Dashboard
@@ -146,7 +140,6 @@ export default function AffiliatePage() {
         </p>
       </div>
 
-      {/* Affiliate Link */}
       <Card className="p-6 mb-6 bg-gradient-to-br from-gold/10 to-gold-light/10 border-2 border-gold/30">
         <h2 className="text-lg font-bold mb-3 text-gray-900">
           Dein persönlicher Affiliate-Link
@@ -180,7 +173,6 @@ export default function AffiliatePage() {
         </p>
       </Card>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <Card className="p-5 bg-white border-2 border-gray-200 hover:border-gold/50 transition-colors">
           <div className="flex items-center justify-between mb-2">
@@ -194,9 +186,7 @@ export default function AffiliatePage() {
 
         <Card className="p-5 bg-white border-2 border-gray-200 hover:border-gold/50 transition-colors">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">
-              Conversions
-            </span>
+            <span className="text-sm font-medium text-gray-600">Conversions</span>
             <TrendingUp size={20} className="text-gold" />
           </div>
           <div className="text-2xl font-bold text-gray-900">
@@ -206,9 +196,7 @@ export default function AffiliatePage() {
 
         <Card className="p-5 bg-white border-2 border-gray-200 hover:border-gold/50 transition-colors">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">
-              Conversion-Rate
-            </span>
+            <span className="text-sm font-medium text-gray-600">Conversion-Rate</span>
             <BarChart3 size={20} className="text-gold" />
           </div>
           <div className="text-2xl font-bold text-gray-900">
@@ -218,9 +206,7 @@ export default function AffiliatePage() {
 
         <Card className="p-5 bg-white border-2 border-gray-200 hover:border-gold/50 transition-colors">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">
-              Provision (gesamt)
-            </span>
+            <span className="text-sm font-medium text-gray-600">Provision (gesamt)</span>
             <DollarSign size={20} className="text-gold" />
           </div>
           <div className="text-2xl font-bold text-gold">
@@ -229,93 +215,50 @@ export default function AffiliatePage() {
         </Card>
       </div>
 
-      {/* Earnings Breakdown */}
       <Card className="p-6 mb-8 bg-white border-2 border-gray-200">
-        <h2 className="text-lg font-bold mb-4 text-gray-900">
-          Provisions-Übersicht
-        </h2>
+        <h2 className="text-lg font-bold mb-4 text-gray-900">Provisions-Übersicht</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
             <div className="text-sm text-gray-600 mb-1">Ausstehend</div>
-            <div className="text-xl font-bold text-gray-900">
-              {formatCurrency(stats?.pendingEarnings || 0)}
-            </div>
+            <div className="text-xl font-bold text-gray-900">{formatCurrency(stats?.pendingEarnings || 0)}</div>
           </div>
           <div className="p-4 bg-green-50 rounded-lg border border-green-200">
             <div className="text-sm text-gray-600 mb-1">Genehmigt</div>
-            <div className="text-xl font-bold text-gray-900">
-              {formatCurrency(stats?.approvedEarnings || 0)}
-            </div>
+            <div className="text-xl font-bold text-gray-900">{formatCurrency(stats?.approvedEarnings || 0)}</div>
           </div>
           <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
             <div className="text-sm text-gray-600 mb-1">Ausgezahlt</div>
-            <div className="text-xl font-bold text-gray-900">
-              {formatCurrency(stats?.paidEarnings || 0)}
-            </div>
+            <div className="text-xl font-bold text-gray-900">{formatCurrency(stats?.paidEarnings || 0)}</div>
           </div>
         </div>
       </Card>
 
-      {/* Conversions Table */}
       <Card className="p-6 bg-white border-2 border-gray-200">
-        <h2 className="text-lg font-bold mb-4 text-gray-900">
-          Deine Conversions
-        </h2>
-
+        <h2 className="text-lg font-bold mb-4 text-gray-900">Deine Conversions</h2>
         {conversions.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            Noch keine Conversions vorhanden
-          </div>
+          <div className="text-center py-8 text-gray-500">Noch keine Conversions vorhanden</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b-2 border-gray-200">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
-                    Datum
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
-                    Bestellung
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
-                    Kunde
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-700">
-                    Bestellwert
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-700">
-                    Provision (5%)
-                  </th>
-                  <th className="text-center py-3 px-4 font-semibold text-gray-700">
-                    Status
-                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Datum</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Bestellung</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Kunde</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Bestellwert</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Provision (5%)</th>
+                  <th className="text-center py-3 px-4 font-semibold text-gray-700">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {conversions.map((conversion) => (
-                  <tr
-                    key={conversion.id}
-                    className="border-b border-gray-100 hover:bg-gray-50"
-                  >
-                    <td className="py-3 px-4 text-sm text-gray-900">
-                      {formatDate(conversion.createdAt)}
-                    </td>
-                    <td className="py-3 px-4 text-sm font-mono text-gray-700">
-                      #{conversion.order.id.substring(0, 8).toUpperCase()}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-gray-900">
-                      {conversion.order.user.company ||
-                        conversion.order.user.email}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-right text-gray-900">
-                      {formatCurrency(Number(conversion.order.totalAmount))}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-right font-bold text-gold">
-                      {formatCurrency(Number(conversion.amount))}
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      {getStatusBadge(conversion.status)}
-                    </td>
+                  <tr key={conversion.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-3 px-4 text-sm text-gray-900">{formatDate(conversion.createdAt)}</td>
+                    <td className="py-3 px-4 text-sm font-mono text-gray-700">#{conversion.order.id.substring(0, 8).toUpperCase()}</td>
+                    <td className="py-3 px-4 text-sm text-gray-900">{conversion.order.user.company || conversion.order.user.email}</td>
+                    <td className="py-3 px-4 text-sm text-right text-gray-900">{formatCurrency(Number(conversion.order.totalAmount))}</td>
+                    <td className="py-3 px-4 text-sm text-right font-bold text-gold">{formatCurrency(Number(conversion.amount))}</td>
+                    <td className="py-3 px-4 text-center">{getStatusBadge(conversion.status)}</td>
                   </tr>
                 ))}
               </tbody>
