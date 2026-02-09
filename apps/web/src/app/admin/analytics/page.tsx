@@ -22,6 +22,20 @@ import {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ecommercerente.com';
 
+interface TrackingData {
+  totalPageViews: number;
+  uniqueVisitors: number;
+  avgPagesPerSession: number;
+  avgDuration: number;
+  bounceRate: number;
+  topPages: Array<{ path: string; views: number; uniqueVisitors: number }>;
+  topReferrers: Array<{ referrer: string; count: number }>;
+  deviceBreakdown: { mobile: number; tablet: number; desktop: number };
+  viewsPerDay: Array<{ date: string; views: number; uniqueVisitors: number }>;
+  landingPageViews: number;
+  landingPageBounceRate: number;
+}
+
 interface AnalyticsData {
   users: {
     total: number;
@@ -67,6 +81,8 @@ const COLORS = {
 export default function AdminAnalyticsPage() {
   const router = useRouter();
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
+  const [tracking, setTracking] = useState<TrackingData | null>(null);
+  const [trackingPeriod, setTrackingPeriod] = useState<string>('30d');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -77,7 +93,8 @@ export default function AdminAnalyticsPage() {
     }
 
     fetchAnalytics(token);
-  }, [router]);
+    fetchTracking(token, trackingPeriod);
+  }, [router, trackingPeriod]);
 
   const fetchAnalytics = async (token: string) => {
     try {
@@ -100,6 +117,26 @@ export default function AdminAnalyticsPage() {
       router.push('/admin/login');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchTracking = async (token: string, period: string) => {
+    try {
+      const response = await fetch(`${API_URL}/tracking/stats?period=${period}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Unauthorized');
+      }
+
+      const data = await response.json();
+      setTracking(data);
+    } catch (error) {
+      console.error('Failed to load tracking stats:', error);
     }
   };
 
@@ -143,6 +180,219 @@ export default function AdminAnalyticsPage() {
             ← Dashboard
           </Link>
         </div>
+
+        {/* Website Traffic Section */}
+        {tracking && (
+          <>
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-gray-900">🌐 Website-Traffic</h2>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setTrackingPeriod('7d')}
+                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+                      trackingPeriod === '7d'
+                        ? 'bg-amber-600 text-black'
+                        : 'bg-white text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    7 Tage
+                  </button>
+                  <button
+                    onClick={() => setTrackingPeriod('30d')}
+                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+                      trackingPeriod === '30d'
+                        ? 'bg-amber-600 text-black'
+                        : 'bg-white text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    30 Tage
+                  </button>
+                  <button
+                    onClick={() => setTrackingPeriod('90d')}
+                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+                      trackingPeriod === '90d'
+                        ? 'bg-amber-600 text-black'
+                        : 'bg-white text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    90 Tage
+                  </button>
+                </div>
+              </div>
+
+              {/* Traffic KPI Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <Card className="p-4 bg-white border-amber-500/20">
+                  <p className="text-sm text-gray-600 mb-2">Seitenaufrufe</p>
+                  <p className="text-3xl font-bold text-gray-900">{tracking.totalPageViews.toLocaleString()}</p>
+                  <p className="text-sm text-gray-600 mt-2">Gesamt im Zeitraum</p>
+                </Card>
+
+                <Card className="p-4 bg-white border-amber-500/20">
+                  <p className="text-sm text-gray-600 mb-2">Unique Besucher</p>
+                  <p className="text-3xl font-bold text-gray-900">{tracking.uniqueVisitors.toLocaleString()}</p>
+                  <p className="text-sm text-gray-600 mt-2">Eindeutige Sessions</p>
+                </Card>
+
+                <Card className="p-4 bg-white border-amber-500/20">
+                  <p className="text-sm text-gray-600 mb-2">Ø Seiten/Besuch</p>
+                  <p className="text-3xl font-bold text-gray-900">{tracking.avgPagesPerSession}</p>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Ø Verweildauer: {Math.round(tracking.avgDuration / 60)}m {tracking.avgDuration % 60}s
+                  </p>
+                </Card>
+
+                <Card className="p-4 bg-white border-amber-500/20">
+                  <p className="text-sm text-gray-600 mb-2">Bounce Rate</p>
+                  <p className="text-3xl font-bold text-gray-900">{tracking.bounceRate}%</p>
+                  <p className="text-sm text-gray-600 mt-2">Sessions mit nur 1 Aufruf</p>
+                </Card>
+              </div>
+
+              {/* Traffic Chart */}
+              <Card className="p-4 bg-white border-amber-500/20 mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Seitenaufrufe & Besucher</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={tracking.viewsPerDay}>
+                    <CartesianGrid strokeDasharray="3 3" stroke={COLORS.lightGray} />
+                    <XAxis
+                      dataKey="date"
+                      tick={{ fontSize: 12 }}
+                      tickFormatter={(date) => new Date(date).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })}
+                    />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: 'white', border: '1px solid #e5e7eb' }}
+                      labelFormatter={(date) => new Date(date).toLocaleDateString('de-DE')}
+                    />
+                    <Line type="monotone" dataKey="views" stroke={COLORS.gold} strokeWidth={2} name="Aufrufe" />
+                    <Line type="monotone" dataKey="uniqueVisitors" stroke={COLORS.gray} strokeWidth={2} name="Besucher" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </Card>
+
+              {/* Top Pages & Referrers */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+                {/* Top Pages */}
+                <Card className="p-4 bg-white border-amber-500/20">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Top 10 Seiten</h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-gray-200">
+                          <th className="text-left py-2 text-gray-600">Pfad</th>
+                          <th className="text-right py-2 text-gray-600">Aufrufe</th>
+                          <th className="text-right py-2 text-gray-600">Besucher</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {tracking.topPages.map((page, idx) => (
+                          <tr key={idx} className="border-b border-gray-100">
+                            <td className="py-3 text-gray-900 font-mono text-xs">{page.path}</td>
+                            <td className="py-3 text-right text-gray-900 font-semibold">{page.views}</td>
+                            <td className="py-3 text-right text-gray-900">{page.uniqueVisitors}</td>
+                          </tr>
+                        ))}
+                        {tracking.topPages.length === 0 && (
+                          <tr>
+                            <td colSpan={3} className="py-4 text-center text-gray-600">
+                              Keine Daten verfügbar
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </Card>
+
+                {/* Top Referrers */}
+                <Card className="p-4 bg-white border-amber-500/20">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Top 10 Traffic-Quellen</h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-gray-200">
+                          <th className="text-left py-2 text-gray-600">Quelle</th>
+                          <th className="text-right py-2 text-gray-600">Anzahl</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {tracking.topReferrers.map((ref, idx) => (
+                          <tr key={idx} className="border-b border-gray-100">
+                            <td className="py-3 text-gray-900 font-mono text-xs truncate max-w-xs">{ref.referrer}</td>
+                            <td className="py-3 text-right text-gray-900 font-semibold">{ref.count}</td>
+                          </tr>
+                        ))}
+                        {tracking.topReferrers.length === 0 && (
+                          <tr>
+                            <td colSpan={2} className="py-4 text-center text-gray-600">
+                              Keine Referrer-Daten
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Device Breakdown */}
+              <Card className="p-4 bg-white border-amber-500/20 mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Geräte-Verteilung</h3>
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-gray-600">📱 Mobile</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {tracking.deviceBreakdown.mobile} ({Math.round((tracking.deviceBreakdown.mobile / tracking.totalPageViews) * 100)}%)
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3">
+                      <div
+                        className="bg-blue-500 h-3 rounded-full"
+                        style={{ width: `${(tracking.deviceBreakdown.mobile / tracking.totalPageViews) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-gray-600">💻 Tablet</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {tracking.deviceBreakdown.tablet} ({Math.round((tracking.deviceBreakdown.tablet / tracking.totalPageViews) * 100)}%)
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3">
+                      <div
+                        className="bg-green-500 h-3 rounded-full"
+                        style={{ width: `${(tracking.deviceBreakdown.tablet / tracking.totalPageViews) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-gray-600">🖥️ Desktop</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {tracking.deviceBreakdown.desktop} ({Math.round((tracking.deviceBreakdown.desktop / tracking.totalPageViews) * 100)}%)
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3">
+                      <div
+                        className="bg-amber-500 h-3 rounded-full"
+                        style={{ width: `${(tracking.deviceBreakdown.desktop / tracking.totalPageViews) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Divider */}
+              <div className="border-t-2 border-amber-500/20 mb-6"></div>
+            </div>
+          </>
+        )}
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

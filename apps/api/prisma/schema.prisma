@@ -449,3 +449,20 @@ enum ChatSenderType {
   USER
   ADMIN
 }
+
+model PageView {
+  id        String   @id @default(uuid())
+  path      String   // z.B. "/", "/produkte", "/admin/dashboard"
+  referrer  String?  // woher der Besucher kam
+  userAgent String?  // Browser-Info (gekürzt, keine IP!)
+  country   String?  // optional, aus Accept-Language Header
+  device    String?  // "mobile", "tablet", "desktop"
+  sessionId String   // anonymer Session-Hash (kein Cookie, aus Fingerprint)
+  duration  Int?     // Verweildauer in Sekunden (optional, via Beacon API)
+  createdAt DateTime @default(now())
+
+  @@index([path])
+  @@index([createdAt])
+  @@index([sessionId])
+  @@map("page_views")
+}
