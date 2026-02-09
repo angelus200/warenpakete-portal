@@ -99,4 +99,12 @@ export class AdminController {
   async getAllProducts() {
     return this.adminService.getAllProducts();
   }
+
+  @Get('analytics')
+  @ApiBearerAuth('admin')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Get marketing analytics and statistics' })
+  async getAnalytics() {
+    return this.adminService.getAnalytics();
+  }
 }

@@ -100,12 +100,33 @@ export default function AdminUsersPage() {
     return user.role === filter;
   });
 
+  const getRoleLabel = (role: string) => {
+    switch (role) {
+      case 'ADMIN': return 'Administrator';
+      case 'EMPLOYEE': return 'Mitarbeiter';
+      case 'RESELLER': return 'Reseller';
+      case 'BUYER': return 'Käufer';
+      default: return role;
+    }
+  };
+
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
-      case 'ADMIN': return 'bg-red-500/20 text-red-400';
-      case 'RESELLER': return 'bg-blue-500/20 text-blue-400';
+      case 'ADMIN': return 'bg-red-500/20 text-red-700';
+      case 'EMPLOYEE': return 'bg-green-500/20 text-green-700';
+      case 'RESELLER': return 'bg-blue-500/20 text-blue-700';
       case 'BUYER': return 'bg-gray-500/20 text-gray-600';
       default: return 'bg-gray-500/20 text-gray-600';
+    }
+  };
+
+  const getRoleDescription = (role: string) => {
+    switch (role) {
+      case 'ADMIN': return 'Administratoren haben vollen Zugriff auf alle Funktionen';
+      case 'EMPLOYEE': return 'Mitarbeiter können auf interne Bereiche zugreifen aber keine Admin-Funktionen nutzen';
+      case 'RESELLER': return 'Reseller können Provisionen verdienen und haben erweiterte Funktionen';
+      case 'BUYER': return 'Käufer können Produkte kaufen und bestellen';
+      default: return '';
     }
   };
 
@@ -170,6 +191,16 @@ export default function AdminUsersPage() {
             Reseller ({users.filter(u => u.role === 'RESELLER').length})
           </button>
           <button
+            onClick={() => setFilter('EMPLOYEE')}
+            className={`px-4 py-2 rounded-lg font-medium transition-all ${
+              filter === 'EMPLOYEE'
+                ? 'bg-amber-600 text-black'
+                : 'bg-white text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            Mitarbeiter ({users.filter(u => u.role === 'EMPLOYEE').length})
+          </button>
+          <button
             onClick={() => setFilter('BUYER')}
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               filter === 'BUYER'
@@ -209,7 +240,7 @@ export default function AdminUsersPage() {
                   <div>
                     <p className="text-sm text-gray-600 mb-1">Rolle</p>
                     <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${getRoleBadgeColor(user.role)}`}>
-                      {user.role}
+                      {getRoleLabel(user.role)}
                     </span>
                   </div>
 
@@ -231,16 +262,20 @@ export default function AdminUsersPage() {
                     <select
                       value={user.role}
                       onChange={(e) => {
-                        if (confirm(`Rolle wirklich zu ${e.target.value} ändern?`)) {
-                          updateUserRole(user.id, e.target.value);
+                        const newRole = e.target.value;
+                        const roleLabel = getRoleLabel(newRole);
+                        const roleDesc = getRoleDescription(newRole);
+                        if (confirm(`Rolle wirklich zu "${roleLabel}" ändern?\n\n${roleDesc}`)) {
+                          updateUserRole(user.id, newRole);
                         }
                       }}
                       disabled={updatingUserId === user.id}
                       className="bg-white text-gray-900 px-3 py-1 rounded-lg border border-amber-500/20 hover:border-amber-500/40 focus:outline-none focus:border-amber-500 disabled:opacity-50"
                     >
-                      <option value="BUYER">BUYER</option>
-                      <option value="RESELLER">RESELLER</option>
-                      <option value="ADMIN">ADMIN</option>
+                      <option value="BUYER">Käufer</option>
+                      <option value="RESELLER">Reseller</option>
+                      <option value="EMPLOYEE">Mitarbeiter</option>
+                      <option value="ADMIN">Administrator</option>
                     </select>
                     {updatingUserId === user.id && (
                       <p className="text-xs text-amber-500 mt-1">Aktualisiere...</p>
