@@ -3,7 +3,32 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
+function validateEnv() {
+  const requiredEnvVars = [
+    'DATABASE_URL',
+    'CLERK_SECRET_KEY',
+    'STRIPE_SECRET_KEY',
+    'STRIPE_WEBHOOK_SECRET',
+    'ADMIN_JWT_SECRET',
+    'RESEND_API_KEY',
+  ];
+
+  const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+  if (missingVars.length > 0) {
+    throw new Error(
+      `❌ Missing required environment variables: ${missingVars.join(', ')}\n` +
+      'Please ensure all required environment variables are set before starting the application.'
+    );
+  }
+
+  console.log('✅ All required environment variables are set');
+}
+
 async function bootstrap() {
+  // Validate environment variables before app initialization
+  validateEnv();
+
   const app = await NestFactory.create(AppModule, {
     rawBody: true,
   });

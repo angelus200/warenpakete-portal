@@ -26,19 +26,13 @@ export class AdminService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const token = await this.jwtService.signAsync(
-      {
-        id: admin.id,
-        email: admin.email,
-        name: admin.name,
-        role: admin.role,
-        type: 'admin',
-      },
-      {
-        secret: process.env.ADMIN_JWT_SECRET || 'admin-secret-key-change-in-production',
-        expiresIn: '8h',
-      },
-    );
+    const token = await this.jwtService.signAsync({
+      id: admin.id,
+      email: admin.email,
+      name: admin.name,
+      role: admin.role,
+      type: 'admin',
+    });
 
     return {
       token,

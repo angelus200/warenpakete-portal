@@ -136,7 +136,6 @@ export class UsersController {
         await this.usersService.removeByClerkId(data.id);
         break;
       default:
-        console.log(`Unhandled webhook event: ${type}`);
     }
 
     return { received: true };

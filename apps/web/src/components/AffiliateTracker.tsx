@@ -26,7 +26,6 @@ export function AffiliateTracker() {
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
-            console.log('Affiliate click tracked:', refCode);
           }
         })
         .catch((err) => {

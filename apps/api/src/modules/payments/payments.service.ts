@@ -126,14 +126,12 @@ export class PaymentsService {
         const userId = session.metadata?.userId;
 
         if (orderId) {
-          console.log(`Processing checkout.session.completed for order ${orderId}`);
 
           // Extrahiere B2B-Daten aus Custom Fields
           const customFields = session.custom_fields || [];
           const companyName = customFields.find(f => f.key === 'company_name')?.text?.value;
           const vatId = customFields.find(f => f.key === 'vat_id')?.text?.value;
 
-          console.log('📋 B2B Data from checkout:', { companyName, vatId });
 
           // Speichere B2B-Daten im User wenn vorhanden
           if (userId && (companyName || vatId)) {
@@ -145,7 +143,6 @@ export class PaymentsService {
                 vatId: vatId || undefined,
               },
             });
-            console.log('✅ Updated user B2B data');
           }
 
           // Update order status to PAID
@@ -172,7 +169,6 @@ export class PaymentsService {
                 orderId,
                 Number(order.totalAmount),
               );
-              console.log(`✅ Affiliate conversion tracked for code: ${affiliateRef}`);
             } catch (error) {
               console.error('Failed to track affiliate conversion:', error);
             }
@@ -206,7 +202,6 @@ export class PaymentsService {
 
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        console.log(`Payment succeeded: ${paymentIntent.id}`);
         // Additional handling if needed
         break;
       }
@@ -219,7 +214,6 @@ export class PaymentsService {
       }
 
       default:
-        console.log(`Unhandled Stripe event: ${event.type}`);
     }
 
     return { received: true };

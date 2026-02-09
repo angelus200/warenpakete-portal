@@ -19,9 +19,7 @@ export class AdminAuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.ADMIN_JWT_SECRET || 'admin-secret-key-change-in-production',
-      });
+      const payload = await this.jwtService.verifyAsync(token);
 
       // Prüfe ob es ein Admin-Token ist
       if (payload.type !== 'admin') {

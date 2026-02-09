@@ -540,7 +540,6 @@ export class InvoicesService {
         ],
       });
 
-      console.log(`✓ Invoice email sent to ${order.user.email}`);
 
       // Mark as sent
       await this.prisma.order.update({

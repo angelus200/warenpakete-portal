@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { AdminService } from './admin.service';
 import { AdminLoginDto } from './dto/admin-login.dto';
 import { UpdateContractDto } from './dto/update-contract.dto';
@@ -20,6 +21,7 @@ export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   @Post('login')
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @ApiOperation({ summary: 'Admin login - returns JWT token' })
   async login(@Body() dto: AdminLoginDto) {
     return this.adminService.login(dto.email, dto.password);

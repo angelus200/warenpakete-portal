@@ -44,12 +44,10 @@ export class OrdersController {
 
     // If user doesn't exist, create from Clerk data
     if (!userRecord) {
-      console.log('⚠️ User not found in DB, creating from Clerk:', user.clerkId);
 
       try {
         const clerkUser = await this.clerk.users.getUser(user.clerkId);
         userRecord = await this.usersService.syncWithClerk(user.clerkId, clerkUser);
-        console.log('✅ User created successfully:', userRecord.id);
       } catch (error) {
         console.error('❌ Failed to sync user from Clerk:', error);
         throw error;
