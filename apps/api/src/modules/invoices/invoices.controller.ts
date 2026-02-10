@@ -6,27 +6,32 @@ import {
   Res,
   UseGuards,
   Req,
+  NotFoundException,
 } from '@nestjs/common';
 import { InvoicesService } from './invoices.service';
 import { ClerkAuthGuard } from '../../common/guards/clerk-auth.guard';
 import { AdminAuthGuard } from '../admin/admin-auth.guard';
+import { PrismaService } from '../../common/prisma/prisma.service';
 import { Response } from 'express';
 
 @Controller('invoices')
 export class InvoicesController {
-  constructor(private readonly invoicesService: InvoicesService) {}
+  constructor(
+    private readonly invoicesService: InvoicesService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Post('order/:orderId/invoice')
   @UseGuards(ClerkAuthGuard)
   async createInvoice(@Param('orderId') orderId: string, @Req() req: any) {
     // Verify user owns this order
-    const order = await this.invoicesService['prisma'].order.findUnique({
+    const order = await this.prisma.order.findUnique({
       where: { id: orderId },
       select: { userId: true },
     });
 
     if (!order || order.userId !== req.userId) {
-      throw new Error('Unauthorized');
+      throw new NotFoundException('Order not found or unauthorized');
     }
 
     return this.invoicesService.createInvoice(orderId);
@@ -36,13 +41,13 @@ export class InvoicesController {
   @UseGuards(ClerkAuthGuard)
   async createDeliveryNote(@Param('orderId') orderId: string, @Req() req: any) {
     // Verify user owns this order
-    const order = await this.invoicesService['prisma'].order.findUnique({
+    const order = await this.prisma.order.findUnique({
       where: { id: orderId },
       select: { userId: true },
     });
 
     if (!order || order.userId !== req.userId) {
-      throw new Error('Unauthorized');
+      throw new NotFoundException('Order not found or unauthorized');
     }
 
     return this.invoicesService.createDeliveryNote(orderId);
@@ -52,13 +57,13 @@ export class InvoicesController {
   @UseGuards(ClerkAuthGuard)
   async getInvoicesForOrder(@Param('orderId') orderId: string, @Req() req: any) {
     // Verify user owns this order
-    const order = await this.invoicesService['prisma'].order.findUnique({
+    const order = await this.prisma.order.findUnique({
       where: { id: orderId },
       select: { userId: true },
     });
 
     if (!order || order.userId !== req.userId) {
-      throw new Error('Unauthorized');
+      throw new NotFoundException('Order not found or unauthorized');
     }
 
     return this.invoicesService.getInvoicesForOrder(orderId);
@@ -72,13 +77,13 @@ export class InvoicesController {
     @Req() req: any,
   ) {
     // Get invoice and verify ownership
-    const invoice = await this.invoicesService['prisma'].invoice.findUnique({
+    const invoice = await this.prisma.invoice.findUnique({
       where: { id: invoiceId },
       include: { order: { select: { userId: true } } },
     });
 
     if (!invoice || invoice.order.userId !== req.userId) {
-      throw new Error('Unauthorized');
+      throw new NotFoundException('Invoice not found or unauthorized');
     }
 
     const pdfBuffer = await this.invoicesService.downloadInvoicePdf(invoiceId);
@@ -97,5 +102,32 @@ export class InvoicesController {
   @UseGuards(AdminAuthGuard)
   async getAllInvoices() {
     return this.invoicesService.getAllInvoices();
+  }
+
+  @Get('admin/:id/download')
+  @UseGuards(AdminAuthGuard)
+  async adminDownloadInvoice(
+    @Param('id') invoiceId: string,
+    @Res() res: Response,
+  ) {
+    // Admin can download any invoice
+    const invoice = await this.prisma.invoice.findUnique({
+      where: { id: invoiceId },
+    });
+
+    if (!invoice) {
+      throw new NotFoundException('Invoice not found');
+    }
+
+    const pdfBuffer = await this.invoicesService.downloadInvoicePdf(invoiceId);
+
+    const filename =
+      invoice.type === 'INVOICE'
+        ? `rechnung-${invoice.invoiceNumber}.pdf`
+        : `lieferschein-${invoice.invoiceNumber}.pdf`;
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.send(pdfBuffer);
   }
 }

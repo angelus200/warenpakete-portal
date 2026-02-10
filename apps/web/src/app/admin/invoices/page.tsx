@@ -74,7 +74,7 @@ export default function AdminInvoicesPage() {
     if (!token) return;
 
     try {
-      const response = await fetch(`${API_URL}/invoices/${invoiceId}/download`, {
+      const response = await fetch(`${API_URL}/invoices/admin/${invoiceId}/download`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
