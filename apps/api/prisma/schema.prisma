@@ -76,7 +76,8 @@ model Product {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 
-  orderItems OrderItem[]
+  orderItems   OrderItem[]
+  packageItems PackageItem[]
 
   @@map("products")
 }
@@ -101,13 +102,14 @@ model Order {
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
-  user              User                @relation(fields: [userId], references: [id])
-  items             OrderItem[]
-  commission        Commission?
-  storageFees       StorageFee[]
-  commissionContract CommissionContract?
-  deliveryAddress   DeliveryAddress?
+  user                User                 @relation(fields: [userId], references: [id])
+  items               OrderItem[]
+  commission          Commission?
+  storageFees         StorageFee[]
+  commissionContract  CommissionContract?
+  deliveryAddress     DeliveryAddress?
   affiliateConversion AffiliateConversion?
+  invoices            Invoice[]
 
   @@map("orders")
 }
@@ -465,4 +467,66 @@ model PageView {
   @@index([createdAt])
   @@index([sessionId])
   @@map("page_views")
+}
+
+// Stückliste: Einzelprodukte innerhalb eines Warenpakets
+model PackageItem {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  name      String   // z.B. "True North Trinkflasche Edelstahl 500ml"
+  quantity  Int      // z.B. 65
+  sku       String?  // Artikelnummer falls vorhanden
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("package_items")
+}
+
+// Rechnungen und Lieferscheine
+model Invoice {
+  id            String      @id @default(uuid())
+  invoiceNumber String      @unique // RE-2026-00001 oder LS-2026-00001
+  orderId       String
+  order         Order       @relation(fields: [orderId], references: [id])
+  type          InvoiceType
+
+  // Kundendaten (zum Zeitpunkt der Erstellung eingefroren)
+  customerCompany String
+  customerName    String
+  customerAddress String
+  customerCountry String  // "DE", "AT", "CH"
+  customerVatId   String? // USt-IdNr / UID / MWST-Nr des Kunden
+
+  // Beträge in Cent
+  netAmount   Int
+  taxRate     Float   @default(0) // 0% für DE/AT, 8.1% für CH
+  taxAmount   Int     @default(0)
+  grossAmount Int
+
+  // Stripe Referenz
+  stripePaymentIntentId String?
+
+  // PDF wird on-the-fly generiert, kein Storage nötig
+
+  issuedAt  DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("invoices")
+}
+
+model InvoiceCounter {
+  id      String      @id @default(uuid())
+  type    InvoiceType
+  year    Int
+  counter Int         @default(0)
+
+  @@unique([type, year])
+  @@map("invoice_counters")
+}
+
+enum InvoiceType {
+  INVOICE
+  DELIVERY_NOTE
 }

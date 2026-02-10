@@ -1,64 +1,101 @@
-import { Controller, Get, Param, Res, UseGuards, Req, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Param,
+  Res,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { InvoicesService } from './invoices.service';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Response } from 'express';
 import { ClerkAuthGuard } from '../../common/guards/clerk-auth.guard';
-import { PrismaService } from '../../common/prisma/prisma.service';
+import { AdminAuthGuard } from '../admin/admin-auth.guard';
+import { Response } from 'express';
 
-@ApiTags('invoices')
 @Controller('invoices')
 export class InvoicesController {
-  constructor(
-    private readonly invoicesService: InvoicesService,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly invoicesService: InvoicesService) {}
 
-  @Get('list')
+  @Post('order/:orderId/invoice')
   @UseGuards(ClerkAuthGuard)
-  @ApiOperation({ summary: 'Get list of available invoices' })
-  @ApiResponse({ status: 200, description: 'Returns list of available invoices' })
-  async getAvailableInvoices(@Req() req) {
-    return this.invoicesService.getAvailableInvoices(req.user.id);
+  async createInvoice(@Param('orderId') orderId: string, @Req() req: any) {
+    // Verify user owns this order
+    const order = await this.invoicesService['prisma'].order.findUnique({
+      where: { id: orderId },
+      select: { userId: true },
+    });
+
+    if (!order || order.userId !== req.userId) {
+      throw new Error('Unauthorized');
+    }
+
+    return this.invoicesService.createInvoice(orderId);
   }
 
-  @Get('monthly/:year/:month')
+  @Post('order/:orderId/delivery-note')
   @UseGuards(ClerkAuthGuard)
-  @ApiOperation({ summary: 'Download monthly invoice PDF' })
-  @ApiResponse({ status: 200, description: 'Returns PDF file' })
-  async downloadMonthlyInvoice(
-    @Param('year') year: string,
-    @Param('month') month: string,
-    @Req() req,
-    @Res() res: Response,
-  ) {
-    return this.invoicesService.generateMonthlyInvoice(
-      req.user.id,
-      parseInt(year),
-      parseInt(month),
-      res,
-    );
+  async createDeliveryNote(@Param('orderId') orderId: string, @Req() req: any) {
+    // Verify user owns this order
+    const order = await this.invoicesService['prisma'].order.findUnique({
+      where: { id: orderId },
+      select: { userId: true },
+    });
+
+    if (!order || order.userId !== req.userId) {
+      throw new Error('Unauthorized');
+    }
+
+    return this.invoicesService.createDeliveryNote(orderId);
   }
 
   @Get('order/:orderId')
   @UseGuards(ClerkAuthGuard)
-  @ApiOperation({ summary: 'Download order invoice PDF' })
-  @ApiResponse({ status: 200, description: 'Returns PDF file' })
-  async getOrderInvoice(
-    @Param('orderId') orderId: string,
-    @Req() req,
+  async getInvoicesForOrder(@Param('orderId') orderId: string, @Req() req: any) {
+    // Verify user owns this order
+    const order = await this.invoicesService['prisma'].order.findUnique({
+      where: { id: orderId },
+      select: { userId: true },
+    });
+
+    if (!order || order.userId !== req.userId) {
+      throw new Error('Unauthorized');
+    }
+
+    return this.invoicesService.getInvoicesForOrder(orderId);
+  }
+
+  @Get(':id/download')
+  @UseGuards(ClerkAuthGuard)
+  async downloadInvoice(
+    @Param('id') invoiceId: string,
     @Res() res: Response,
+    @Req() req: any,
   ) {
-    // Check if user has access to this order
-    const order = await this.prisma.order.findUnique({ where: { id: orderId } });
+    // Get invoice and verify ownership
+    const invoice = await this.invoicesService['prisma'].invoice.findUnique({
+      where: { id: invoiceId },
+      include: { order: { select: { userId: true } } },
+    });
 
-    if (!order) {
-      throw new NotFoundException('Order not found');
+    if (!invoice || invoice.order.userId !== req.userId) {
+      throw new Error('Unauthorized');
     }
 
-    if (order.userId !== req.user.id && req.user.role !== 'ADMIN') {
-      throw new ForbiddenException('Access denied');
-    }
+    const pdfBuffer = await this.invoicesService.downloadInvoicePdf(invoiceId);
 
-    return this.invoicesService.generateOrderInvoice(orderId, res);
+    const filename =
+      invoice.type === 'INVOICE'
+        ? `rechnung-${invoice.invoiceNumber}.pdf`
+        : `lieferschein-${invoice.invoiceNumber}.pdf`;
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.send(pdfBuffer);
+  }
+
+  @Get()
+  @UseGuards(AdminAuthGuard)
+  async getAllInvoices() {
+    return this.invoicesService.getAllInvoices();
   }
 }

@@ -1,16 +1,250 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
-import PDFDocument from 'pdfkit';
-import { Response } from 'express';
-import { Resend } from 'resend';
+import { PdfGeneratorService } from './pdf-generator.service';
+import { InvoiceType } from '@prisma/client';
 
 @Injectable()
 export class InvoicesService {
-  private resend: Resend;
+  constructor(
+    private prisma: PrismaService,
+    private pdfGenerator: PdfGeneratorService,
+  ) {}
 
-  constructor(private prisma: PrismaService) {
-    this.resend = new Resend(process.env.RESEND_API_KEY);
+  async generateInvoiceNumber(type: InvoiceType): Promise<string> {
+    const currentYear = new Date().getFullYear();
+    const prefix = type === InvoiceType.INVOICE ? 'RE' : 'LS';
+
+    // Get or create counter
+    let counter = await this.prisma.invoiceCounter.findUnique({
+      where: {
+        type_year: {
+          type,
+          year: currentYear,
+        },
+      },
+    });
+
+    if (!counter) {
+      counter = await this.prisma.invoiceCounter.create({
+        data: {
+          type,
+          year: currentYear,
+          counter: 0,
+        },
+      });
+    }
+
+    // Increment counter
+    counter = await this.prisma.invoiceCounter.update({
+      where: { id: counter.id },
+      data: { counter: { increment: 1 } },
+    });
+
+    // Format: RE-2026-00001
+    return `${prefix}-${currentYear}-${String(counter.counter).padStart(5, '0')}`;
   }
+
+  async createInvoice(orderId: string) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        user: true,
+        items: {
+          include: {
+            product: {
+              include: {
+                packageItems: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    // Check if invoice already exists
+    const existingInvoice = await this.prisma.invoice.findFirst({
+      where: {
+        orderId,
+        type: InvoiceType.INVOICE,
+      },
+    });
+
+    if (existingInvoice) {
+      return existingInvoice;
+    }
+
+    // Generate invoice number
+    const invoiceNumber = await this.generateInvoiceNumber(InvoiceType.INVOICE);
+
+    // Determine tax rate based on country
+    const customerCountry = order.user.companyCountry || 'DE';
+    const isReverseCharge = customerCountry === 'DE' || customerCountry === 'AT';
+    const taxRate = isReverseCharge ? 0 : 8.1;
+
+    // Calculate amounts (stored in cents)
+    const grossAmountCents = Math.round(Number(order.totalAmount) * 100);
+    let netAmountCents: number;
+    let taxAmountCents: number;
+
+    if (isReverseCharge) {
+      // DE/AT: No tax, net = gross
+      netAmountCents = grossAmountCents;
+      taxAmountCents = 0;
+    } else {
+      // CH: Calculate net from gross including 8.1% VAT
+      netAmountCents = Math.round(grossAmountCents / 1.081);
+      taxAmountCents = grossAmountCents - netAmountCents;
+    }
+
+    // Create invoice
+    const invoice = await this.prisma.invoice.create({
+      data: {
+        invoiceNumber,
+        orderId,
+        type: InvoiceType.INVOICE,
+        customerCompany: order.user.company || order.user.companyName || 'N/A',
+        customerName: order.user.name || `${order.user.firstName || ''} ${order.user.lastName || ''}`.trim() || 'N/A',
+        customerAddress: `${order.user.companyStreet || ''}, ${order.user.companyZip || ''} ${order.user.companyCity || ''}, ${customerCountry}`.trim(),
+        customerCountry,
+        customerVatId: order.user.vatId,
+        netAmount: netAmountCents,
+        taxRate,
+        taxAmount: taxAmountCents,
+        grossAmount: grossAmountCents,
+        stripePaymentIntentId: order.stripePaymentId,
+      },
+    });
+
+    return invoice;
+  }
+
+  async createDeliveryNote(orderId: string) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        user: true,
+        items: {
+          include: {
+            product: {
+              include: {
+                packageItems: true,
+              },
+            },
+          },
+        },
+        deliveryAddress: true,
+      },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    // Check if delivery note already exists
+    const existingDeliveryNote = await this.prisma.invoice.findFirst({
+      where: {
+        orderId,
+        type: InvoiceType.DELIVERY_NOTE,
+      },
+    });
+
+    if (existingDeliveryNote) {
+      return existingDeliveryNote;
+    }
+
+    // Generate delivery note number
+    const invoiceNumber = await this.generateInvoiceNumber(InvoiceType.DELIVERY_NOTE);
+
+    // Use delivery address if available, otherwise use company address
+    let deliveryAddressStr: string;
+    if (order.deliveryAddress) {
+      deliveryAddressStr = `${order.deliveryAddress.street}, ${order.deliveryAddress.zipCode} ${order.deliveryAddress.city}, ${order.deliveryAddress.country}`;
+    } else {
+      const country = order.user.companyCountry || 'DE';
+      deliveryAddressStr = `${order.user.companyStreet || ''}, ${order.user.companyZip || ''} ${order.user.companyCity || ''}, ${country}`.trim();
+    }
+
+    // Create delivery note
+    const deliveryNote = await this.prisma.invoice.create({
+      data: {
+        invoiceNumber,
+        orderId,
+        type: InvoiceType.DELIVERY_NOTE,
+        customerCompany: order.user.company || order.user.companyName || 'N/A',
+        customerName: order.user.name || `${order.user.firstName || ''} ${order.user.lastName || ''}`.trim() || 'N/A',
+        customerAddress: deliveryAddressStr,
+        customerCountry: order.user.companyCountry || 'DE',
+        customerVatId: order.user.vatId,
+        netAmount: 0,
+        taxRate: 0,
+        taxAmount: 0,
+        grossAmount: 0,
+      },
+    });
+
+    return deliveryNote;
+  }
+
+  async getInvoicesForOrder(orderId: string) {
+    return this.prisma.invoice.findMany({
+      where: { orderId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async downloadInvoicePdf(invoiceId: string): Promise<Buffer> {
+    const invoice = await this.prisma.invoice.findUnique({
+      where: { id: invoiceId },
+      include: {
+        order: {
+          include: {
+            items: {
+              include: {
+                product: {
+                  include: {
+                    packageItems: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!invoice) {
+      throw new NotFoundException('Invoice not found');
+    }
+
+    return this.pdfGenerator.generateInvoicePdf(invoice as any);
+  }
+
+  async getAllInvoices() {
+    return this.prisma.invoice.findMany({
+      include: {
+        order: {
+          select: {
+            id: true,
+            user: {
+              select: {
+                name: true,
+                company: true,
+                companyName: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  // LEGACY METHODS - Keep for backward compatibility with existing commission invoices
+  // These use the old invoice logic for monthly commission reports
 
   /**
    * Generate monthly invoice PDF for reseller
@@ -19,8 +253,11 @@ export class InvoicesService {
     userId: string,
     year: number,
     month: number,
-    res: Response,
+    res: any,
   ) {
+    const PDFDocument = require('pdfkit');
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
     // Get user
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -252,9 +489,10 @@ export class InvoicesService {
   }
 
   /**
-   * Generate order invoice PDF
+   * Generate order invoice PDF (LEGACY)
    */
-  async generateOrderInvoice(orderId: string, res?: Response): Promise<Buffer | void> {
+  async generateOrderInvoice(orderId: string, res?: any): Promise<Buffer | void> {
+    const PDFDocument = require('pdfkit');
     // Get order with all details
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
@@ -275,7 +513,7 @@ export class InvoicesService {
 
     // Generate invoice number if not exists
     if (!order.invoiceNumber) {
-      const invoiceNumber = await this.generateInvoiceNumber();
+      const invoiceNumber = await this.generateLegacyInvoiceNumber();
       await this.prisma.order.update({
         where: { id: orderId },
         data: { invoiceNumber },
@@ -461,9 +699,9 @@ export class InvoicesService {
   }
 
   /**
-   * Generate unique invoice number
+   * Generate unique invoice number (LEGACY)
    */
-  private async generateInvoiceNumber(): Promise<string> {
+  private async generateLegacyInvoiceNumber(): Promise<string> {
     const year = new Date().getFullYear();
     const count = await this.prisma.order.count({
       where: {
@@ -474,9 +712,11 @@ export class InvoicesService {
   }
 
   /**
-   * Send invoice email with PDF attachment
+   * Send invoice email with PDF attachment (LEGACY)
    */
   async sendInvoiceEmail(orderId: string) {
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
       include: { user: true, items: { include: { product: true } } },
@@ -495,7 +735,7 @@ export class InvoicesService {
 
     // Send email with Resend
     try {
-      await this.resend.emails.send({
+      await resend.emails.send({
         from: 'Marketplace24-7 GmbH <noreply@ecommercerente.com>',
         to: order.user.email,
         subject: `Ihre Rechnung ${order.invoiceNumber} - Marketplace24-7 GmbH`,
