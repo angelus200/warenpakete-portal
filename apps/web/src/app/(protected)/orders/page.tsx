@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 export const dynamic = 'force-dynamic';
 import { useApi } from '@/hooks/useApi';
@@ -10,10 +10,18 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
+interface InvoiceResponse {
+  id: string;
+  invoiceNumber: string;
+  type: string;
+}
+
 export default function OrdersPage() {
   const api = useApi();
   const searchParams = useSearchParams();
   const [showSuccess, setShowSuccess] = useState(false);
+  const [generatingInvoice, setGeneratingInvoice] = useState<string | null>(null);
+  const [generatingDeliveryNote, setGeneratingDeliveryNote] = useState<string | null>(null);
 
   useEffect(() => {
     if (searchParams.get('success') === 'true') {
@@ -26,6 +34,42 @@ export default function OrdersPage() {
     queryKey: ['orders'],
     queryFn: () => api.get('/orders'),
   });
+
+  const createInvoiceMutation = useMutation<InvoiceResponse, Error, string>({
+    mutationFn: (orderId: string) => api.post(`/invoices/order/${orderId}/invoice`, {}),
+    onSuccess: (data, orderId) => {
+      // Download the invoice PDF
+      window.open(`${process.env.NEXT_PUBLIC_API_URL}/invoices/${data.id}/download`, '_blank');
+      setGeneratingInvoice(null);
+    },
+    onError: () => {
+      alert('Fehler beim Erstellen der Rechnung');
+      setGeneratingInvoice(null);
+    },
+  });
+
+  const createDeliveryNoteMutation = useMutation<InvoiceResponse, Error, string>({
+    mutationFn: (orderId: string) => api.post(`/invoices/order/${orderId}/delivery-note`, {}),
+    onSuccess: (data, orderId) => {
+      // Download the delivery note PDF
+      window.open(`${process.env.NEXT_PUBLIC_API_URL}/invoices/${data.id}/download`, '_blank');
+      setGeneratingDeliveryNote(null);
+    },
+    onError: () => {
+      alert('Fehler beim Erstellen des Lieferscheins');
+      setGeneratingDeliveryNote(null);
+    },
+  });
+
+  const handleDownloadInvoice = (orderId: string) => {
+    setGeneratingInvoice(orderId);
+    createInvoiceMutation.mutate(orderId);
+  };
+
+  const handleDownloadDeliveryNote = (orderId: string) => {
+    setGeneratingDeliveryNote(orderId);
+    createDeliveryNoteMutation.mutate(orderId);
+  };
 
   return (
     <div className="min-h-screen bg-[#ebebeb]">
@@ -115,15 +159,57 @@ export default function OrdersPage() {
                 </div>
 
                 {order.status === 'PAID' && (
-                  <button
-                    onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL}/invoices/order/${order.id}`, '_blank')}
-                    className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 rounded-lg transition-colors font-semibold"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <button
+                      onClick={() => handleDownloadInvoice(order.id)}
+                      disabled={generatingInvoice === order.id}
+                      className="flex items-center justify-center gap-2 px-4 py-3 bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 rounded-lg transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {generatingInvoice === order.id ? (
+                        <>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gold"></div>
+                          Erstelle Rechnung...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                          Rechnung herunterladen
+                        </>
+                      )}
+                    </button>
+
+                    <button
+                      onClick={() => handleDownloadDeliveryNote(order.id)}
+                      disabled={generatingDeliveryNote === order.id}
+                      className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-lg transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {generatingDeliveryNote === order.id ? (
+                        <>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400"></div>
+                          Erstelle Lieferschein...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                          </svg>
+                          Lieferschein herunterladen
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
+
+                {(order.status === 'SHIPPED' || order.status === 'DELIVERED') && (
+                  <div className="mt-2 text-center text-sm text-gray-600">
+                    <svg className="w-5 h-5 inline mr-2 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                      <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
                     </svg>
-                    Rechnung herunterladen
-                  </button>
+                    {order.status === 'SHIPPED' ? 'Bestellung versendet' : 'Bestellung zugestellt'}
+                  </div>
                 )}
               </Card>
             ))}
