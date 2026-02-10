@@ -149,7 +149,7 @@ export default function ProductDetailPage({
               <h1 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
                 {product.name}
               </h1>
-              <p className="text-gray-600 text-lg leading-relaxed mb-4">
+              <p className="text-gray-600 text-lg leading-relaxed mb-4 whitespace-pre-line">
                 {product.description}
               </p>
 
