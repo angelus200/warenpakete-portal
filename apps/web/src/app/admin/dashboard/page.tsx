@@ -199,6 +199,13 @@ export default function AdminDashboardPage() {
               <p className="text-sm text-gray-600 mt-1">Auszahlungen & Übersicht</p>
             </Link>
             <Link
+              href="/admin/invoices"
+              className="p-4 bg-white hover:bg-gray-100 rounded-lg transition-all text-center"
+            >
+              <p className="text-gray-900 font-semibold">📄 Rechnungen</p>
+              <p className="text-sm text-gray-600 mt-1">Rechnungen & Lieferscheine</p>
+            </Link>
+            <Link
               href="/admin/products"
               className="p-4 bg-white hover:bg-gray-100 rounded-lg transition-all text-center"
             >
