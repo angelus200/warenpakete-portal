@@ -959,22 +959,22 @@ export default function Home() {
               { name: 'Spielwaren', image: '/images/categories/spielwaren.webp' },
               { name: 'Werkzeug', image: '/images/categories/werkzeug.webp' },
             ].map((category) => (
-              <Link key={category.name} href={isSignedIn ? '/products' : '/sign-up'}>
-                <Card className="p-4 text-center bg-white border-gray-300 hover:border-gold hover:shadow-xl hover:shadow-gold/20 transition-all cursor-pointer group">
+              <div key={category.name}>
+                <Card className="p-4 text-center bg-white border-gray-300">
                   <div className="w-full h-32 mb-4 overflow-hidden rounded-lg relative">
                     <Image
                       src={category.image}
                       alt={category.name}
                       width={600}
                       height={400}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover"
                     />
                   </div>
-                  <p className="font-bold text-gray-900 group-hover:text-gold transition-colors">
+                  <p className="font-bold text-gray-900">
                     {category.name}
                   </p>
                 </Card>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
