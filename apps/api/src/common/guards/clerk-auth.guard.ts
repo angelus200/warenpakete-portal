@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Clerk } from '@clerk/backend';
 import { PrismaService } from '../prisma/prisma.service';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class ClerkAuthGuard implements CanActivate {
@@ -51,13 +52,37 @@ export class ClerkAuthGuard implements CanActivate {
       }
 
       // CRITICAL: Get user from database to get the actual user.id (not just clerkId)
-      const user = await this.prisma.user.findUnique({
+      let user = await this.prisma.user.findUnique({
         where: { clerkId: payload.sub },
         select: { id: true, clerkId: true, email: true, role: true },
       });
 
+      // AUTO-CREATE FALLBACK: If user exists in Clerk but not in DB
+      // This handles cases where webhook failed or was missed
       if (!user) {
-        throw new UnauthorizedException('User not found');
+        try {
+          console.log(`⚠️  User ${payload.sub} not in DB - fetching from Clerk for auto-create`);
+
+          // Fetch full user data from Clerk
+          const clerkUser = await this.clerk.users.getUser(payload.sub);
+
+          // Create user in database
+          user = await this.prisma.user.create({
+            data: {
+              clerkId: payload.sub,
+              email: clerkUser.emailAddresses[0]?.emailAddress || '',
+              firstName: clerkUser.firstName || null,
+              lastName: clerkUser.lastName || null,
+              referralCode: nanoid(10),
+            },
+            select: { id: true, clerkId: true, email: true, role: true },
+          });
+
+          console.log(`✅ Auto-created user ${user.email} (webhook missed)`);
+        } catch (createError) {
+          console.error('❌ Failed to auto-create user:', createError.message);
+          throw new UnauthorizedException('User not found and auto-create failed');
+        }
       }
 
       request.user = {
