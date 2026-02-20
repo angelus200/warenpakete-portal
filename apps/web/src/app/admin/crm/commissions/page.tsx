@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { CrmLayout } from '@/components/crm/CrmLayout';
 import { CrmKpiCard } from '@/components/crm/CrmKpiCard';
 import { CrmStatusBadge } from '@/components/crm/CrmStatusBadge';
@@ -24,6 +25,7 @@ interface Commission {
 }
 
 export default function CrmCommissionsPage() {
+  const router = useRouter();
   const [commissions, setCommissions] = useState<Commission[]>([]);
   const [stats, setStats] = useState<any>(null);
   const [filter, setFilter] = useState('all');
@@ -36,6 +38,12 @@ export default function CrmCommissionsPage() {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('adminToken');
+
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
       const [commissionsRes, statsRes] = await Promise.all([
         fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/crm/commissions${filter !== 'all' ? `?status=${filter}` : ''}`,
@@ -45,12 +53,35 @@ export default function CrmCommissionsPage() {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
+
+      if (!commissionsRes.ok || !statsRes.ok) {
+        if (commissionsRes.status === 401 || statsRes.status === 401) {
+          router.push('/admin/login');
+          return;
+        }
+        setCommissions([]);
+        setStats(null);
+        return;
+      }
+
       const commissionsData = await commissionsRes.json();
       const statsData = await statsRes.json();
-      setCommissions(commissionsData);
-      setStats(statsData);
+
+      if (Array.isArray(commissionsData)) {
+        setCommissions(commissionsData);
+      } else {
+        setCommissions([]);
+      }
+
+      if (statsData && typeof statsData === 'object') {
+        setStats(statsData);
+      } else {
+        setStats(null);
+      }
     } catch (error) {
       console.error('Failed to fetch commissions:', error);
+      setCommissions([]);
+      setStats(null);
     } finally {
       setLoading(false);
     }

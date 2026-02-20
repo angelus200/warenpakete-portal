@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { CrmLayout } from '@/components/crm/CrmLayout';
 import { CrmKpiCard } from '@/components/crm/CrmKpiCard';
 import { CrmStatusBadge } from '@/components/crm/CrmStatusBadge';
@@ -60,6 +61,7 @@ const PIPELINE_STAGES = [
 ];
 
 export default function CrmOrdersPage() {
+  const router = useRouter();
   const [pipeline, setPipeline] = useState<Pipeline | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -70,16 +72,33 @@ export default function CrmOrdersPage() {
   const fetchPipeline = async () => {
     try {
       const token = localStorage.getItem('adminToken');
+
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/crm/orders/pipeline`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          router.push('/admin/login');
+          return;
+        }
+        setPipeline(null);
+        return;
+      }
+
       const data = await res.json();
       setPipeline(data);
     } catch (error) {
       console.error('Failed to fetch pipeline:', error);
+      setPipeline(null);
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { CrmLayout } from '@/components/crm/CrmLayout';
 
 interface Affiliate {
@@ -41,6 +42,7 @@ interface Withdrawal {
 }
 
 export default function AdminAffiliatesPage() {
+  const router = useRouter();
   const [affiliates, setAffiliates] = useState<Affiliate[]>([]);
   const [loading, setLoading] = useState(true);
   const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
@@ -55,16 +57,42 @@ export default function AdminAffiliatesPage() {
   const fetchAffiliates = async () => {
     try {
       const token = localStorage.getItem('adminToken');
+
+      if (!token) {
+        console.error('No admin token found');
+        router.push('/admin/login');
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/affiliate/admin/all`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          console.error('Unauthorized - redirecting to login');
+          router.push('/admin/login');
+          return;
+        }
+        console.error('Failed to fetch affiliates:', res.status);
+        setAffiliates([]);
+        return;
+      }
+
       const data = await res.json();
-      setAffiliates(data);
+
+      if (Array.isArray(data)) {
+        setAffiliates(data);
+      } else {
+        console.error('Invalid response format:', data);
+        setAffiliates([]);
+      }
     } catch (error) {
       console.error('Failed to fetch affiliates:', error);
+      setAffiliates([]);
     } finally {
       setLoading(false);
     }
@@ -73,14 +101,36 @@ export default function AdminAffiliatesPage() {
   const fetchWithdrawals = async () => {
     try {
       const token = localStorage.getItem('adminToken');
+
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/affiliate/admin/withdrawals`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          router.push('/admin/login');
+          return;
+        }
+        setWithdrawals([]);
+        return;
+      }
+
       const data = await res.json();
-      setWithdrawals(data);
+
+      if (Array.isArray(data)) {
+        setWithdrawals(data);
+      } else {
+        setWithdrawals([]);
+      }
     } catch (error) {
       console.error('Failed to fetch withdrawals:', error);
+      setWithdrawals([]);
     }
   };
 

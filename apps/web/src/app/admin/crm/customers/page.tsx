@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { CrmLayout } from '@/components/crm/CrmLayout';
 import { CrmKpiCard } from '@/components/crm/CrmKpiCard';
 import { CrmStatusBadge } from '@/components/crm/CrmStatusBadge';
@@ -23,6 +24,7 @@ interface Customer {
 }
 
 export default function CrmCustomersPage() {
+  const router = useRouter();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -36,6 +38,12 @@ export default function CrmCustomersPage() {
   const fetchCustomers = async () => {
     try {
       const token = localStorage.getItem('adminToken');
+
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
       const params = new URLSearchParams();
       if (statusFilter !== 'all') params.append('status', statusFilter);
       if (search) params.append('search', search);
@@ -46,10 +54,26 @@ export default function CrmCustomersPage() {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          router.push('/admin/login');
+          return;
+        }
+        setCustomers([]);
+        return;
+      }
+
       const data = await res.json();
-      setCustomers(data);
+
+      if (Array.isArray(data)) {
+        setCustomers(data);
+      } else {
+        setCustomers([]);
+      }
     } catch (error) {
       console.error('Failed to fetch customers:', error);
+      setCustomers([]);
     } finally {
       setLoading(false);
     }

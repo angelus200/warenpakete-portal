@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { CrmLayout } from '@/components/crm/CrmLayout';
 import { MessageSquare, Send, X } from 'lucide-react';
 
@@ -26,6 +27,7 @@ interface ChatMessage {
 }
 
 export default function AdminSupportPage() {
+  const router = useRouter();
   const [rooms, setRooms] = useState<ChatRoom[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -57,14 +59,36 @@ export default function AdminSupportPage() {
   const fetchRooms = async () => {
     try {
       const token = localStorage.getItem('adminToken');
+
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/chat/admin/rooms`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          router.push('/admin/login');
+          return;
+        }
+        setRooms([]);
+        return;
+      }
+
       const data = await res.json();
-      setRooms(data);
+
+      if (Array.isArray(data)) {
+        setRooms(data);
+      } else {
+        setRooms([]);
+      }
     } catch (error) {
       console.error('Failed to fetch rooms:', error);
+      setRooms([]);
     } finally {
       setLoading(false);
     }
@@ -73,16 +97,39 @@ export default function AdminSupportPage() {
   const fetchMessages = async (roomId: string) => {
     try {
       const token = localStorage.getItem('adminToken');
+
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/chat/admin/rooms/${roomId}/messages`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          router.push('/admin/login');
+          return;
+        }
+        setMessages([]);
+        return;
+      }
+
       const data = await res.json();
-      setMessages(data);
+
+      if (Array.isArray(data)) {
+        setMessages(data);
+      } else {
+        setMessages([]);
+      }
+
       // Refresh rooms to update unread count
       await fetchRooms();
     } catch (error) {
       console.error('Failed to fetch messages:', error);
+      setMessages([]);
     }
   };
 
@@ -92,6 +139,12 @@ export default function AdminSupportPage() {
     try {
       setSending(true);
       const token = localStorage.getItem('adminToken');
+
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/chat/admin/rooms/${selectedRoom.id}/messages`,
         {
@@ -103,6 +156,16 @@ export default function AdminSupportPage() {
           body: JSON.stringify({ message: newMessage }),
         }
       );
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          router.push('/admin/login');
+          return;
+        }
+        console.error('Failed to send message:', res.status);
+        return;
+      }
+
       const message = await res.json();
       setMessages([...messages, message]);
       setNewMessage('');
@@ -119,13 +182,29 @@ export default function AdminSupportPage() {
 
     try {
       const token = localStorage.getItem('adminToken');
-      await fetch(
+
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
+      const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/chat/admin/rooms/${roomId}/close`,
         {
           method: 'PATCH',
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          router.push('/admin/login');
+          return;
+        }
+        console.error('Failed to close room:', res.status);
+        return;
+      }
+
       await fetchRooms();
       if (selectedRoom?.id === roomId) {
         setSelectedRoom(null);

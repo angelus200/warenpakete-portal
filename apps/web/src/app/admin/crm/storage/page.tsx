@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { CrmLayout } from '@/components/crm/CrmLayout';
 import { CrmKpiCard } from '@/components/crm/CrmKpiCard';
 import { CrmStatusBadge } from '@/components/crm/CrmStatusBadge';
@@ -29,6 +30,7 @@ interface StorageFee {
 }
 
 export default function CrmStoragePage() {
+  const router = useRouter();
   const [storage, setStorage] = useState<StorageFee[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,16 +41,38 @@ export default function CrmStoragePage() {
   const fetchStorage = async () => {
     try {
       const token = localStorage.getItem('adminToken');
+
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/crm/storage`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          router.push('/admin/login');
+          return;
+        }
+        setStorage([]);
+        return;
+      }
+
       const data = await res.json();
-      setStorage(data);
+
+      if (Array.isArray(data)) {
+        setStorage(data);
+      } else {
+        setStorage([]);
+      }
     } catch (error) {
       console.error('Failed to fetch storage:', error);
+      setStorage([]);
     } finally {
       setLoading(false);
     }
