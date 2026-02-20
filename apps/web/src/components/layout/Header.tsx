@@ -50,6 +50,9 @@ export function Header() {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-4">
+            {/* Public links - always visible */}
+            <NavLink href="/partner">Partner werden</NavLink>
+
             {api.isSignedIn && (
               <>
                 <NavLink href="/products">Produkte</NavLink>
@@ -114,18 +117,23 @@ export function Header() {
         </div>
 
         {/* Mobile Navigation */}
-        {api.isSignedIn && (
-          <div className="md:hidden border-t border-gray-300 py-3 flex space-x-4 overflow-x-auto">
-            <NavLink href="/products">Produkte</NavLink>
-            <NavLink href="/dashboard">Dashboard</NavLink>
-            <NavLink href="/orders">Bestellungen</NavLink>
-            <NavLink href="/contracts">Verträge</NavLink>
-            <NavLink href="/affiliate">Affiliate</NavLink>
-            <NavLink href="/support">Support</NavLink>
-            {/* Admin link - only visible for admin users */}
-            {isAdmin && <NavLink href="/admin" isAdminLink>Admin</NavLink>}
-          </div>
-        )}
+        <div className="md:hidden border-t border-gray-300 py-3 flex space-x-4 overflow-x-auto">
+          {/* Public links - always visible */}
+          <NavLink href="/partner">Partner werden</NavLink>
+
+          {api.isSignedIn && (
+            <>
+              <NavLink href="/products">Produkte</NavLink>
+              <NavLink href="/dashboard">Dashboard</NavLink>
+              <NavLink href="/orders">Bestellungen</NavLink>
+              <NavLink href="/contracts">Verträge</NavLink>
+              <NavLink href="/affiliate">Affiliate</NavLink>
+              <NavLink href="/support">Support</NavLink>
+              {/* Admin link - only visible for admin users */}
+              {isAdmin && <NavLink href="/admin" isAdminLink>Admin</NavLink>}
+            </>
+          )}
+        </div>
       </div>
     </header>
   );
