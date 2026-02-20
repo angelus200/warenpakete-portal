@@ -533,3 +533,67 @@ enum InvoiceType {
   INVOICE
   DELIVERY_NOTE
 }
+
+// Berater für Erstgespräch-Funnel
+model Consultant {
+  id             String       @id @default(uuid())
+  name           String       // z.B. "Thomas Gross"
+  email          String       @unique
+  calendlyUrl    String       // z.B. "https://calendly.com/thomas-gross/erstgespraech"
+  isActive       Boolean      @default(true)
+  maxLeadsPerDay Int?         @default(10)
+  assignedLeads  Int          @default(0)  // Zähler für Round-Robin
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  leads          FunnelLead[]
+
+  @@map("consultants")
+}
+
+// Lead aus Erstgespräch-Funnel
+model FunnelLead {
+  id                  String      @id @default(uuid())
+
+  // Step 1: Kontaktdaten
+  firstName           String
+  lastName            String
+  email               String
+  phone               String
+  company             String
+  position            String?
+
+  // Step 2: Qualifizierung
+  budget              String      // "5k-10k", "10k-25k", "25k-50k", "50k-100k", "100k+"
+  industry            String
+  ecommerceExperience String      // "none", "basic", "advanced", "pro"
+  companySize         String      // "1", "2-10", "11-50", "51-200", "200+"
+  source              String      // "google", "social", "referral", "youtube", "podcast", "event", "other"
+  timeframe           String      // "immediate", "1-3months", "3-6months", "just_info"
+
+  // Step 3: Ergebnis
+  isQualified         Boolean     @default(false)  // Budget >= 10k
+  consultantId        String?
+  consultant          Consultant? @relation(fields: [consultantId], references: [id])
+  calendlyBooked      Boolean     @default(false)
+  bookedAt            DateTime?
+
+  // Tracking
+  affiliateRef        String?     // Falls über Affiliate-Link
+  utmSource           String?
+  utmMedium           String?
+  utmCampaign         String?
+
+  // Admin Management
+  status              String      @default("NEW")  // NEW, CONTACTED, CONVERTED, REJECTED
+  notes               String?     @db.Text
+
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([isQualified])
+  @@index([createdAt])
+  @@map("funnel_leads")
+}

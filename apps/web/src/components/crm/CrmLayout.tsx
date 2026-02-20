@@ -9,6 +9,8 @@ import {
   Warehouse,
   Share2,
   MessageSquare,
+  UserPlus,
+  UserCheck,
 } from 'lucide-react';
 
 const TABS = [
@@ -47,6 +49,18 @@ const TABS = [
     label: 'Support',
     icon: MessageSquare,
     href: '/admin/crm/support',
+  },
+  {
+    key: 'leads',
+    label: 'Leads',
+    icon: UserPlus,
+    href: '/admin/crm/leads',
+  },
+  {
+    key: 'consultants',
+    label: 'Berater',
+    icon: UserCheck,
+    href: '/admin/crm/consultants',
   },
 ];
 
