@@ -425,7 +425,7 @@ export default function PartnerPage() {
                   ))}
                 </div>
                 <p className="text-gray-700 italic mb-6 leading-relaxed">
-                  "{testimonial.quote}"
+                  &quot;{testimonial.quote}&quot;
                 </p>
                 <div className="border-t border-gray-200 pt-4">
                   <p className="font-bold text-gray-900">
