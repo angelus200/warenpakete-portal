@@ -1,42 +1,18 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Delete,
-  Body,
-  Param,
-  Query,
-  UseGuards,
-  Res,
-} from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
-import { FunnelService } from './funnel.service';
-import { CreateLeadDto } from './dto/create-lead.dto';
-import { UpdateLeadDto } from './dto/update-lead.dto';
-import { CreateConsultantDto } from './dto/create-consultant.dto';
-import { UpdateConsultantDto } from './dto/update-consultant.dto';
-import { AdminAuthGuard } from '../admin/admin-auth.guard';
+import { UsersService } from './users.service';
 
-@ApiTags('funnel')
-@Controller('funnel')
-export class FunnelController {
-  constructor(private readonly funnelService: FunnelService) {}
+@ApiTags('users-public')
+@Controller('users')
+export class UsersPublicController {
+  constructor(private readonly usersService: UsersService) {}
 
-  // ===== PUBLIC ENDPOINTS =====
-
-  @Post('leads')
-  @ApiOperation({ summary: 'Create new lead from funnel (PUBLIC)' })
-  createLead(@Body() createLeadDto: CreateLeadDto) {
-    return this.funnelService.createLead(createLeadDto);
-  }
-
-  @Get('unsubscribe/:leadId')
+  @Get('unsubscribe/:userId')
   @ApiOperation({ summary: 'Unsubscribe from email sequences (PUBLIC)' })
-  async unsubscribeLead(@Param('leadId') leadId: string, @Res() res: Response) {
+  async unsubscribeUser(@Param('userId') userId: string, @Res() res: Response) {
     try {
-      await this.funnelService.unsubscribeLead(leadId);
+      await this.usersService.unsubscribeUser(userId);
 
       const html = `
         <!DOCTYPE html>
@@ -169,94 +145,5 @@ export class FunnelController {
       `;
       return res.status(400).send(errorHtml);
     }
-  }
-
-  // ===== ADMIN ENDPOINTS =====
-
-  @Get('leads')
-  @UseGuards(AdminAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get all leads with filters (ADMIN)' })
-  getLeads(
-    @Query('status') status?: string,
-    @Query('isQualified') isQualified?: string,
-    @Query('consultantId') consultantId?: string,
-    @Query('search') search?: string,
-  ) {
-    return this.funnelService.getLeads({
-      status,
-      isQualified: isQualified === 'true' ? true : isQualified === 'false' ? false : undefined,
-      consultantId,
-      search,
-    });
-  }
-
-  @Get('leads/stats')
-  @UseGuards(AdminAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get lead statistics (ADMIN)' })
-  getLeadStats() {
-    return this.funnelService.getLeadStats();
-  }
-
-  @Get('leads/:id')
-  @UseGuards(AdminAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get lead by ID (ADMIN)' })
-  getLeadById(@Param('id') id: string) {
-    return this.funnelService.getLeadById(id);
-  }
-
-  @Patch('leads/:id')
-  @UseGuards(AdminAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update lead (ADMIN)' })
-  updateLead(@Param('id') id: string, @Body() updateLeadDto: UpdateLeadDto) {
-    return this.funnelService.updateLead(id, updateLeadDto);
-  }
-
-  // ===== CONSULTANT ENDPOINTS (ADMIN) =====
-
-  @Get('consultants')
-  @UseGuards(AdminAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get all consultants (ADMIN)' })
-  getConsultants() {
-    return this.funnelService.getConsultants();
-  }
-
-  @Post('consultants')
-  @UseGuards(AdminAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Create consultant (ADMIN)' })
-  createConsultant(@Body() createConsultantDto: CreateConsultantDto) {
-    return this.funnelService.createConsultant(createConsultantDto);
-  }
-
-  @Get('consultants/:id')
-  @UseGuards(AdminAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get consultant by ID (ADMIN)' })
-  getConsultantById(@Param('id') id: string) {
-    return this.funnelService.getConsultantById(id);
-  }
-
-  @Patch('consultants/:id')
-  @UseGuards(AdminAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update consultant (ADMIN)' })
-  updateConsultant(
-    @Param('id') id: string,
-    @Body() updateConsultantDto: UpdateConsultantDto,
-  ) {
-    return this.funnelService.updateConsultant(id, updateConsultantDto);
-  }
-
-  @Delete('consultants/:id')
-  @UseGuards(AdminAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete consultant (soft delete) (ADMIN)' })
-  deleteConsultant(@Param('id') id: string) {
-    return this.funnelService.deleteConsultant(id);
   }
 }

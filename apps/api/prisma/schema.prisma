@@ -42,6 +42,14 @@ model User {
   customerStatus    String?  @default("active") // active, pending, inactive, vip
   totalSpent        Decimal? @default(0) @db.Decimal(10, 2)
   lastOrderAt       DateTime?
+  firstOrderAt      DateTime?
+
+  // Email automation tracking
+  emailOptOut              Boolean  @default(false)
+  welcomeEmailSentAt       DateTime?
+  onboardingEmail2SentAt   DateTime?
+  onboardingEmail3SentAt   DateTime?
+  emailSequenceCompleted   Boolean  @default(false)
 
   orders             Order[]
   commissionsEarned  Commission[]       @relation("ResellerCommissions")
@@ -54,6 +62,7 @@ model User {
   affiliateWithdrawals AffiliateWithdrawal[] @relation("UserAffiliateWithdrawals")
   chatRooms          ChatRoom[]         @relation("UserChatRooms")
 
+  @@index([emailOptOut, createdAt, firstOrderAt])
   @@map("users")
 }
 
@@ -588,6 +597,12 @@ model FunnelLead {
   status              String      @default("NEW")  // NEW, CONTACTED, CONVERTED, REJECTED
   notes               String?     @db.Text
 
+  // Email automation tracking
+  emailOptOut         Boolean     @default(false)
+  lastEmailSentAt     DateTime?
+  lastEmailType       String?     // "thank_you", "reminder_24h", "urgency_72h", "content_7d"
+  emailsSentCount     Int         @default(0)
+
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
 
@@ -595,5 +610,7 @@ model FunnelLead {
   @@index([status])
   @@index([isQualified])
   @@index([createdAt])
+  @@index([isQualified, calendlyBooked, emailOptOut, createdAt])
+  @@index([emailOptOut])
   @@map("funnel_leads")
 }

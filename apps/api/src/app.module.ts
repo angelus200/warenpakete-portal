@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './common/prisma/prisma.module';
@@ -11,6 +12,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { CommissionsModule } from './modules/commissions/commissions.module';
 import { EmailModule } from './modules/email/email.module';
+import { EmailAutomationModule } from './modules/email-automation/email-automation.module';
 import { StorageModule } from './modules/storage/storage.module';
 import { WalletModule } from './modules/wallet/wallet.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
@@ -27,6 +29,7 @@ import { FunnelModule } from './modules/funnel/funnel.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
@@ -35,6 +38,7 @@ import { FunnelModule } from './modules/funnel/funnel.module';
     ]),
     PrismaModule,
     EmailModule,
+    EmailAutomationModule,
     StorageModule,
     WalletModule,
     InvoicesModule,

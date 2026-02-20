@@ -135,4 +135,23 @@ export class UsersService {
 
     return newUser;
   }
+
+  // ===== UNSUBSCRIBE =====
+
+  async unsubscribeUser(userId: string) {
+    this.logger.log(`Unsubscribing user: ${userId}`);
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { emailOptOut: true },
+    });
+  }
 }

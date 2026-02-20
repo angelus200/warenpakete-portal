@@ -258,4 +258,23 @@ export class FunnelService {
 
     return budgetMap[budgetString] || 0;
   }
+
+  // ===== UNSUBSCRIBE =====
+
+  async unsubscribeLead(leadId: string) {
+    this.logger.log(`Unsubscribing lead: ${leadId}`);
+
+    const lead = await this.prisma.funnelLead.findUnique({
+      where: { id: leadId },
+    });
+
+    if (!lead) {
+      throw new NotFoundException('Lead not found');
+    }
+
+    return this.prisma.funnelLead.update({
+      where: { id: leadId },
+      data: { emailOptOut: true },
+    });
+  }
 }
