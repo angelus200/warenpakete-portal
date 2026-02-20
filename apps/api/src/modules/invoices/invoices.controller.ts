@@ -30,7 +30,7 @@ export class InvoicesController {
       select: { userId: true },
     });
 
-    if (!order || order.userId !== req.userId) {
+    if (!order || order.userId !== req.user.id) {
       throw new NotFoundException('Order not found or unauthorized');
     }
 
@@ -46,7 +46,7 @@ export class InvoicesController {
       select: { userId: true },
     });
 
-    if (!order || order.userId !== req.userId) {
+    if (!order || order.userId !== req.user.id) {
       throw new NotFoundException('Order not found or unauthorized');
     }
 
@@ -62,7 +62,7 @@ export class InvoicesController {
       select: { userId: true },
     });
 
-    if (!order || order.userId !== req.userId) {
+    if (!order || order.userId !== req.user.id) {
       throw new NotFoundException('Order not found or unauthorized');
     }
 
@@ -82,7 +82,7 @@ export class InvoicesController {
       include: { order: { select: { userId: true } } },
     });
 
-    if (!invoice || invoice.order.userId !== req.userId) {
+    if (!invoice || invoice.order.userId !== req.user.id) {
       throw new NotFoundException('Invoice not found or unauthorized');
     }
 
