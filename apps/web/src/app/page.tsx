@@ -84,6 +84,15 @@ export default function Home() {
                   {isSignedIn ? 'Warenpakete ansehen' : 'Jetzt registrieren'}
                 </Button>
               </Link>
+              <Link href="/erstgespraech">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-lg px-5 py-7 border-2 border-gold text-gold bg-white hover:bg-gold/10 font-bold shadow-xl"
+                >
+                  📞 Erstgespräch vereinbaren
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -132,6 +141,68 @@ export default function Home() {
                 />
               </div>
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Erstgespräch CTA Section */}
+      <section className="py-20 bg-gradient-to-br from-[#fffbeb] via-white to-[#fffbeb] relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold/5 via-transparent to-transparent" />
+
+        <div className="container relative z-10 mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <Card className="p-10 md:p-12 bg-white border-2 border-gold/30 shadow-2xl shadow-gold/10">
+              <div className="text-center">
+                <div className="inline-block mb-4 px-4 py-2 rounded-full bg-gold/20 border border-gold/30">
+                  <span className="text-gold text-sm font-bold tracking-wider">
+                    KOSTENLOSE BERATUNG
+                  </span>
+                </div>
+
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                  Persönliche <span className="text-gold">Beratung</span> gewünscht?
+                </h2>
+
+                <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                  Vereinbaren Sie jetzt ein kostenloses Erstgespräch mit unseren E-Commerce Experten.
+                  Wir besprechen Ihre individuellen Möglichkeiten und beantworten all Ihre Fragen.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>30 Minuten persönlich</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>100% unverbindlich</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>Keine Verpflichtungen</span>
+                  </div>
+                </div>
+
+                <Link href="/erstgespraech">
+                  <Button
+                    size="lg"
+                    className="text-lg px-8 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
+                  >
+                    📞 Jetzt Termin buchen
+                  </Button>
+                </Link>
+
+                <p className="text-xs text-gray-500 mt-4">
+                  In nur 3 Minuten Ihren Wunschtermin sichern
+                </p>
+              </div>
+            </Card>
           </div>
         </div>
       </section>
