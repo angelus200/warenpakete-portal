@@ -85,39 +85,160 @@ export class AffiliateService {
   }
 
   /**
-   * Track affiliate conversion
+   * Track 3-tier affiliate conversion
+   * Tier 1 (direct referrer): 3%
+   * Tier 2 (referrer's referrer): 1%
+   * Tier 3 (referrer's referrer's referrer): 1%
+   *
+   * Includes self-referral protection and loop detection
    */
-  async trackConversion(code: string, orderId: string, orderAmount: number) {
-    const link = await this.prisma.affiliateLink.findUnique({
-      where: { code },
-    });
-
-    if (!link) {
-      return { success: false, error: 'Invalid code' };
-    }
-
-    // Check if conversion already exists
-    const existing = await this.prisma.affiliateConversion.findUnique({
-      where: { orderId },
-    });
-
-    if (existing) {
-      return { success: false, error: 'Conversion already tracked' };
-    }
-
-    // Calculate 5% commission
-    const amount = orderAmount * 0.05;
-
-    const conversion = await this.prisma.affiliateConversion.create({
-      data: {
-        linkId: link.id,
-        orderId,
-        amount,
-        status: 'PENDING',
+  async trackConversion(buyerUserId: string, orderId: string, orderAmount: number) {
+    // Get buyer with affiliateReferredBy chain
+    const buyer = await this.prisma.user.findUnique({
+      where: { id: buyerUserId },
+      select: {
+        id: true,
+        affiliateReferredBy: true,
       },
     });
 
-    return { success: true, conversion };
+    if (!buyer?.affiliateReferredBy) {
+      console.log('No affiliate referrer found for user', buyerUserId);
+      return { success: false, error: 'No affiliate referrer' };
+    }
+
+    // Check if conversions already exist for this order
+    const existingConversions = await this.prisma.affiliateConversion.findMany({
+      where: { orderId },
+    });
+
+    if (existingConversions.length > 0) {
+      console.log('Conversions already tracked for order', orderId);
+      return { success: false, error: 'Conversion already tracked' };
+    }
+
+    const conversions = [];
+    const visitedCodes = new Set<string>(); // Loop detection
+    visitedCodes.add(buyer.id); // Prevent self-referral
+
+    // TIER 1: Direct referrer (3%)
+    let currentReferrerCode = buyer.affiliateReferredBy;
+
+    if (!currentReferrerCode) {
+      return { success: true, conversions: [] };
+    }
+
+    // Find Tier 1 affiliate link
+    const tier1Link = await this.prisma.affiliateLink.findUnique({
+      where: { code: currentReferrerCode },
+      include: { user: true },
+    });
+
+    if (!tier1Link) {
+      console.log('Tier 1 affiliate link not found for code', currentReferrerCode);
+      return { success: false, error: 'Tier 1 referrer link not found' };
+    }
+
+    // Self-referral check
+    if (tier1Link.userId === buyer.id) {
+      console.log('Self-referral detected - user cannot refer themselves');
+      return { success: false, error: 'Self-referral not allowed' };
+    }
+
+    // Loop detection
+    if (visitedCodes.has(tier1Link.userId)) {
+      console.log('Loop detected at Tier 1');
+      return { success: true, conversions };
+    }
+    visitedCodes.add(tier1Link.userId);
+
+    // Create Tier 1 conversion (3%)
+    const tier1Amount = orderAmount * 0.03;
+    const conversion1 = await this.prisma.affiliateConversion.create({
+      data: {
+        linkId: tier1Link.id,
+        orderId,
+        amount: tier1Amount,
+        status: 'PENDING',
+        tier: 1,
+      },
+    });
+    conversions.push(conversion1);
+
+    // TIER 2: Referrer's referrer (1%)
+    const tier1User = tier1Link.user;
+    if (!tier1User.affiliateReferredBy) {
+      return { success: true, conversions };
+    }
+
+    const tier2Link = await this.prisma.affiliateLink.findUnique({
+      where: { code: tier1User.affiliateReferredBy },
+      include: { user: true },
+    });
+
+    if (!tier2Link) {
+      console.log('Tier 2 affiliate link not found');
+      return { success: true, conversions };
+    }
+
+    // Loop detection
+    if (visitedCodes.has(tier2Link.userId)) {
+      console.log('Loop detected at Tier 2');
+      return { success: true, conversions };
+    }
+    visitedCodes.add(tier2Link.userId);
+
+    // Create Tier 2 conversion (1%)
+    const tier2Amount = orderAmount * 0.01;
+    const conversion2 = await this.prisma.affiliateConversion.create({
+      data: {
+        linkId: tier2Link.id,
+        orderId,
+        amount: tier2Amount,
+        status: 'PENDING',
+        tier: 2,
+      },
+    });
+    conversions.push(conversion2);
+
+    // TIER 3: Referrer's referrer's referrer (1%)
+    const tier2User = tier2Link.user;
+    if (!tier2User.affiliateReferredBy) {
+      return { success: true, conversions };
+    }
+
+    const tier3Link = await this.prisma.affiliateLink.findUnique({
+      where: { code: tier2User.affiliateReferredBy },
+      include: { user: true },
+    });
+
+    if (!tier3Link) {
+      console.log('Tier 3 affiliate link not found');
+      return { success: true, conversions };
+    }
+
+    // Loop detection
+    if (visitedCodes.has(tier3Link.userId)) {
+      console.log('Loop detected at Tier 3');
+      return { success: true, conversions };
+    }
+    visitedCodes.add(tier3Link.userId);
+
+    // Create Tier 3 conversion (1%)
+    const tier3Amount = orderAmount * 0.01;
+    const conversion3 = await this.prisma.affiliateConversion.create({
+      data: {
+        linkId: tier3Link.id,
+        orderId,
+        amount: tier3Amount,
+        status: 'PENDING',
+        tier: 3,
+      },
+    });
+    conversions.push(conversion3);
+
+    console.log(`Created ${conversions.length}-tier conversions for order ${orderId}`);
+    return { success: true, conversions };
   }
 
   /**
@@ -163,6 +284,22 @@ export class AffiliateService {
       .filter((c) => c.status === 'PAID')
       .reduce((sum, c) => sum + Number(c.amount), 0);
 
+    // Calculate tier-specific earnings
+    const tier1Earnings = link.conversions
+      .filter((c) => c.tier === 1)
+      .reduce((sum, c) => sum + Number(c.amount), 0);
+
+    const tier2Earnings = link.conversions
+      .filter((c) => c.tier === 2)
+      .reduce((sum, c) => sum + Number(c.amount), 0);
+
+    const tier3Earnings = link.conversions
+      .filter((c) => c.tier === 3)
+      .reduce((sum, c) => sum + Number(c.amount), 0);
+
+    // Count direct referrals (tier 1 conversions)
+    const directReferrals = link.conversions.filter((c) => c.tier === 1).length;
+
     return {
       totalClicks,
       totalConversions,
@@ -174,6 +311,10 @@ export class AffiliateService {
       pendingEarnings,
       approvedEarnings,
       paidEarnings,
+      tier1Earnings,
+      tier2Earnings,
+      tier3Earnings,
+      directReferrals,
     };
   }
 

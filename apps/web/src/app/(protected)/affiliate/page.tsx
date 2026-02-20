@@ -14,12 +14,17 @@ interface AffiliateStats {
   pendingEarnings: number;
   approvedEarnings: number;
   paidEarnings: number;
+  tier1Earnings: number;
+  tier2Earnings: number;
+  tier3Earnings: number;
+  directReferrals: number;
 }
 
 interface Conversion {
   id: string;
   amount: number;
   status: string;
+  tier: number;
   createdAt: string;
   order: {
     id: string;
@@ -233,7 +238,7 @@ export default function AffiliatePage() {
           Affiliate Dashboard
         </h1>
         <p className="text-gray-600">
-          Verdiene 5% Provision für jeden geworbenen Kunden
+          Verdiene bis zu 5% Provision mit dem 3-Ebenen-System (3% + 1% + 1%)
         </p>
       </div>
 
@@ -327,6 +332,47 @@ export default function AffiliatePage() {
             <div className="text-sm text-gray-600 mb-1">Ausgezahlt</div>
             <div className="text-xl font-bold text-gray-900">{formatCurrency(stats?.paidEarnings || 0)}</div>
           </div>
+        </div>
+      </Card>
+
+      <Card className="p-6 mb-8 bg-white border-2 border-gray-200">
+        <h2 className="text-lg font-bold mb-4 text-gray-900">3-Ebenen-Provisionen</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="p-5 bg-gradient-to-br from-gold/10 to-gold-light/20 rounded-lg border-2 border-gold/40">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-sm font-medium text-gray-600">Ebene 1 (3%)</div>
+              <div className="text-xs bg-gold/20 text-gold-dark px-2 py-1 rounded-full font-bold">Direkt</div>
+            </div>
+            <div className="text-2xl font-bold text-gold mb-1">{formatCurrency(stats?.tier1Earnings || 0)}</div>
+            <div className="text-xs text-gray-600">{stats?.directReferrals || 0} direkte Empfehlungen</div>
+          </div>
+          <div className="p-5 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border-2 border-blue-200">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-sm font-medium text-gray-600">Ebene 2 (1%)</div>
+              <div className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full font-bold">Indirekt</div>
+            </div>
+            <div className="text-2xl font-bold text-blue-600">{formatCurrency(stats?.tier2Earnings || 0)}</div>
+            <div className="text-xs text-gray-600">Empfehlungen deiner Referrals</div>
+          </div>
+          <div className="p-5 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg border-2 border-purple-200">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-sm font-medium text-gray-600">Ebene 3 (1%)</div>
+              <div className="text-xs bg-purple-200 text-purple-800 px-2 py-1 rounded-full font-bold">2. Stufe</div>
+            </div>
+            <div className="text-2xl font-bold text-purple-600">{formatCurrency(stats?.tier3Earnings || 0)}</div>
+            <div className="text-xs text-gray-600">Dritte Ebene</div>
+          </div>
+        </div>
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <p className="text-sm text-gray-700">
+            <span className="font-semibold">Wie funktioniert das 3-Ebenen-System?</span><br/>
+            <span className="text-gray-600">
+              • <strong>Ebene 1:</strong> Du empfiehlst jemanden direkt → 3% Provision<br/>
+              • <strong>Ebene 2:</strong> Deine Empfehlung empfiehlt jemanden → 1% Provision<br/>
+              • <strong>Ebene 3:</strong> Die Empfehlung deiner Empfehlung empfiehlt jemanden → 1% Provision<br/>
+              <span className="text-gold font-semibold">Maximum: 5% pro Verkauf</span>
+            </span>
+          </p>
         </div>
       </Card>
 
@@ -475,8 +521,9 @@ export default function AffiliatePage() {
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">Datum</th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">Bestellung</th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">Kunde</th>
+                  <th className="text-center py-3 px-4 font-semibold text-gray-700">Ebene</th>
                   <th className="text-right py-3 px-4 font-semibold text-gray-700">Bestellwert</th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Provision (5%)</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Provision</th>
                   <th className="text-center py-3 px-4 font-semibold text-gray-700">Status</th>
                 </tr>
               </thead>
@@ -486,8 +533,20 @@ export default function AffiliatePage() {
                     <td className="py-3 px-4 text-sm text-gray-900">{formatDate(conversion.createdAt)}</td>
                     <td className="py-3 px-4 text-sm font-mono text-gray-700">#{conversion.order.id.substring(0, 8).toUpperCase()}</td>
                     <td className="py-3 px-4 text-sm text-gray-900">{conversion.order.user.company || conversion.order.user.email}</td>
+                    <td className="py-3 px-4 text-center">
+                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${
+                        conversion.tier === 1 ? 'bg-gold/20 text-gold-dark' :
+                        conversion.tier === 2 ? 'bg-blue-100 text-blue-700' :
+                        'bg-purple-100 text-purple-700'
+                      }`}>
+                        Ebene {conversion.tier}
+                      </span>
+                    </td>
                     <td className="py-3 px-4 text-sm text-right text-gray-900">{formatCurrency(Number(conversion.order.totalAmount))}</td>
-                    <td className="py-3 px-4 text-sm text-right font-bold text-gold">{formatCurrency(Number(conversion.amount))}</td>
+                    <td className="py-3 px-4 text-sm text-right font-bold text-gold">
+                      {formatCurrency(Number(conversion.amount))}
+                      <span className="text-xs text-gray-500 ml-1">({conversion.tier === 1 ? '3%' : '1%'})</span>
+                    </td>
                     <td className="py-3 px-4 text-center">{getStatusBadge(conversion.status)}</td>
                   </tr>
                 ))}

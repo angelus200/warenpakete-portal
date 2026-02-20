@@ -160,18 +160,15 @@ export class PaymentsService {
           const userName = order.user.firstName || order.user.email.split('@')[0];
           await this.emailService.sendPaymentSuccess(order.user.email, order, userName);
 
-          // Track affiliate conversion if referral exists
-          const affiliateRef = session.metadata?.affiliateRef;
-          if (affiliateRef) {
-            try {
-              await this.affiliateService.trackConversion(
-                affiliateRef,
-                orderId,
-                Number(order.totalAmount),
-              );
-            } catch (error) {
-              console.error('Failed to track affiliate conversion:', error);
-            }
+          // Track 3-tier affiliate conversion based on user's referral chain
+          try {
+            await this.affiliateService.trackConversion(
+              order.userId,
+              orderId,
+              Number(order.totalAmount),
+            );
+          } catch (error) {
+            console.error('Failed to track affiliate conversion:', error);
           }
 
           // Check if there's a commission and send email to reseller

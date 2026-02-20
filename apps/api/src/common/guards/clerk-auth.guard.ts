@@ -66,6 +66,23 @@ export class ClerkAuthGuard implements CanActivate {
           // Fetch full user data from Clerk
           const clerkUser = await this.clerk.users.getUser(payload.sub);
 
+          // Read affiliate cookie to set referral chain
+          const affiliateCookie = request.cookies?.affiliate_ref;
+          let affiliateReferredBy: string | null = null;
+
+          if (affiliateCookie) {
+            // Validate that the affiliate code exists
+            const affiliateLink = await this.prisma.affiliateLink.findUnique({
+              where: { code: affiliateCookie },
+              select: { code: true },
+            });
+
+            if (affiliateLink) {
+              affiliateReferredBy = affiliateLink.code;
+              console.log(`✅ User will be linked to affiliate code: ${affiliateReferredBy}`);
+            }
+          }
+
           // Create user in database
           user = await this.prisma.user.create({
             data: {
@@ -74,6 +91,7 @@ export class ClerkAuthGuard implements CanActivate {
               firstName: clerkUser.firstName || null,
               lastName: clerkUser.lastName || null,
               referralCode: nanoid(10),
+              affiliateReferredBy,
             },
             select: { id: true, clerkId: true, email: true, role: true },
           });
