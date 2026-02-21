@@ -228,6 +228,19 @@ export class AdminService {
     });
   }
 
+  async getAllAdminUsers() {
+    return this.prisma.adminUser.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      },
+      orderBy: { name: 'asc' },
+    });
+  }
+
   async updateUserRole(userId: string, role: string) {
     const validRoles = ['BUYER', 'RESELLER', 'EMPLOYEE', 'ADMIN'];
 

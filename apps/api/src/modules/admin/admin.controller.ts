@@ -81,6 +81,14 @@ export class AdminController {
     return this.adminService.getAllUsers();
   }
 
+  @Get('admin-users')
+  @ApiBearerAuth('admin')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Get all admin users' })
+  async getAllAdminUsers() {
+    return this.adminService.getAllAdminUsers();
+  }
+
   @Patch('users/:id/role')
   @ApiBearerAuth('admin')
   @UseGuards(AdminAuthGuard)

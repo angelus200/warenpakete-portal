@@ -19,12 +19,31 @@ interface Consultant {
   };
 }
 
+interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
+interface RegularUser {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  role: string;
+}
+
 export default function CrmConsultantsPage() {
   const router = useRouter();
   const [consultants, setConsultants] = useState<Consultant[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [creationMode, setCreationMode] = useState<'existing' | 'external'>('existing');
+  const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
+  const [regularUsers, setRegularUsers] = useState<RegularUser[]>([]);
+  const [selectedUserId, setSelectedUserId] = useState<string>('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -191,9 +210,92 @@ export default function CrmConsultantsPage() {
     }
   };
 
-  const openCreateModal = () => {
+  const fetchAdminUsers = async () => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      if (!token) return;
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/admin-users`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        setAdminUsers(Array.isArray(data) ? data : []);
+      }
+    } catch (error) {
+      console.error('Failed to fetch admin users:', error);
+    }
+  };
+
+  const fetchRegularUsers = async () => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      if (!token) return;
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/users`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        // Filter nur EMPLOYEE und ADMIN
+        const employees = Array.isArray(data)
+          ? data.filter((u: RegularUser) => u.role === 'EMPLOYEE' || u.role === 'ADMIN')
+          : [];
+        setRegularUsers(employees);
+      }
+    } catch (error) {
+      console.error('Failed to fetch users:', error);
+    }
+  };
+
+  const handleUserSelect = (value: string) => {
+    setSelectedUserId(value);
+
+    if (!value) {
+      setFormData({ ...formData, name: '', email: '' });
+      return;
+    }
+
+    // Parse "admin-{id}" oder "user-{id}"
+    const [type, id] = value.split('-');
+
+    if (type === 'admin') {
+      const selectedUser = adminUsers.find((u) => u.id === id);
+      if (selectedUser) {
+        setFormData({
+          ...formData,
+          name: selectedUser.name,
+          email: selectedUser.email,
+        });
+      }
+    } else if (type === 'user') {
+      const selectedUser = regularUsers.find((u) => u.id === id);
+      if (selectedUser) {
+        const name = selectedUser.firstName && selectedUser.lastName
+          ? `${selectedUser.firstName} ${selectedUser.lastName}`
+          : selectedUser.firstName || selectedUser.lastName || selectedUser.email;
+        setFormData({
+          ...formData,
+          name: name,
+          email: selectedUser.email,
+        });
+      }
+    }
+  };
+
+  const openCreateModal = async () => {
     resetForm();
     setEditingId(null);
+    setCreationMode('existing');
+    setSelectedUserId('');
+
+    // Lade beide User-Listen
+    await Promise.all([fetchAdminUsers(), fetchRegularUsers()]);
+
     setShowModal(true);
   };
 
@@ -375,51 +477,189 @@ export default function CrmConsultantsPage() {
               </h3>
 
               <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Name *
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[#D4AF37] focus:outline-none"
-                    placeholder="Thomas Gross"
-                  />
-                </div>
+                {/* Nur bei Create, nicht bei Edit */}
+                {!editingId && (
+                  <div className="bg-gray-50 p-4 rounded-lg space-y-3 border-2 border-gray-200">
+                    <div className="text-xs font-bold text-gray-600 uppercase mb-3">
+                      Modus auswählen
+                    </div>
+                    <label className="flex items-start gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded transition">
+                      <input
+                        type="radio"
+                        name="mode"
+                        value="existing"
+                        checked={creationMode === 'existing'}
+                        onChange={() => {
+                          setCreationMode('existing');
+                          setSelectedUserId('');
+                          setFormData({ ...formData, name: '', email: '' });
+                        }}
+                        className="w-4 h-4 mt-1"
+                      />
+                      <div>
+                        <div className="font-semibold text-gray-900 text-sm">
+                          Bestehenden Mitarbeiter auswählen
+                        </div>
+                        <div className="text-xs text-gray-600 mt-1">
+                          Admin-User oder Mitarbeiter als Berater zuordnen
+                        </div>
+                      </div>
+                    </label>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[#D4AF37] focus:outline-none"
-                    placeholder="thomas@beispiel.de"
-                  />
-                </div>
+                    <label className="flex items-start gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded transition">
+                      <input
+                        type="radio"
+                        name="mode"
+                        value="external"
+                        checked={creationMode === 'external'}
+                        onChange={() => {
+                          setCreationMode('external');
+                          setSelectedUserId('');
+                          setFormData({ ...formData, name: '', email: '' });
+                        }}
+                        className="w-4 h-4 mt-1"
+                      />
+                      <div>
+                        <div className="font-semibold text-gray-900 text-sm">
+                          Externen Berater anlegen
+                        </div>
+                        <div className="text-xs text-gray-600 mt-1">
+                          Neuen Berater manuell hinzufügen
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                )}
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Calendly URL *
-                  </label>
-                  <input
-                    type="url"
-                    value={formData.calendlyUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, calendlyUrl: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[#D4AF37] focus:outline-none"
-                    placeholder="https://calendly.com/..."
-                  />
-                </div>
+                {/* Conditional Inputs */}
+                {!editingId && creationMode === 'existing' ? (
+                  <>
+                    {/* User-Dropdown */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Mitarbeiter auswählen *
+                      </label>
+                      <select
+                        value={selectedUserId}
+                        onChange={(e) => handleUserSelect(e.target.value)}
+                        className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[#D4AF37] focus:outline-none"
+                      >
+                        <option value="">-- Bitte wählen --</option>
 
+                        {adminUsers.length > 0 && (
+                          <optgroup label="🛡️ Admin-User">
+                            {adminUsers.map((u) => (
+                              <option key={`admin-${u.id}`} value={`admin-${u.id}`}>
+                                {u.name} ({u.email})
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
+
+                        {regularUsers.length > 0 && (
+                          <optgroup label="👤 Mitarbeiter">
+                            {regularUsers.map((u) => (
+                              <option key={`user-${u.id}`} value={`user-${u.id}`}>
+                                {u.firstName && u.lastName
+                                  ? `${u.firstName} ${u.lastName}`
+                                  : u.firstName || u.lastName || u.email}{' '}
+                                ({u.email}) - {u.role}
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
+                      </select>
+                    </div>
+
+                    {/* Auto-gefüllte Read-Only Felder */}
+                    {selectedUserId && (
+                      <div className="bg-blue-50 p-3 rounded border-2 border-blue-200">
+                        <div className="text-xs text-blue-800 mb-2 font-semibold">
+                          ℹ️ Name und Email werden automatisch übernommen
+                        </div>
+                        <div className="space-y-2">
+                          <div>
+                            <span className="text-xs text-gray-600">Name:</span>
+                            <div className="font-semibold">{formData.name || '-'}</div>
+                          </div>
+                          <div>
+                            <span className="text-xs text-gray-600">Email:</span>
+                            <div className="font-semibold">{formData.email || '-'}</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Calendly URL - manuell */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Calendly URL *{' '}
+                        <span className="text-xs text-gray-500 font-normal">
+                          (manuell eingeben)
+                        </span>
+                      </label>
+                      <input
+                        type="url"
+                        value={formData.calendlyUrl}
+                        onChange={(e) =>
+                          setFormData({ ...formData, calendlyUrl: e.target.value })
+                        }
+                        className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[#D4AF37] focus:outline-none"
+                        placeholder="https://calendly.com/..."
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* Manuelle Eingabe oder Edit-Modus */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Name *
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) =>
+                          setFormData({ ...formData, name: e.target.value })
+                        }
+                        className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[#D4AF37] focus:outline-none"
+                        placeholder="Thomas Gross"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
+                        className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[#D4AF37] focus:outline-none"
+                        placeholder="thomas@beispiel.de"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Calendly URL *
+                      </label>
+                      <input
+                        type="url"
+                        value={formData.calendlyUrl}
+                        onChange={(e) =>
+                          setFormData({ ...formData, calendlyUrl: e.target.value })
+                        }
+                        className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[#D4AF37] focus:outline-none"
+                        placeholder="https://calendly.com/..."
+                      />
+                    </div>
+                  </>
+                )}
+
+                {/* Gemeinsame Felder */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Max Leads pro Tag
