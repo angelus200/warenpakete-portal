@@ -6,6 +6,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AffiliateTracker } from '@/components/AffiliateTracker';
 import { PageTracker } from '@/components/PageTracker';
+import ElevenLabsWidget from '@/components/ElevenLabsWidget';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -32,6 +33,7 @@ export default function RootLayout({
               <main className="flex-1">{children}</main>
               <Footer />
             </div>
+            <ElevenLabsWidget />
           </Providers>
         </body>
       </html>

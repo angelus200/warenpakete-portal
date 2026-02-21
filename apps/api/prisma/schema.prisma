@@ -61,6 +61,7 @@ model User {
   affiliateLinks     AffiliateLink[]    @relation("UserAffiliateLinks")
   affiliateWithdrawals AffiliateWithdrawal[] @relation("UserAffiliateWithdrawals")
   chatRooms          ChatRoom[]         @relation("UserChatRooms")
+  phoneCalls         PhoneCall[]
 
   @@index([emailOptOut, createdAt, firstOrderAt])
   @@map("users")
@@ -543,6 +544,32 @@ enum InvoiceType {
   DELIVERY_NOTE
 }
 
+// AI-Agent Telefonanrufe
+model PhoneCall {
+  id                String   @id @default(uuid())
+  conversationId    String?  @unique
+  agentId           String?
+  callerPhone       String?
+  callerType        String?
+  duration          Int?
+  outcome           String?
+  transcript        String?  @db.Text
+  summary           String?  @db.Text
+  sentiment         String?
+  userId            String?
+  user              User?    @relation(fields: [userId], references: [id])
+  funnelLeadId      String?
+  funnelLead        FunnelLead? @relation(fields: [funnelLeadId], references: [id])
+  analysisData      Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([callerType])
+  @@index([outcome])
+  @@index([createdAt])
+  @@map("phone_calls")
+}
+
 // Berater für Erstgespräch-Funnel
 model Consultant {
   id             String       @id @default(uuid())
@@ -596,6 +623,8 @@ model FunnelLead {
   // Admin Management
   status              String      @default("NEW")  // NEW, CONTACTED, CONVERTED, REJECTED
   notes               String?     @db.Text
+  sourceChannel       String?     @default("web")
+  phoneCalls          PhoneCall[]
 
   // Email automation tracking
   emailOptOut         Boolean     @default(false)

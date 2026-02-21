@@ -23,6 +23,7 @@ import { AffiliateModule } from './modules/affiliate/affiliate.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { TrackingModule } from './modules/tracking/tracking.module';
 import { FunnelModule } from './modules/funnel/funnel.module';
+import { AiAgentModule } from './modules/ai-agent/ai-agent.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { FunnelModule } from './modules/funnel/funnel.module';
     ChatModule,
     TrackingModule,
     FunnelModule,
+    AiAgentModule,
     UsersModule,
     ProductsModule,
     OrdersModule,

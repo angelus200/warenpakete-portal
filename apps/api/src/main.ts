@@ -39,11 +39,12 @@ async function bootstrap() {
       'http://localhost:3000',
       'https://www.ecommercerente.com',
       'https://ecommercerente.com',
+      'https://api.elevenlabs.io',
       process.env.FRONTEND_URL,
     ].filter(Boolean),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'stripe-signature', 'svix-id', 'svix-timestamp', 'svix-signature'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'stripe-signature', 'svix-id', 'svix-timestamp', 'svix-signature', 'x-agent-secret', 'X-Agent-Secret'],
   });
 
   // Global validation pipe
