@@ -260,8 +260,8 @@ export default function CrmConsultantsPage() {
       return;
     }
 
-    // Parse "admin-{id}" oder "user-{id}"
-    const [type, id] = value.split('-');
+    // Parse "admin::UUID" oder "user::UUID" (:: trennt type und id korrekt bei UUIDs)
+    const [type, id] = value.split('::');
 
     if (type === 'admin') {
       const selectedUser = adminUsers.find((u) => u.id === id);
@@ -549,7 +549,7 @@ export default function CrmConsultantsPage() {
                         {adminUsers.length > 0 && (
                           <optgroup label="🛡️ Admin-User">
                             {adminUsers.map((u) => (
-                              <option key={`admin-${u.id}`} value={`admin-${u.id}`}>
+                              <option key={`admin::${u.id}`} value={`admin::${u.id}`}>
                                 {u.name} ({u.email})
                               </option>
                             ))}
@@ -559,7 +559,7 @@ export default function CrmConsultantsPage() {
                         {regularUsers.length > 0 && (
                           <optgroup label="👤 Mitarbeiter">
                             {regularUsers.map((u) => (
-                              <option key={`user-${u.id}`} value={`user-${u.id}`}>
+                              <option key={`user::${u.id}`} value={`user::${u.id}`}>
                                 {u.firstName && u.lastName
                                   ? `${u.firstName} ${u.lastName}`
                                   : u.firstName || u.lastName || u.email}{' '}
