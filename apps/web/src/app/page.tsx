@@ -145,6 +145,122 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Guide CTA Section */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <Card className="p-8 md:p-12 bg-gradient-to-br from-[#fffbeb] via-white to-[#fffbeb] border-2 border-gold/30 shadow-2xl shadow-gold/10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                {/* Left: Book Cover Mockup */}
+                <div className="flex justify-center">
+                  <div
+                    className="relative"
+                    style={{
+                      width: '240px',
+                      height: '320px',
+                      perspective: '1000px',
+                    }}
+                  >
+                    <div
+                      className="w-full h-full rounded-lg shadow-2xl flex items-center justify-center p-6 text-center"
+                      style={{
+                        background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+                        transform: 'rotateY(-15deg) rotateX(5deg)',
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+                        border: '2px solid #D4AF37',
+                      }}
+                    >
+                      <div>
+                        <h3 className="text-dark font-bold text-xl leading-tight mb-4">
+                          Online Warenhandel
+                        </h3>
+                        <div className="text-dark font-extrabold text-2xl mb-4">
+                          B2B GUIDE
+                        </div>
+                        <div className="text-dark font-bold text-lg">
+                          2026
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right: Content */}
+                <div>
+                  <div className="inline-block mb-4 px-4 py-2 rounded-full border-2 border-gold bg-gold/20">
+                    <span className="text-gold text-sm font-bold tracking-wider">
+                      KOSTENLOSER B2B-GUIDE
+                    </span>
+                  </div>
+
+                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Kostenloser <span className="text-gold">B2B-Guide</span>
+                  </h2>
+
+                  <p className="text-lg text-gray-600 mb-6">
+                    Der komplette Leitfaden für profitablen Marktplatz-Handel 2026
+                  </p>
+
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-start gap-3">
+                      <svg className="w-6 h-6 text-gold flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700">
+                        Konkrete Kalkulationsbeispiele mit realistischen Margen (13-17% EBIT)
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <svg className="w-6 h-6 text-gold flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700">
+                        Steuer-Tipps: Reverse Charge & Vorsteuerabzug optimal nutzen
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <svg className="w-6 h-6 text-gold flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700">
+                        Schritt-für-Schritt vom Gewerbeschein zum ersten Verkauf
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <svg className="w-6 h-6 text-gold flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700">
+                        Die 5 größten Fehler vermeiden — aus hunderten Kundengesprächen
+                      </span>
+                    </div>
+                  </div>
+
+                  <Link
+                    href={
+                      isSignedIn
+                        ? `/guide${typeof window !== 'undefined' ? window.location.search : ''}`
+                        : `/sign-up?redirect_url=/guide${typeof window !== 'undefined' ? encodeURIComponent(window.location.search) : ''}`
+                    }
+                  >
+                    <Button
+                      size="lg"
+                      className="text-lg px-8 py-6 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
+                    >
+                      Jetzt kostenlos herunterladen
+                    </Button>
+                  </Link>
+
+                  <p className="text-sm text-gray-500 mt-4">
+                    Kostenlos nach Registrierung • Kein Abo • Sofort verfügbar
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Erstgespräch CTA Section */}
       <section className="py-20 bg-gradient-to-br from-[#fffbeb] via-white to-[#fffbeb] relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold/5 via-transparent to-transparent" />

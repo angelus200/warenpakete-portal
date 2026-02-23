@@ -27,6 +27,11 @@ export class EmailAutomationService {
       await this.sendUserOnboarding2();
       await this.sendUserOnboarding3();
 
+      // Guide Lead-Magnet Sequenzen
+      await this.sendGuideEmail2_48h();
+      await this.sendGuideEmail3_5d();
+      await this.sendGuideEmail4_10d();
+
       this.logger.log('✅ Email sequence processing complete');
     } catch (error) {
       this.logger.error('❌ Error during email sequence processing:', error);
@@ -327,5 +332,159 @@ export class EmailAutomationService {
   async manualTrigger() {
     this.logger.log('🔧 Manual trigger initiated');
     await this.processEmailSequences();
+  }
+
+  /**
+   * GUIDE SEQUENZ 1: 48h Email
+   * Zielgruppe: User mit Guide-Download, noch keine Bestellung, 48h nach Download
+   */
+  private async sendGuideEmail2_48h() {
+    try {
+      const now = Date.now();
+      const windowStart = new Date(now - 49 * 60 * 60 * 1000); // 49h ago
+      const windowEnd = new Date(now - 48 * 60 * 60 * 1000); // 48h ago
+
+      const users = await this.prisma.user.findMany({
+        where: {
+          emailOptOut: false,
+          firstOrderAt: null, // Noch keine Bestellung
+          guideDownloadedAt: {
+            gte: windowStart,
+            lte: windowEnd,
+          },
+          guideEmail2SentAt: null, // Noch nicht gesendet
+        },
+      });
+
+      this.logger.log(`Found ${users.length} users for guide email 2`);
+
+      let successCount = 0;
+      let failCount = 0;
+
+      for (const user of users) {
+        try {
+          await this.emailService.sendGuideEmail2(user.email, user);
+
+          await this.prisma.user.update({
+            where: { id: user.id },
+            data: {
+              guideEmail2SentAt: new Date(),
+            },
+          });
+
+          successCount++;
+        } catch (error) {
+          this.logger.error(`Failed to send guide email 2 to ${user.email}:`, error);
+          failCount++;
+        }
+      }
+
+      this.logger.log(`✓ Guide email 2: ${successCount} sent, ${failCount} failed`);
+    } catch (error) {
+      this.logger.error('Error in sendGuideEmail2_48h:', error);
+    }
+  }
+
+  /**
+   * GUIDE SEQUENZ 2: 5 Tage Email
+   * Zielgruppe: User mit Guide-Download, noch keine Bestellung, 5 Tage nach Download
+   */
+  private async sendGuideEmail3_5d() {
+    try {
+      const now = Date.now();
+      const windowStart = new Date(now - (5 * 24 + 1) * 60 * 60 * 1000); // 5 days + 1h ago
+      const windowEnd = new Date(now - 5 * 24 * 60 * 60 * 1000); // 5 days ago
+
+      const users = await this.prisma.user.findMany({
+        where: {
+          emailOptOut: false,
+          firstOrderAt: null, // Noch keine Bestellung
+          guideDownloadedAt: {
+            gte: windowStart,
+            lte: windowEnd,
+          },
+          guideEmail3SentAt: null, // Noch nicht gesendet
+        },
+      });
+
+      this.logger.log(`Found ${users.length} users for guide email 3`);
+
+      let successCount = 0;
+      let failCount = 0;
+
+      for (const user of users) {
+        try {
+          await this.emailService.sendGuideEmail3(user.email, user);
+
+          await this.prisma.user.update({
+            where: { id: user.id },
+            data: {
+              guideEmail3SentAt: new Date(),
+            },
+          });
+
+          successCount++;
+        } catch (error) {
+          this.logger.error(`Failed to send guide email 3 to ${user.email}:`, error);
+          failCount++;
+        }
+      }
+
+      this.logger.log(`✓ Guide email 3: ${successCount} sent, ${failCount} failed`);
+    } catch (error) {
+      this.logger.error('Error in sendGuideEmail3_5d:', error);
+    }
+  }
+
+  /**
+   * GUIDE SEQUENZ 3: 10 Tage Email
+   * Zielgruppe: User mit Guide-Download, noch keine Bestellung, 10 Tage nach Download
+   */
+  private async sendGuideEmail4_10d() {
+    try {
+      const now = Date.now();
+      const windowStart = new Date(now - (10 * 24 + 1) * 60 * 60 * 1000); // 10 days + 1h ago
+      const windowEnd = new Date(now - 10 * 24 * 60 * 1000); // 10 days ago
+
+      const users = await this.prisma.user.findMany({
+        where: {
+          emailOptOut: false,
+          firstOrderAt: null, // Noch keine Bestellung
+          guideDownloadedAt: {
+            gte: windowStart,
+            lte: windowEnd,
+          },
+          guideEmail4SentAt: null, // Noch nicht gesendet
+        },
+      });
+
+      this.logger.log(`Found ${users.length} users for guide email 4`);
+
+      let successCount = 0;
+      let failCount = 0;
+
+      for (const user of users) {
+        try {
+          await this.emailService.sendGuideEmail4(user.email, user);
+
+          await this.prisma.user.update({
+            where: { id: user.id },
+            data: {
+              guideEmail4SentAt: new Date(),
+              guideSequenceCompleted: true, // Nach Email 4 ist Sequenz komplett
+            },
+          });
+
+          successCount++;
+        } catch (error) {
+          this.logger.error(`Failed to send guide email 4 to ${user.email}:`, error);
+          failCount++;
+        }
+      }
+
+      this.logger.log(`✓ Guide email 4: ${successCount} sent, ${failCount} failed`);
+    } catch (error) {
+      this.logger.error('Error in sendGuideEmail4_10d:', error);
+    }
   }
 }

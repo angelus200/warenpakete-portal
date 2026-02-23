@@ -51,6 +51,16 @@ model User {
   onboardingEmail3SentAt   DateTime?
   emailSequenceCompleted   Boolean  @default(false)
 
+  // Guide Lead-Magnet Tracking
+  guideDownloadedAt         DateTime?
+  guideSource               String?       // utm_source bei Download
+  guideCampaign             String?       // utm_campaign bei Download
+  guideMedium               String?       // utm_medium bei Download
+  guideEmail2SentAt         DateTime?     // 48h Email
+  guideEmail3SentAt         DateTime?     // 5d Email
+  guideEmail4SentAt         DateTime?     // 10d Email
+  guideSequenceCompleted    Boolean       @default(false)
+
   orders             Order[]
   commissionsEarned  Commission[]       @relation("ResellerCommissions")
   walletTransactions WalletTransaction[]
@@ -64,6 +74,7 @@ model User {
   phoneCalls         PhoneCall[]
 
   @@index([emailOptOut, createdAt, firstOrderAt])
+  @@index([emailOptOut, guideDownloadedAt, firstOrderAt])
   @@map("users")
 }
 

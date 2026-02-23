@@ -147,4 +147,39 @@ export class UsersController {
     const dbUser = await this.usersService.findByClerkId(user.clerkId);
     return this.usersService.update(dbUser.id, { role: UserRole.ADMIN });
   }
+
+  @Post('guide-download')
+  @ApiOperation({ summary: 'Track guide download and send email' })
+  async trackGuideDownload(
+    @CurrentUser() user: { clerkId: string },
+    @Body() body: { utmSource?: string; utmMedium?: string; utmCampaign?: string },
+  ) {
+    const dbUser = await this.usersService.findByClerkId(user.clerkId);
+
+    // Nur beim ersten Mal setzen
+    const updateData: any = {};
+    if (!dbUser.guideDownloadedAt) {
+      updateData.guideDownloadedAt = new Date();
+      updateData.guideSource = body.utmSource;
+      updateData.guideMedium = body.utmMedium;
+      updateData.guideCampaign = body.utmCampaign;
+
+      await this.usersService.update(dbUser.id, updateData);
+
+      // Sofort-Email senden
+      try {
+        const EmailService = (await import('../email/email.service')).EmailService;
+        const emailService = new EmailService();
+        await emailService.sendGuideDownload(dbUser.email, dbUser, body);
+      } catch (error) {
+        console.error('Failed to send guide download email:', error);
+        // Fehler nicht werfen, Download-Tracking soll trotzdem funktionieren
+      }
+    }
+
+    return {
+      success: true,
+      downloadedAt: updateData.guideDownloadedAt || dbUser.guideDownloadedAt,
+    };
+  }
 }

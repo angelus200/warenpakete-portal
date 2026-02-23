@@ -1130,4 +1130,406 @@ export class EmailService {
       this.logger.error(`Failed to send user onboarding 3 email to ${to}:`, error);
     }
   }
+
+  /**
+   * GUIDE SEQUENZ - Email 1: Sofort nach Download
+   * Gesendet direkt nach Guide-Download via API-Call
+   */
+  async sendGuideDownload(to: string, user: any, utmParams: any) {
+    try {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          </head>
+          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+              <!-- Header -->
+              <div style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0;">
+                <h1 style="margin: 0; color: #1f2937; font-size: 28px; font-weight: bold;">Ihr B2B-Guide ist da! 📚</h1>
+              </div>
+
+              <!-- Content -->
+              <div style="background-color: white; padding: 40px; border-radius: 0 0 8px 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <p style="font-size: 16px; color: #374151; line-height: 1.6; margin-top: 0;">
+                  Hallo ${user.firstName || user.name},
+                </p>
+
+                <p style="font-size: 16px; color: #374151; line-height: 1.6;">
+                  Vielen Dank für Ihren Download des B2B-Guides "Online Warenhandel 2026"!
+                </p>
+
+                <!-- Backup Download Link -->
+                <div style="margin: 30px 0; padding: 20px; background-color: #fffbeb; border-radius: 8px; border-left: 4px solid #D4AF37; text-align: center;">
+                  <p style="margin: 0 0 15px 0; color: #374151; font-weight: 600;">
+                    📥 Download-Link als Backup
+                  </p>
+                  <a href="${process.env.FRONTEND_URL}/downloads/b2b-guide-2026.pdf" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #1f2937; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px;">Guide herunterladen</a>
+                </div>
+
+                <!-- Key Takeaways -->
+                <h2 style="color: #1f2937; font-size: 18px; margin: 30px 0 15px 0;">Die wichtigsten Erkenntnisse:</h2>
+
+                <div style="margin: 15px 0; padding: 15px; background-color: #f0fdf4; border-radius: 8px; border-left: 4px solid #10b981;">
+                  <p style="margin: 0; color: #374151; font-size: 14px;">
+                    <strong>✓ E-Commerce DACH-Markt:</strong> Über 100 Mrd. € Umsatz
+                  </p>
+                </div>
+
+                <div style="margin: 15px 0; padding: 15px; background-color: #f0fdf4; border-radius: 8px; border-left: 4px solid #10b981;">
+                  <p style="margin: 0; color: #374151; font-size: 14px;">
+                    <strong>✓ Einstieg ab 2.500€ möglich:</strong> Professionelle Warenpakete für jeden Budgetrahmen
+                  </p>
+                </div>
+
+                <div style="margin: 15px 0; padding: 15px; background-color: #f0fdf4; border-radius: 8px; border-left: 4px solid #10b981;">
+                  <p style="margin: 0; color: #374151; font-size: 14px;">
+                    <strong>✓ 13-17% EBIT-Marge:</strong> Bei kuratierten Warenpaketen mit geprüfter Verkaufshistorie
+                  </p>
+                </div>
+
+                <p style="font-size: 14px; color: #6b7280; line-height: 1.6; padding: 15px; background-color: #fffbeb; border-radius: 6px; border-left: 4px solid #D4AF37;">
+                  💡 <strong>Unser Tipp:</strong> Lesen Sie besonders Kapitel 5 (Kalkulation & ROI) — dort sehen Sie genau, wie sich Ihr Investment rechnet.
+                </p>
+
+                <!-- CTA Button -->
+                <div style="text-align: center; margin: 30px 0;">
+                  <a href="${process.env.FRONTEND_URL}/guide" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #1f2937; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">Guide jetzt lesen</a>
+                </div>
+
+                <p style="font-size: 14px; color: #6b7280; line-height: 1.6; margin-bottom: 0;">
+                  Viel Erfolg beim Lesen und vielleicht bis bald!
+                </p>
+              </div>
+
+              <!-- Footer -->
+              <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
+                <p style="margin: 0;">© 2024 E-Commerce Rente | Commercehelden GmbH</p>
+                <p style="margin: 10px 0 0 0;">
+                  <a href="${process.env.FRONTEND_URL}" style="color: #FFD700; text-decoration: none;">Portal besuchen</a> |
+                  <a href="${process.env.FRONTEND_URL}/users/unsubscribe/${user.id}" style="color: #9ca3af; text-decoration: underline;">Abmelden</a>
+                </p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `;
+
+      await this.resend.emails.send({
+        from: this.fromAddress,
+        to,
+        subject: `Ihr B2B-Guide ist da, ${user.firstName || user.name}!`,
+        html,
+      });
+
+      this.logger.log(`Guide download email sent to ${to}`);
+    } catch (error) {
+      this.logger.error(`Failed to send guide download email to ${to}:`, error);
+    }
+  }
+
+  /**
+   * GUIDE SEQUENZ - Email 2: 48h - Die 3 wichtigsten Erkenntnisse
+   * Gesendet 48h nach Guide-Download
+   */
+  async sendGuideEmail2(to: string, user: any) {
+    try {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          </head>
+          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+              <!-- Header -->
+              <div style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0;">
+                <h1 style="margin: 0; color: #1f2937; font-size: 28px; font-weight: bold;">Die 3 wichtigsten Erkenntnisse 💡</h1>
+              </div>
+
+              <!-- Content -->
+              <div style="background-color: white; padding: 40px; border-radius: 0 0 8px 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <p style="font-size: 16px; color: #374151; line-height: 1.6; margin-top: 0;">
+                  Hallo ${user.firstName || user.name},
+                </p>
+
+                <p style="font-size: 16px; color: #374151; line-height: 1.6;">
+                  Haben Sie den Guide schon gelesen? Hier die <strong>3 wichtigsten Punkte</strong> auf einen Blick:
+                </p>
+
+                <!-- Key Points -->
+                <div style="margin: 30px 0;">
+                  <div style="margin: 20px 0; padding: 20px; background-color: #fffbeb; border-radius: 8px; border-left: 4px solid #D4AF37;">
+                    <h3 style="margin: 0 0 10px 0; color: #1f2937; font-size: 16px;">1️⃣ Diversifikation senkt Ihr Risiko</h3>
+                    <p style="margin: 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
+                      Verkaufen Sie über mehrere Kanäle (Amazon, Kaufland, Temu, eigene Shops) und reduzieren Sie Ihre Abhängigkeit von einer einzelnen Plattform.
+                    </p>
+                  </div>
+
+                  <div style="margin: 20px 0; padding: 20px; background-color: #fffbeb; border-radius: 8px; border-left: 4px solid #D4AF37;">
+                    <h3 style="margin: 0 0 10px 0; color: #1f2937; font-size: 16px;">2️⃣ Kommissionsverkauf als Einstieg</h3>
+                    <p style="margin: 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
+                      Starten Sie ohne eigenes Seller-Konto — wir verkaufen die Ware für Sie und Sie erhalten 80% des Ertrags. Kein Aufwand, kein Risiko.
+                    </p>
+                  </div>
+
+                  <div style="margin: 20px 0; padding: 20px; background-color: #fffbeb; border-radius: 8px; border-left: 4px solid #D4AF37;">
+                    <h3 style="margin: 0 0 10px 0; color: #1f2937; font-size: 16px;">3️⃣ Reverse Charge spart Liquidität</h3>
+                    <p style="margin: 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
+                      Beim Wareneinkauf von EU-Lieferanten zahlen Sie keine Umsatzsteuer vorab — das schont Ihre Liquidität erheblich.
+                    </p>
+                  </div>
+                </div>
+
+                <p style="font-size: 16px; color: #374151; line-height: 1.6;">
+                  Möchten Sie sehen, welche <strong>Warenpakete aktuell verfügbar</strong> sind?
+                </p>
+
+                <!-- CTA Button -->
+                <div style="text-align: center; margin: 30px 0;">
+                  <a href="${process.env.FRONTEND_URL}/products" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #1f2937; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">Warenpakete ansehen</a>
+                </div>
+
+                <p style="font-size: 14px; color: #6b7280; line-height: 1.6; margin-bottom: 0;">
+                  Bei Fragen stehen wir Ihnen jederzeit zur Verfügung!
+                </p>
+              </div>
+
+              <!-- Footer -->
+              <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
+                <p style="margin: 0;">© 2024 E-Commerce Rente | Commercehelden GmbH</p>
+                <p style="margin: 10px 0 0 0;">
+                  <a href="${process.env.FRONTEND_URL}" style="color: #FFD700; text-decoration: none;">Portal besuchen</a> |
+                  <a href="${process.env.FRONTEND_URL}/users/unsubscribe/${user.id}" style="color: #9ca3af; text-decoration: underline;">Abmelden</a>
+                </p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `;
+
+      await this.resend.emails.send({
+        from: this.fromAddress,
+        to,
+        subject: `Die 3 wichtigsten Erkenntnisse aus dem B2B-Guide`,
+        html,
+      });
+
+      this.logger.log(`Guide email 2 sent to ${to}`);
+    } catch (error) {
+      this.logger.error(`Failed to send guide email 2 to ${to}:`, error);
+    }
+  }
+
+  /**
+   * GUIDE SEQUENZ - Email 3: 5 Tage - Bereit für den nächsten Schritt?
+   * Gesendet 5 Tage nach Guide-Download
+   */
+  async sendGuideEmail3(to: string, user: any) {
+    try {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          </head>
+          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+              <!-- Header -->
+              <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0;">
+                <h1 style="margin: 0; color: white; font-size: 28px; font-weight: bold;">Bereit für den nächsten Schritt? 🚀</h1>
+              </div>
+
+              <!-- Content -->
+              <div style="background-color: white; padding: 40px; border-radius: 0 0 8px 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <p style="font-size: 16px; color: #374151; line-height: 1.6; margin-top: 0;">
+                  Hallo ${user.firstName || user.name},
+                </p>
+
+                <p style="font-size: 16px; color: #374151; line-height: 1.6;">
+                  Viele unserer Kunden haben genau so angefangen wie Sie — <strong>mit dem Guide</strong>.
+                </p>
+
+                <!-- Social Proof -->
+                <div style="margin: 30px 0;">
+                  <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 15px;">Das sagen unsere Kunden:</h2>
+
+                  <div style="margin: 15px 0; padding: 20px; background-color: #f9fafb; border-radius: 8px; border-left: 4px solid #D4AF37;">
+                    <p style="margin: 0; color: #374151; font-size: 14px; font-style: italic; line-height: 1.6;">
+                      "Mit 2.500€ gestartet, nach 3 Monaten Einsatz zurück plus 380€ Gewinn. Der Guide hat mir die Augen geöffnet."
+                    </p>
+                    <p style="margin: 10px 0 0 0; color: #6b7280; font-size: 12px;">
+                      - Nico K., E-Commerce Partner seit 2025
+                    </p>
+                  </div>
+
+                  <div style="margin: 15px 0; padding: 20px; background-color: #f9fafb; border-radius: 8px; border-left: 4px solid #D4AF37;">
+                    <p style="margin: 0; color: #374151; font-size: 14px; font-style: italic; line-height: 1.6;">
+                      "Kommissionsverkauf war perfekt für mich — ich musste mich um nichts kümmern und hatte trotzdem solide Erträge."
+                    </p>
+                    <p style="margin: 10px 0 0 0; color: #6b7280; font-size: 12px;">
+                      - Sandra M., Online-Händlerin
+                    </p>
+                  </div>
+
+                  <div style="margin: 15px 0; padding: 20px; background-color: #f9fafb; border-radius: 8px; border-left: 4px solid #D4AF37;">
+                    <p style="margin: 0; color: #374151; font-size: 14px; font-style: italic; line-height: 1.6;">
+                      "ROI von über 18% pro Quartal mit dem Enterprise-Paket. Die Zahlen aus dem Guide sind realistisch."
+                    </p>
+                    <p style="margin: 10px 0 0 0; color: #6b7280; font-size: 12px;">
+                      - Thomas R., Geschäftsführer
+                    </p>
+                  </div>
+                </div>
+
+                <p style="font-size: 16px; color: #374151; line-height: 1.6;">
+                  In einem <strong>kostenlosen 15-Minuten-Erstgespräch</strong> zeigen wir Ihnen, welches Paket zu Ihrem Budget und Ihren Zielen passt.
+                </p>
+
+                <!-- CTA Button -->
+                <div style="text-align: center; margin: 30px 0;">
+                  <a href="${process.env.FRONTEND_URL}/erstgespraech" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #1f2937; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">Kostenloses Erstgespräch buchen</a>
+                </div>
+
+                <p style="font-size: 14px; color: #6b7280; line-height: 1.6; text-align: center; margin-bottom: 0;">
+                  100% kostenlos & unverbindlich • 15 Minuten • Online via Zoom
+                </p>
+              </div>
+
+              <!-- Footer -->
+              <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
+                <p style="margin: 0;">© 2024 E-Commerce Rente | Commercehelden GmbH</p>
+                <p style="margin: 10px 0 0 0;">
+                  <a href="${process.env.FRONTEND_URL}" style="color: #FFD700; text-decoration: none;">Portal besuchen</a> |
+                  <a href="${process.env.FRONTEND_URL}/users/unsubscribe/${user.id}" style="color: #9ca3af; text-decoration: underline;">Abmelden</a>
+                </p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `;
+
+      await this.resend.emails.send({
+        from: this.fromAddress,
+        to,
+        subject: `${user.firstName || user.name}, bereit für den nächsten Schritt?`,
+        html,
+      });
+
+      this.logger.log(`Guide email 3 sent to ${to}`);
+    } catch (error) {
+      this.logger.error(`Failed to send guide email 3 to ${to}:`, error);
+    }
+  }
+
+  /**
+   * GUIDE SEQUENZ - Email 4: 10 Tage - Exklusive Warenpaket-Verfügbarkeit
+   * Gesendet 10 Tage nach Guide-Download
+   */
+  async sendGuideEmail4(to: string, user: any) {
+    try {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          </head>
+          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+              <!-- Header -->
+              <div style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0;">
+                <h1 style="margin: 0; color: white; font-size: 28px; font-weight: bold;">Exklusiv für Sie 🎁</h1>
+              </div>
+
+              <!-- Content -->
+              <div style="background-color: white; padding: 40px; border-radius: 0 0 8px 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <p style="font-size: 16px; color: #374151; line-height: 1.6; margin-top: 0;">
+                  Hallo ${user.firstName || user.name},
+                </p>
+
+                <p style="font-size: 16px; color: #374151; line-height: 1.6;">
+                  Unsere kuratierten Warenpakete sind begehrt — <strong>beliebte Pakete sind oft schnell vergriffen</strong>.
+                </p>
+
+                <p style="font-size: 16px; color: #374151; line-height: 1.6;">
+                  Hier ist ein exklusiver Überblick über unsere <strong>aktuelle Verfügbarkeit</strong>:
+                </p>
+
+                <!-- Package Overview -->
+                <div style="margin: 30px 0;">
+                  <div style="margin: 20px 0; padding: 25px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-radius: 12px; border: 2px solid #D4AF37;">
+                    <h3 style="margin: 0 0 10px 0; color: #1f2937; font-size: 18px; font-weight: 700;">Starter-Paket (ab 2.500€)</h3>
+                    <p style="margin: 0 0 10px 0; color: #374151; font-size: 14px;">
+                      • 15-25 Produkte<br>
+                      • 13-15% EBIT-Marge<br>
+                      • Perfekt für den Einstieg
+                    </p>
+                    <span style="display: inline-block; padding: 4px 12px; background-color: #10b981; color: white; border-radius: 4px; font-size: 12px; font-weight: 600;">Verfügbar</span>
+                  </div>
+
+                  <div style="margin: 20px 0; padding: 25px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-radius: 12px; border: 2px solid #D4AF37;">
+                    <h3 style="margin: 0 0 10px 0; color: #1f2937; font-size: 18px; font-weight: 700;">Business-Paket (ab 5.000€)</h3>
+                    <p style="margin: 0 0 10px 0; color: #374151; font-size: 14px;">
+                      • 30-50 Produkte<br>
+                      • 14-16% EBIT-Marge<br>
+                      • Für ambitionierte Händler
+                    </p>
+                    <span style="display: inline-block; padding: 4px 12px; background-color: #10b981; color: white; border-radius: 4px; font-size: 12px; font-weight: 600;">Verfügbar</span>
+                  </div>
+
+                  <div style="margin: 20px 0; padding: 25px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-radius: 12px; border: 2px solid #D4AF37;">
+                    <h3 style="margin: 0 0 10px 0; color: #1f2937; font-size: 18px; font-weight: 700;">Premium-Paket (ab 10.000€)</h3>
+                    <p style="margin: 0 0 10px 0; color: #374151; font-size: 14px;">
+                      • 60-100 Produkte<br>
+                      • 15-17% EBIT-Marge<br>
+                      • Maximale Diversifikation
+                    </p>
+                    <span style="display: inline-block; padding: 4px 12px; background-color: #f59e0b; color: white; border-radius: 4px; font-size: 12px; font-weight: 600;">Begrenzt verfügbar</span>
+                  </div>
+                </div>
+
+                <p style="font-size: 14px; color: #92400e; line-height: 1.6; padding: 15px; background-color: #fef3c7; border-radius: 6px; border-left: 4px solid #f59e0b;">
+                  ⚠️ <strong>Hinweis:</strong> Sichern Sie sich Ihr Paket, bevor die aktuelle Charge vergriffen ist. Beliebte Pakete sind teilweise innerhalb von 48 Stunden ausverkauft.
+                </p>
+
+                <!-- CTA Button -->
+                <div style="text-align: center; margin: 30px 0;">
+                  <a href="${process.env.FRONTEND_URL}/products" style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #1f2937; text-decoration: none; border-radius: 6px; font-weight: 700; font-size: 18px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">Jetzt Paket sichern</a>
+                </div>
+
+                <p style="font-size: 14px; color: #6b7280; line-height: 1.6; text-align: center; margin-bottom: 0;">
+                  Bei Fragen helfen wir Ihnen gerne persönlich weiter
+                </p>
+              </div>
+
+              <!-- Footer -->
+              <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
+                <p style="margin: 0;">© 2024 E-Commerce Rente | Commercehelden GmbH</p>
+                <p style="margin: 10px 0 0 0;">
+                  <a href="${process.env.FRONTEND_URL}" style="color: #FFD700; text-decoration: none;">Portal besuchen</a> |
+                  <a href="${process.env.FRONTEND_URL}/users/unsubscribe/${user.id}" style="color: #9ca3af; text-decoration: underline;">Abmelden</a>
+                </p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `;
+
+      await this.resend.emails.send({
+        from: this.fromAddress,
+        to,
+        subject: `Exklusiv: Aktuelle Warenpaket-Verfügbarkeit für ${user.firstName || user.name}`,
+        html,
+      });
+
+      this.logger.log(`Guide email 4 sent to ${to}`);
+    } catch (error) {
+      this.logger.error(`Failed to send guide email 4 to ${to}:`, error);
+    }
+  }
 }
