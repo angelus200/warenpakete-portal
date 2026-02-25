@@ -261,6 +261,79 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Video Section - Erfahren Sie mehr */}
+      <section className="py-20 bg-[#f8f8f8]">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Erfahren Sie <span className="text-gold">mehr</span>
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Drei kurze Videos mit wertvollen Einblicken in den E-Commerce Warenhandel
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Video 1 */}
+            <a
+              href="https://share.vidyard.com/watch/N4rBLTgaJZBs4ygwMwDYZB"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group cursor-pointer"
+            >
+              <div className="overflow-hidden rounded-xl transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl">
+                <img
+                  src="https://play.vidyard.com/N4rBLTgaJZBs4ygwMwDYZB.jpg?small=1&play_button=1&"
+                  alt="Geld verdienen mit Amazon"
+                  className="w-full h-auto"
+                />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 mt-4 text-center group-hover:text-gold transition-colors">
+                Geld verdienen mit Amazon
+              </h3>
+            </a>
+
+            {/* Video 2 */}
+            <a
+              href="https://share.vidyard.com/watch/9hd9xdCiZC3PBSJKkJLDSm"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group cursor-pointer"
+            >
+              <div className="overflow-hidden rounded-xl transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl">
+                <img
+                  src="https://play.vidyard.com/9hd9xdCiZC3PBSJKkJLDSm.jpg?small=1&play_button=1&"
+                  alt="Zweites Standbein aufbauen"
+                  className="w-full h-auto"
+                />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 mt-4 text-center group-hover:text-gold transition-colors">
+                Zweites Standbein aufbauen
+              </h3>
+            </a>
+
+            {/* Video 3 */}
+            <a
+              href="https://share.vidyard.com/watch/f772CcGMmTfqFbwu6cd6Ub"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group cursor-pointer"
+            >
+              <div className="overflow-hidden rounded-xl transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl">
+                <img
+                  src="https://play.vidyard.com/f772CcGMmTfqFbwu6cd6Ub.jpg?small=1&play_button=1&"
+                  alt="Nebengewerbe in 3 Schritten starten"
+                  className="w-full h-auto"
+                />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 mt-4 text-center group-hover:text-gold transition-colors">
+                Nebengewerbe in 3 Schritten starten
+              </h3>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Erstgespräch CTA Section */}
       <section className="py-20 bg-gradient-to-br from-[#fffbeb] via-white to-[#fffbeb] relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold/5 via-transparent to-transparent" />
