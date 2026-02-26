@@ -581,5 +581,218 @@ git push origin main
 
 **🎉 PROJEKT IST LIVE UND VOLL FUNKTIONSFÄHIG!**
 
-Stand: 5. Februar 2026
-Letzte Aktualisierung: Delivery-Flow implementiert
+---
+
+## 📚 KNOWLEDGE SHOP
+
+**Stand:** 26. Februar 2026
+**Feature:** Digitale Produkte (Guides, Templates, Academy Content)
+
+### Routen
+- **User:** `/knowledge` (public, kein Login erforderlich zum Ansehen)
+- **Admin:** `/admin/knowledge`
+
+### Datenbank-Models
+
+#### **KnowledgeProduct** (knowledge_products)
+- Digitale Produkte zum Verkauf/Download
+- Felder:
+  - id, title (unique), description, category
+  - price (Decimal), isFree (Boolean)
+  - fileUrl (String) - z.B. `/downloads/knowledge/datei.pdf`
+  - isActive (Boolean), sortOrder (Int)
+  - createdAt, updatedAt
+- Kategorien: `"guide"` | `"template"` | `"academy"`
+- Relationen: purchases (KnowledgePurchase[])
+
+#### **KnowledgePurchase** (knowledge_purchases)
+- Käufe von Knowledge-Produkten
+- Felder:
+  - id, userId, productId
+  - paidAmount (Decimal)
+  - stripePaymentIntentId (String, optional)
+  - createdAt
+- Unique Constraint: (userId, productId) - User kann Produkt nur einmal kaufen
+- Relationen: user, product
+
+**User Model erweitert:**
+- `knowledgePurchases KnowledgePurchase[]`
+
+### Zahlungsflow
+
+#### Kostenlose Produkte
+1. User klickt "Download" auf kostenloses Produkt
+2. Backend erstellt sofort `KnowledgePurchase` (paidAmount=0)
+3. Download startet automatisch
+
+#### Kostenpflichtige Produkte
+1. User klickt "Kaufen"
+2. Backend erstellt Stripe `PaymentIntent` (NICHT Checkout Session!)
+3. Frontend öffnet Modal mit Stripe `PaymentElement`
+4. Metadata: `{type: 'knowledge_product', productId, userId}`
+5. Payment erfolgreich → Webhook `payment_intent.succeeded`
+6. `payments.service.ts` erstellt `KnowledgePurchase`
+7. User kann nun downloaden
+
+### Webhook Integration
+
+**payments.service.ts erweitert:**
+```typescript
+case 'payment_intent.succeeded': {
+  // Bestehender Code für normale Orders...
+
+  // NEU: Knowledge Product Payments
+  if (paymentIntent.metadata?.type === 'knowledge_product') {
+    const knowledgeService = this.moduleRef.get(KnowledgeService);
+    await knowledgeService.completePurchase(
+      paymentIntent.metadata.userId,
+      paymentIntent.metadata.productId,
+      paymentIntent.amount / 100, // cents → euro
+      paymentIntent.id
+    );
+  }
+}
+```
+
+### Frontend-Integration
+
+#### Stripe Dependencies
+```json
+"@stripe/stripe-js": "8.8.0",
+"@stripe/react-stripe-js": "5.6.0"
+```
+
+**Installation:**
+```bash
+npm install @stripe/stripe-js @stripe/react-stripe-js --legacy-peer-deps
+```
+
+#### Components
+- **CheckoutForm:** Stripe `Elements` + `PaymentElement` in Modal
+- **Product Cards:** Kategorie-Badge, Preis, Status-basierte Buttons
+- **Filter Tabs:** Alle, Guides, Templates, Academy
+
+#### Mobile-Optimierung
+- Header: `text-2xl md:text-4xl`, reduziertes Padding
+- Filter Tabs: Horizontal scrollbar, kleinere Buttons
+- Cards: `p-4 md:p-6`
+- Buttons: `px-4 py-2 md:px-6`, `text-sm md:text-base`
+- Modal: `mx-4 p-6 md:p-8` für bessere mobile Darstellung
+
+### PDF-Dateien
+
+**Speicherort:**
+```
+apps/web/public/downloads/knowledge/
+├── amazon-seller-checkliste.pdf
+├── produktrecherche-template.pdf
+├── steuer-guide-reverse-charge.pdf
+├── roi-kalkulation.pdf
+├── amazon-fba-grundlagen.pdf
+└── marketplace-starter-guide.pdf
+```
+
+**Auslieferung:**
+- Next.js static file serving über `/downloads/knowledge/`
+- Backend generiert signed Download-URLs (Auth-Check)
+- Download-Endpoint: `GET /knowledge/:id/download` (Protected)
+
+**PDF-Generierung:**
+```bash
+cd apps/api
+npx ts-node -r tsconfig-paths/register src/scripts/generate-knowledge-pdfs.ts
+```
+
+**Script:** `apps/api/src/scripts/generate-knowledge-pdfs.ts`
+- Verwendet Puppeteer für HTML → PDF
+- Professional Design mit Gold-Gradient Header
+- Alle PDFs 120KB-220KB groß
+- Real Content (keine Lorem Ipsum)
+
+### Backend API Endpoints
+
+#### Public
+- `GET /knowledge` - Alle aktiven Produkte
+
+#### Protected (User)
+- `GET /knowledge/my-purchases` - Eigene Käufe
+- `POST /knowledge/:id/purchase` - Produkt kaufen
+- `GET /knowledge/:id/download` - Download (nur nach Kauf)
+
+#### Admin
+- `POST /knowledge` - Produkt erstellen
+- `PATCH /knowledge/:id` - Produkt aktualisieren
+- `DELETE /knowledge/:id` - Produkt löschen
+
+### Seeding
+
+**Script:** `apps/api/src/scripts/seed-knowledge.ts`
+
+**Produkte:**
+1. **Amazon Seller Checkliste** (Template, €19.00)
+2. **Produktrecherche Template** (Template, €29.00)
+3. **Steuer-Guide Reverse Charge** (Guide, €29.00)
+4. **ROI Kalkulations-Template** (Template, €19.00)
+5. **Amazon FBA Grundlagen** (Academy, Kostenlos)
+6. **Marketplace Starter Guide** (Guide, €49.00)
+
+**Seeding ausführen:**
+```bash
+cd apps/api
+npx ts-node -r tsconfig-paths/register src/scripts/seed-knowledge.ts
+```
+
+### Middleware-Konfiguration
+
+**apps/web/src/middleware.ts:**
+```typescript
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/sign-in(.*)',
+  '/sign-up(.*)',
+  '/erstgespraech',
+  '/partner',
+  '/knowledge',  // ← Public Route
+]);
+```
+
+- `/knowledge` ist public → kein Login zum Ansehen
+- Download-Endpoint erfordert Login + Kauf-Nachweis
+
+### Neue Produkte hinzufügen
+
+**Schritt-für-Schritt:**
+1. PDF erstellen (manuell oder via generate-knowledge-pdfs.ts)
+2. PDF nach `apps/web/public/downloads/knowledge/` kopieren
+3. Via Admin-Interface `/admin/knowledge` oder Seed-Script in DB eintragen
+4. `fileUrl` muss `/downloads/knowledge/dateiname.pdf` sein
+5. **Kein Deploy nötig** wenn nur DB-Eintrag (statische Files bleiben)
+
+### Design
+
+**Header:**
+- Gold-Gradient Background: `from-gold-dark via-gold to-gold-light`
+- Title: "Knowledge Shop"
+- Subtitle: "Premium Templates, Guides & Academy Content"
+
+**Product Cards:**
+- Weiß mit Hover-Gold-Border
+- Kategorie-Badge (gold/10 background)
+- "Kostenlos" Badge (grün) für free products
+- Gold-Preis oder "Gratis"
+- Status-basierte Buttons:
+  - Kostenlos + nicht heruntergeladen: "Download" (gold)
+  - Kostenlos + heruntergeladen: "✓ Heruntergeladen" (disabled)
+  - Kostenpflichtig + nicht gekauft: "Kaufen" (gold)
+  - Kostenpflichtig + gekauft: "✓ Download" (grün)
+
+**Stripe Modal:**
+- Weiß, abgerundete Ecken
+- PaymentElement von Stripe
+- Gold "Jetzt bezahlen" Button
+- Grau "Abbrechen" Button
+
+---
+
+**Stand:** 26. Februar 2026
+Letzte Aktualisierung: Knowledge Shop implementiert (mit Mobile-Optimierung)
