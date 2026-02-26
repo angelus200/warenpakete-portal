@@ -43,63 +43,74 @@ export default function Home() {
       <ECommerceNewsTicker />
       {/* Hero Section */}
       <section className="relative overflow-hidden py-28 md:py-40">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/images/hero/hero-ecommerce.jpg"
-            alt=""
-            fill
-            className="object-cover"
-          />
-          {/* Overlay for readability */}
-          <div className="absolute inset-0 bg-[#f5f5f0]/85" />
-        </div>
+        {/* Background - Dark gradient statt kaputtem Bild */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900" />
+        {/* Gold accent overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-gold/10 via-transparent to-gold/5" />
+        {/* Decorative elements */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gold/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold/8 rounded-full blur-3xl" />
 
         <div className="container relative mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block mb-3 px-4 py-2 rounded-full border-2 border-gold bg-gold/20">
+
+            {/* B2B Badge */}
+            <div className="inline-block mb-6 px-4 py-2 rounded-full border border-gold/50 bg-gold/10">
               <span className="text-gold text-sm font-bold tracking-wider">
-                NUR FÜR GEWERBETREIBENDE (B2B)
+                🏆 NUR FÜR GEWERBETREIBENDE (B2B) — DACH-REGION
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-3 bg-gradient-to-r from-gold-light via-gold to-gold-dark bg-clip-text text-transparent">
-              Bewährte Warenpakete
+            {/* Main Heading */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-gold-light via-gold to-gold-dark bg-clip-text text-transparent">
+                Verdienen Sie mit Amazon —
+              </span>
               <br />
-              <span className="text-gray-900">zu Großhandelspreisen</span>
+              <span className="text-white">
+                ohne selbst zu sourcen.
+              </span>
             </h1>
 
-            <p className="text-xl md:text-lg text-gray-700 mb-5 leading-relaxed">
-              Produkte die bereits erfolgreich auf <span className="text-gold font-semibold">Amazon, eBay & Online-Shops</span> verkauft werden
-              <br />
-              – jetzt zu B2B-Konditionen für Ihr Geschäft
+            {/* Subheading */}
+            <p className="text-xl md:text-2xl text-gray-300 mb-4 leading-relaxed">
+              Fertige Warenpakete. Bewährte Produkte. Sofort verkaufbar.
+            </p>
+            <p className="text-base md:text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
+              Über <span className="text-gold font-semibold">500 B2B-Unternehmer</span> im DACH-Raum verkaufen bereits mit unseren kuratierten Amazon-Paketen ab <span className="text-gold font-semibold">€5.000</span> — mit bis zu <span className="text-gold font-semibold">20% ROI</span> in 60–90 Tagen.
             </p>
 
+            {/* Trust indicators */}
+            <div className="flex flex-wrap justify-center gap-6 mb-10 text-sm text-gray-400">
+              <span className="flex items-center gap-1.5">✅ Kein Produktrisiko</span>
+              <span className="flex items-center gap-1.5">✅ Kein Listing-Aufwand</span>
+              <span className="flex items-center gap-1.5">✅ Sofort handelsfähig</span>
+              <span className="flex items-center gap-1.5">✅ DACH B2B-geprüft</span>
+            </div>
+
+            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={isSignedIn ? '/products' : '/sign-up'}>
                 <Button
                   size="lg"
-                  className="text-lg px-5 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30 border border-gold-light/20"
+                  className="text-lg px-8 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30 border border-gold-light/20"
                 >
-                  {isSignedIn ? 'Warenpakete ansehen' : 'Jetzt registrieren'}
+                  {isSignedIn ? '→ Warenpakete ansehen' : '→ Jetzt kostenlos registrieren'}
                 </Button>
               </Link>
               <Link href="/erstgespraech">
                 <Button
                   size="lg"
                   variant="outline"
-                  className="text-lg px-5 py-7 border-2 border-gold text-gold bg-white hover:bg-gold/10 font-bold shadow-xl"
+                  className="text-lg px-8 py-7 border-2 border-gold text-gold bg-transparent hover:bg-gold/10 font-bold shadow-xl"
                 >
-                  📞 Erstgespräch vereinbaren
+                  📞 Kostenloses Erstgespräch
                 </Button>
               </Link>
             </div>
+
           </div>
         </div>
-
-        {/* Decorative elements */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gold/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold-light/5 rounded-full blur-3xl" />
       </section>
 
       {/* Bekannt aus Section */}
