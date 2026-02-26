@@ -2,6 +2,8 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@clerk/nextjs';
 import { useApi } from '@/hooks/useApi';
 import { Card } from '@/components/ui/card';
 import { loadStripe } from '@stripe/stripe-js';
@@ -100,11 +102,20 @@ function CheckoutForm({
 }
 
 export default function KnowledgePage() {
+  const router = useRouter();
+  const { isSignedIn } = useAuth();
   const api = useApi();
   const queryClient = useQueryClient();
   const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<KnowledgeProduct | null>(null);
+  const [purchaseError, setPurchaseError] = useState<string | null>(null);
+  const [pendingProductId, setPendingProductId] = useState<string | null>(null);
+
+  // Debug: Check stripePromise on mount
+  console.log('🟡 Component mounted');
+  console.log('🟡 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:', process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+  console.log('🟡 stripePromise:', stripePromise);
 
   const { data: products = [] } = useQuery<KnowledgeProduct[]>({
     queryKey: ['knowledge-products'],
@@ -121,18 +132,40 @@ export default function KnowledgePage() {
   const purchasedIds = new Set(purchases.map(p => p.productId));
 
   const purchaseMutation = useMutation({
-    mutationFn: (productId: string) =>
-      api.post<{ isFree: boolean; clientSecret?: string; purchaseId?: string }>(`/knowledge/${productId}/purchase`, {}),
-    onSuccess: (data, productId) => {
+    mutationFn: (product: KnowledgeProduct) =>
+      api.post<{ isFree: boolean; clientSecret?: string; purchaseId?: string }>(`/knowledge/${product.id}/purchase`, {}),
+    onSuccess: (data, product) => {
+      console.log('🔵 purchaseMutation.onSuccess called');
+      console.log('🔵 data:', data);
+      console.log('🔵 product:', product);
+
+      setPendingProductId(null);
+      setPurchaseError(null);
+
       if (data.isFree) {
         queryClient.invalidateQueries({ queryKey: ['knowledge-purchases'] });
-        const product = products.find(p => p.id === productId);
-        if (product) {
-          downloadMutation.mutate(productId);
-        }
+        downloadMutation.mutate(product.id);
       } else if (data.clientSecret) {
+        console.log('🔵 data.clientSecret exists:', data.clientSecret);
+        console.log('🔵 Using product directly (no find needed):', product);
+
         setClientSecret(data.clientSecret);
-        setSelectedProduct(products.find(p => p.id === productId) || null);
+        setSelectedProduct(product); // Direct assignment - no find() needed!
+
+        console.log('🔵 State updates called - clientSecret and selectedProduct set');
+      }
+    },
+    onError: (error: any) => {
+      console.error('❌ Purchase error:', error);
+      setPendingProductId(null);
+
+      // Handle different error types
+      if (error.message?.includes('401') || error.message?.includes('Unauthorized')) {
+        setPurchaseError('Bitte melde dich an, um Produkte zu kaufen.');
+      } else if (error.message?.includes('already purchased')) {
+        setPurchaseError('Du hast dieses Produkt bereits gekauft.');
+      } else {
+        setPurchaseError(error.message || 'Fehler beim Kaufvorgang. Bitte versuche es erneut.');
       }
     },
   });
@@ -148,7 +181,21 @@ export default function KnowledgePage() {
   const handlePurchaseSuccess = () => {
     setClientSecret(null);
     setSelectedProduct(null);
+    setPurchaseError(null);
     queryClient.invalidateQueries({ queryKey: ['knowledge-purchases'] });
+  };
+
+  const handlePurchaseClick = (product: KnowledgeProduct) => {
+    // Check if user is signed in
+    if (!isSignedIn) {
+      router.push('/sign-in');
+      return;
+    }
+
+    // Clear any previous errors
+    setPurchaseError(null);
+    setPendingProductId(product.id);
+    purchaseMutation.mutate(product);
   };
 
   const filteredProducts = products.filter(
@@ -193,6 +240,25 @@ export default function KnowledgePage() {
             </button>
           ))}
         </div>
+
+        {/* Error Message */}
+        {purchaseError && (
+          <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <span className="text-red-600 text-xl">⚠️</span>
+              <div className="flex-1">
+                <p className="text-red-800 font-medium mb-1">Kaufvorgang fehlgeschlagen</p>
+                <p className="text-red-700 text-sm">{purchaseError}</p>
+              </div>
+              <button
+                onClick={() => setPurchaseError(null)}
+                className="text-red-400 hover:text-red-600 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -239,28 +305,28 @@ export default function KnowledgePage() {
                           </button>
                         ) : (
                           <button
-                            onClick={() => purchaseMutation.mutate(product.id)}
-                            disabled={purchaseMutation.isPending}
-                            className="px-4 py-2 md:px-6 text-sm md:text-base bg-gold hover:bg-gold-dark text-dark font-medium rounded-lg transition-colors"
+                            onClick={() => handlePurchaseClick(product)}
+                            disabled={pendingProductId === product.id}
+                            className="px-4 py-2 md:px-6 text-sm md:text-base bg-gold hover:bg-gold-dark text-dark font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            {purchaseMutation.isPending ? 'Lädt...' : 'Download'}
+                            {pendingProductId === product.id ? 'Lädt...' : 'Download'}
                           </button>
                         )
                       ) : isPurchased ? (
                         <button
                           onClick={() => downloadMutation.mutate(product.id)}
                           disabled={downloadMutation.isPending}
-                          className="px-4 py-2 md:px-6 text-sm md:text-base bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+                          className="px-4 py-2 md:px-6 text-sm md:text-base bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {downloadMutation.isPending ? 'Lädt...' : '✓ Download'}
                         </button>
                       ) : (
                         <button
-                          onClick={() => purchaseMutation.mutate(product.id)}
-                          disabled={purchaseMutation.isPending}
-                          className="px-4 py-2 md:px-6 text-sm md:text-base bg-gold hover:bg-gold-dark text-dark font-medium rounded-lg transition-colors"
+                          onClick={() => handlePurchaseClick(product)}
+                          disabled={pendingProductId === product.id}
+                          className="px-4 py-2 md:px-6 text-sm md:text-base bg-gold hover:bg-gold-dark text-dark font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          {purchaseMutation.isPending ? 'Lädt...' : 'Kaufen'}
+                          {pendingProductId === product.id ? 'Lädt...' : 'Kaufen'}
                         </button>
                       )}
                     </div>
@@ -281,31 +347,37 @@ export default function KnowledgePage() {
       </div>
 
       {/* Stripe Payment Modal */}
-      {clientSecret && selectedProduct && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 md:p-8">
-            <div className="mb-6">
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-                Zahlung abschließen
-              </h2>
-              <p className="text-sm md:text-base text-gray-600">
-                {selectedProduct.title} - €{Number(selectedProduct.price).toFixed(2)}
-              </p>
-            </div>
+      {clientSecret && selectedProduct && (() => {
+        console.log('🟢 Modal is rendering!');
+        console.log('🟢 clientSecret:', clientSecret);
+        console.log('🟢 selectedProduct:', selectedProduct);
+        console.log('🟢 stripePromise:', stripePromise);
+        return (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 md:p-8">
+              <div className="mb-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
+                  Zahlung abschließen
+                </h2>
+                <p className="text-sm md:text-base text-gray-600">
+                  {selectedProduct.title} - €{Number(selectedProduct.price).toFixed(2)}
+                </p>
+              </div>
 
-            <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <CheckoutForm
-                clientSecret={clientSecret}
-                onSuccess={handlePurchaseSuccess}
-                onClose={() => {
-                  setClientSecret(null);
-                  setSelectedProduct(null);
-                }}
-              />
-            </Elements>
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <CheckoutForm
+                  clientSecret={clientSecret}
+                  onSuccess={handlePurchaseSuccess}
+                  onClose={() => {
+                    setClientSecret(null);
+                    setSelectedProduct(null);
+                  }}
+                />
+              </Elements>
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
