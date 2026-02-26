@@ -56,6 +56,7 @@ export function Header() {
             {api.isSignedIn && (
               <>
                 <NavLink href="/products">Produkte</NavLink>
+                <NavLink href="/knowledge">Knowledge</NavLink>
                 <NavLink href="/dashboard">Dashboard</NavLink>
                 <NavLink href="/orders">Bestellungen</NavLink>
                 <NavLink href="/contracts">Verträge</NavLink>
@@ -124,6 +125,7 @@ export function Header() {
           {api.isSignedIn && (
             <>
               <NavLink href="/products">Produkte</NavLink>
+              <NavLink href="/knowledge">Knowledge</NavLink>
               <NavLink href="/dashboard">Dashboard</NavLink>
               <NavLink href="/orders">Bestellungen</NavLink>
               <NavLink href="/contracts">Verträge</NavLink>

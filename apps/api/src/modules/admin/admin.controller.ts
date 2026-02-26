@@ -115,4 +115,12 @@ export class AdminController {
   async getAnalytics() {
     return this.adminService.getAnalytics();
   }
+
+  @Get('knowledge')
+  @ApiBearerAuth('admin')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({ summary: 'Get all knowledge products' })
+  async getAllKnowledgeProducts() {
+    return this.adminService.getAllKnowledgeProducts();
+  }
 }

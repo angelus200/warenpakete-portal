@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { OrdersService } from '../orders/orders.service';
 import { EmailService } from '../email/email.service';
@@ -15,6 +16,7 @@ export class PaymentsService {
     private ordersService: OrdersService,
     private emailService: EmailService,
     private affiliateService: AffiliateService,
+    private moduleRef: ModuleRef,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2023-10-16',
@@ -199,7 +201,28 @@ export class PaymentsService {
 
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        // Additional handling if needed
+
+        // Handle knowledge product purchases
+        if (paymentIntent.metadata?.type === 'knowledge_product') {
+          const { productId, userId } = paymentIntent.metadata;
+
+          if (productId && userId) {
+            try {
+              // Lazy load KnowledgeService to avoid circular dependency
+              const { KnowledgeService } = await import('../knowledge/knowledge.service');
+              const knowledgeService = this.moduleRef.get(KnowledgeService, { strict: false });
+
+              await knowledgeService.completePurchase(
+                productId,
+                userId,
+                paymentIntent.id,
+                paymentIntent.amount / 100,
+              );
+            } catch (error) {
+              console.error('Failed to complete knowledge product purchase:', error);
+            }
+          }
+        }
         break;
       }
 

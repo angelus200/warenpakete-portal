@@ -468,4 +468,10 @@ export class AdminService {
       fulfillment: fulfillmentStats,
     };
   }
+
+  async getAllKnowledgeProducts() {
+    return this.prisma.knowledgeProduct.findMany({
+      orderBy: { sortOrder: 'asc' },
+    });
+  }
 }

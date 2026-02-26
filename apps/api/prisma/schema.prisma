@@ -72,6 +72,7 @@ model User {
   affiliateWithdrawals AffiliateWithdrawal[] @relation("UserAffiliateWithdrawals")
   chatRooms          ChatRoom[]         @relation("UserChatRooms")
   phoneCalls         PhoneCall[]
+  knowledgePurchases KnowledgePurchase[]
 
   @@index([emailOptOut, createdAt, firstOrderAt])
   @@index([emailOptOut, guideDownloadedAt, firstOrderAt])
@@ -653,4 +654,33 @@ model FunnelLead {
   @@index([isQualified, calendlyBooked, emailOptOut, createdAt])
   @@index([emailOptOut])
   @@map("funnel_leads")
+}
+
+model KnowledgeProduct {
+  id          String    @id @default(uuid())
+  title       String    @unique
+  description String    @db.Text
+  category    String
+  price       Decimal?  @db.Decimal(10, 2)
+  isFree      Boolean   @default(false)
+  fileUrl     String
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  purchases   KnowledgePurchase[]
+  @@map("knowledge_products")
+}
+
+model KnowledgePurchase {
+  id                    String   @id @default(uuid())
+  userId                String
+  productId             String
+  paidAmount            Decimal  @db.Decimal(10, 2)
+  stripePaymentIntentId String?
+  createdAt             DateTime @default(now())
+  user    User             @relation(fields: [userId], references: [id])
+  product KnowledgeProduct @relation(fields: [productId], references: [id])
+  @@unique([userId, productId])
+  @@map("knowledge_purchases")
 }
