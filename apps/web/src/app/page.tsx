@@ -1034,6 +1034,68 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Affiliate Partner Section */}
+      <section className="py-24 bg-gradient-to-br from-[#fffbeb] via-white to-[#fffbeb] relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold/5 via-transparent to-transparent" />
+
+        <div className="container relative z-10 mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-block mb-6 px-4 py-2 rounded-full border-2 border-gold bg-gold/20">
+              <span className="text-gold text-sm font-bold tracking-wider">
+                💰 AFFILIATE-PARTNER WERDEN
+              </span>
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Verdiene <span className="text-gold">passiv</span> mit jedem Verkauf
+            </h2>
+
+            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+              Empfehle E-Commerce Rente an Unternehmer aus deinem Netzwerk und profitiere von unserem <strong>3-Ebenen Provisionssystem</strong>. Bis zu <strong className="text-gold">5% Provision</strong> auf direkte Verkäufe plus wiederkehrende Einnahmen aus deinem Partner-Netzwerk.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 max-w-3xl mx-auto">
+              <div className="bg-white p-6 rounded-xl border-2 border-gold/30 shadow-lg">
+                <div className="text-3xl font-bold text-gold mb-2">5%</div>
+                <div className="text-sm text-gray-600">Ebene 1: Direkte Empfehlungen</div>
+              </div>
+              <div className="bg-white p-6 rounded-xl border-2 border-gold/30 shadow-lg">
+                <div className="text-3xl font-bold text-gold mb-2">2%</div>
+                <div className="text-sm text-gray-600">Ebene 2: Deine Partner-Verkäufe</div>
+              </div>
+              <div className="bg-white p-6 rounded-xl border-2 border-gold/30 shadow-lg">
+                <div className="text-3xl font-bold text-gold mb-2">1%</div>
+                <div className="text-sm text-gray-600">Ebene 3: Deren Partner-Verkäufe</div>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <a href="/downloads/partner-handbuch.pdf" download>
+                <Button
+                  size="lg"
+                  className="text-lg px-8 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
+                >
+                  📥 Partner-Handbuch herunterladen (PDF)
+                </Button>
+              </a>
+              <Link href="/partner">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-lg px-8 py-7 border-2 border-gold text-gold bg-white hover:bg-gold/10 font-bold shadow-xl"
+                >
+                  Mehr zum Affiliate-Programm →
+                </Button>
+              </Link>
+            </div>
+
+            <p className="text-sm text-gray-500 mt-6">
+              Kostenlos registrieren • Keine monatlichen Gebühren • Sofort starten
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Zwei Optionen Section */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4">

@@ -390,19 +390,19 @@ export default function PartnerPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
               {
-                name: 'M. Schmidt',
+                name: 'M. Schmidtner',
                 role: 'Affiliate Partner seit 2025',
                 quote:
                   'Innerhalb von 3 Monaten konnte ich mir ein stabiles Nebeneinkommen aufbauen.',
               },
               {
-                name: 'S. Weber',
+                name: 'S. Webermann',
                 role: 'Premium Partner',
                 quote:
                   'Das 3-Ebenen-System macht den Unterschied. Mein Netzwerk arbeitet für mich.',
               },
               {
-                name: 'J. Müller',
+                name: 'J. Moller',
                 role: 'Affiliate Partner seit 2025',
                 quote:
                   'Einfacher Einstieg, professionelles Dashboard und pünktliche Auszahlungen.',
