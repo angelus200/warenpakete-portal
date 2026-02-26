@@ -43,16 +43,6 @@ function CheckoutForm({
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Show loading state while Stripe is initializing
-  if (!stripe) {
-    return (
-      <div className="flex items-center justify-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
-        <p className="ml-3 text-gray-600">Zahlung wird vorbereitet...</p>
-      </div>
-    );
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
