@@ -1,15 +1,13 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { useApi } from '@/hooks/useApi';
 import { Card } from '@/components/ui/card';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 interface KnowledgeProduct {
   id: string;
@@ -111,6 +109,12 @@ export default function KnowledgePage() {
   const [selectedProduct, setSelectedProduct] = useState<KnowledgeProduct | null>(null);
   const [purchaseError, setPurchaseError] = useState<string | null>(null);
   const [pendingProductId, setPendingProductId] = useState<string | null>(null);
+
+  // Initialize Stripe inside component with useMemo
+  const stripePromise = useMemo(
+    () => loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!),
+    []
+  );
 
   // Debug: Check stripePromise on mount
   console.log('🟡 Component mounted');
@@ -364,7 +368,11 @@ export default function KnowledgePage() {
                 </p>
               </div>
 
-              <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <Elements
+                key={clientSecret}
+                stripe={stripePromise}
+                options={{ clientSecret }}
+              >
                 <CheckoutForm
                   clientSecret={clientSecret}
                   onSuccess={handlePurchaseSuccess}
