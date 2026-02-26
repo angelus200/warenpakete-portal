@@ -57,35 +57,36 @@ export default function Home() {
             {/* B2B Badge */}
             <div className="inline-block mb-6 px-4 py-2 rounded-full border border-gold/50 bg-gold/10">
               <span className="text-gold text-sm font-bold tracking-wider">
-                🏆 NUR FÜR GEWERBETREIBENDE (B2B) — DACH-REGION
+                💰 PASSIVES EINKOMMEN FÜR GEWERBETREIBENDE
               </span>
             </div>
 
             {/* Main Heading */}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gold-light via-gold to-gold-dark bg-clip-text text-transparent">
-                Verdienen Sie mit Amazon —
+                Ihre E-Commerce Rente —
               </span>
               <br />
               <span className="text-white">
-                ohne selbst zu sourcen.
+                monatlich. automatisiert. passiv.
               </span>
             </h1>
 
             {/* Subheading */}
             <p className="text-xl md:text-2xl text-gray-300 mb-4 leading-relaxed">
-              Fertige Warenpakete. Bewährte Produkte. Sofort verkaufbar.
+              Einmal einrichten. Jeden Monat verdienen.
             </p>
             <p className="text-base md:text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
-              Über <span className="text-gold font-semibold">500 B2B-Unternehmer</span> im DACH-Raum verkaufen bereits mit unseren kuratierten Amazon-Paketen ab <span className="text-gold font-semibold">€5.000</span> — mit bis zu <span className="text-gold font-semibold">20% ROI</span> in 60–90 Tagen.
+              Über <span className="text-gold font-semibold">500 Unternehmer</span> im DACH-Raum bauen sich mit unseren Handelspaketen ab <span className="text-gold font-semibold">€5.000</span> eine zweite Einnahmequelle auf — nebenberuflich, ohne Zeitaufwand, mit bis zu <span className="text-gold font-semibold">20% ROI</span>.
             </p>
 
             {/* Trust indicators */}
             <div className="flex flex-wrap justify-center gap-6 mb-10 text-sm text-gray-400">
-              <span className="flex items-center gap-1.5">✅ Kein Produktrisiko</span>
-              <span className="flex items-center gap-1.5">✅ Kein Listing-Aufwand</span>
-              <span className="flex items-center gap-1.5">✅ Sofort handelsfähig</span>
-              <span className="flex items-center gap-1.5">✅ DACH B2B-geprüft</span>
+              <span className="flex items-center gap-1.5">💰 Monatliche Einnahmen ohne aktive Arbeit</span>
+              <span className="flex items-center gap-1.5">📦 Kein Sourcing, kein Risiko</span>
+              <span className="flex items-center gap-1.5">🤖 Vollautomatisierter Verkaufsprozess</span>
+              <span className="flex items-center gap-1.5">🕐 Nebenberuflich — ab 2h/Woche</span>
+              <span className="flex items-center gap-1.5">📈 Skalierbar von €5.000 bis €100.000+</span>
             </div>
 
             {/* CTA Buttons */}
