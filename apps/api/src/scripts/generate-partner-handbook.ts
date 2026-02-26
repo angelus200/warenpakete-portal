@@ -206,7 +206,7 @@ const HTML_CONTENT = `
       left: 0;
       color: #D4AF37;
       font-weight: bold;
-      font-size: 18pt;
+      font-size: 14pt;
     }
 
     strong {
@@ -736,6 +736,18 @@ const HTML_CONTENT = `
 
       <p style="margin-top: 15px;"><strong>Antwortzeit:</strong> Innerhalb 24 Stunden (Werktage)</p>
     </div>
+  </div>
+  <div class="footer">© 2026 Commercehelden GmbH — Alle Rechte vorbehalten</div>
+</div>
+
+<!-- SEITE 11: ZIELE & WELCOME -->
+<div class="page">
+  <div class="header">
+    <span>E-Commerce Rente Partner-Handbuch</span>
+    <span>Seite 11</span>
+  </div>
+  <div class="content">
+    <h2>Nächste Schritte & Kontakt</h2>
 
     <h3>🎯 Ihr Ziel für die nächsten 30 Tage</h3>
     <div class="highlight-box">
@@ -748,14 +760,14 @@ const HTML_CONTENT = `
       </ul>
     </div>
 
-    <div style="text-align: center; margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: white; border-radius: 12px;">
+    <div style="text-align: center; margin-top: 20px; padding: 30px; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: white; border-radius: 12px;">
       <p style="font-size: 14pt; margin-bottom: 15px;">
         <strong>QR-Code Platzhalter</strong>
       </p>
       <p style="font-size: 12pt; color: #D4AF37;">
         ecommercerente.com/partner
       </p>
-      <div style="width: 120px; height: 120px; margin: 20px auto; background: white; border: 3px solid #D4AF37; display: flex; align-items: center; justify-content: center;">
+      <div style="width: 80px; height: 80px; margin: 20px auto; background: white; border: 3px solid #D4AF37; display: flex; align-items: center; justify-content: center;">
         <span style="color: #1a1a1a; font-size: 10pt;">QR</span>
       </div>
     </div>
