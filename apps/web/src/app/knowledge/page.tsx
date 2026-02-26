@@ -10,7 +10,8 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 // Initialize Stripe outside component (prevents re-creation on every render)
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+// TEMPORARY DEBUG: Hardcoded key to test if env variable is the issue
+const stripePromise = loadStripe('pk_live_51R28PnA8fUoWsdr56pd5HX5bZ2cFodfPxhZ1etegfXAyp0BmXm2paXz8P9SrgsY8FjzNq29QjcVgP8KrpAfAWOXE00buifRdXo');
 
 interface KnowledgeProduct {
   id: string;
