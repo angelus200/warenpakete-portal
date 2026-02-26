@@ -52,11 +52,11 @@ export function Header() {
           <nav className="hidden md:flex items-center space-x-4">
             {/* Public links - always visible */}
             <NavLink href="/partner">Partner werden</NavLink>
+            <NavLink href="/knowledge">Knowledge Shop</NavLink>
 
             {api.isSignedIn && (
               <>
                 <NavLink href="/products">Produkte</NavLink>
-                <NavLink href="/knowledge">Knowledge Shop</NavLink>
                 <NavLink href="/dashboard">Dashboard</NavLink>
                 <NavLink href="/orders">Bestellungen</NavLink>
                 <NavLink href="/contracts">Verträge</NavLink>
@@ -121,11 +121,11 @@ export function Header() {
         <div className="md:hidden border-t border-gray-300 py-3 flex space-x-4 overflow-x-auto">
           {/* Public links - always visible */}
           <NavLink href="/partner">Partner werden</NavLink>
+          <NavLink href="/knowledge">Knowledge Shop</NavLink>
 
           {api.isSignedIn && (
             <>
               <NavLink href="/products">Produkte</NavLink>
-              <NavLink href="/knowledge">Knowledge Shop</NavLink>
               <NavLink href="/dashboard">Dashboard</NavLink>
               <NavLink href="/orders">Bestellungen</NavLink>
               <NavLink href="/contracts">Verträge</NavLink>
