@@ -167,23 +167,23 @@ export default function KnowledgePage() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8 text-center">
-          <div className="inline-block px-6 py-12 bg-gradient-to-r from-gold-dark via-gold to-gold-light rounded-2xl shadow-xl shadow-gold/20 mb-4">
-            <h1 className="text-4xl font-bold text-dark mb-2">
+          <div className="inline-block px-4 py-8 md:px-6 md:py-12 bg-gradient-to-r from-gold-dark via-gold to-gold-light rounded-2xl shadow-xl shadow-gold/20 mb-4">
+            <h1 className="text-2xl md:text-4xl font-bold text-dark mb-2">
               Knowledge Shop
             </h1>
-            <p className="text-dark/80 text-lg">
+            <p className="text-dark/80 text-base md:text-lg">
               Premium Templates, Guides & Academy Content
             </p>
           </div>
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex justify-center gap-2 mb-8 flex-wrap">
+        <div className="flex justify-start md:justify-center gap-2 mb-8 overflow-x-auto pb-2">
           {categories.map(cat => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+              className={`px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-base font-medium transition-all whitespace-nowrap ${
                 activeCategory === cat.id
                   ? 'bg-gold text-dark shadow-lg shadow-gold/20'
                   : 'bg-white text-gray-700 hover:bg-gray-50'
@@ -202,7 +202,7 @@ export default function KnowledgePage() {
 
             return (
               <Card key={product.id} className="bg-white border-gray-300 hover:border-gold transition-all shadow-sm hover:shadow-lg">
-                <div className="p-6">
+                <div className="p-4 md:p-6">
                   {/* Header */}
                   <div className="flex items-start justify-between mb-4">
                     <span className="px-3 py-1 bg-gold/10 text-gold text-xs font-semibold rounded-full uppercase">
@@ -216,7 +216,7 @@ export default function KnowledgePage() {
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3">
                     {product.title}
                   </h3>
                   <p className="text-sm text-gray-600 mb-6 line-clamp-3">
@@ -225,7 +225,7 @@ export default function KnowledgePage() {
 
                   {/* Footer */}
                   <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                    <div className="text-2xl font-bold text-gold">
+                    <div className="text-xl md:text-2xl font-bold text-gold">
                       {product.isFree ? 'Gratis' : `€${Number(product.price).toFixed(2)}`}
                     </div>
                     <div>
@@ -233,7 +233,7 @@ export default function KnowledgePage() {
                         isDownloaded ? (
                           <button
                             disabled
-                            className="px-6 py-2 bg-gray-200 text-gray-500 rounded-lg font-medium cursor-not-allowed"
+                            className="px-4 py-2 md:px-6 text-sm md:text-base bg-gray-200 text-gray-500 rounded-lg font-medium cursor-not-allowed"
                           >
                             ✓ Heruntergeladen
                           </button>
@@ -241,7 +241,7 @@ export default function KnowledgePage() {
                           <button
                             onClick={() => purchaseMutation.mutate(product.id)}
                             disabled={purchaseMutation.isPending}
-                            className="px-6 py-2 bg-gold hover:bg-gold-dark text-dark font-medium rounded-lg transition-colors"
+                            className="px-4 py-2 md:px-6 text-sm md:text-base bg-gold hover:bg-gold-dark text-dark font-medium rounded-lg transition-colors"
                           >
                             {purchaseMutation.isPending ? 'Lädt...' : 'Download'}
                           </button>
@@ -250,7 +250,7 @@ export default function KnowledgePage() {
                         <button
                           onClick={() => downloadMutation.mutate(product.id)}
                           disabled={downloadMutation.isPending}
-                          className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+                          className="px-4 py-2 md:px-6 text-sm md:text-base bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
                         >
                           {downloadMutation.isPending ? 'Lädt...' : '✓ Download'}
                         </button>
@@ -258,7 +258,7 @@ export default function KnowledgePage() {
                         <button
                           onClick={() => purchaseMutation.mutate(product.id)}
                           disabled={purchaseMutation.isPending}
-                          className="px-6 py-2 bg-gold hover:bg-gold-dark text-dark font-medium rounded-lg transition-colors"
+                          className="px-4 py-2 md:px-6 text-sm md:text-base bg-gold hover:bg-gold-dark text-dark font-medium rounded-lg transition-colors"
                         >
                           {purchaseMutation.isPending ? 'Lädt...' : 'Kaufen'}
                         </button>
@@ -283,12 +283,12 @@ export default function KnowledgePage() {
       {/* Stripe Payment Modal */}
       {clientSecret && selectedProduct && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 md:p-8">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
                 Zahlung abschließen
               </h2>
-              <p className="text-gray-600">
+              <p className="text-sm md:text-base text-gray-600">
                 {selectedProduct.title} - €{Number(selectedProduct.price).toFixed(2)}
               </p>
             </div>
