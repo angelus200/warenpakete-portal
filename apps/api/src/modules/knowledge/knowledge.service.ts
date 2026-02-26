@@ -139,6 +139,7 @@ export class KnowledgeService {
     const paymentIntent = await this.stripe.paymentIntents.create({
       amount: Math.round(Number(product.price) * 100),
       currency: 'eur',
+      automatic_payment_methods: { enabled: true },
       metadata: {
         type: 'knowledge_product',
         productId: id,
