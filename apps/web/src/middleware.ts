@@ -14,6 +14,7 @@ const isPublicRoute = createRouteMatcher([
   '/agb',
   '/datenschutz',
   '/impressum',
+  '/faq',
 ]);
 
 const isAdminRoute = createRouteMatcher(['/admin(.*)']);
