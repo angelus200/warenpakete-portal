@@ -57,32 +57,32 @@ export default function Home() {
             {/* B2B Badge */}
             <div className="inline-block mb-6 px-4 py-2 rounded-full border border-gold/50 bg-gold/10">
               <span className="text-gold text-sm font-bold tracking-wider">
-                💰 PASSIVES EINKOMMEN FÜR GEWERBETREIBENDE
+                💼 B2B WARENHANDEL FÜR GEWERBETREIBENDE
               </span>
             </div>
 
             {/* Main Heading */}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gold-light via-gold to-gold-dark bg-clip-text text-transparent">
-                Ihre E-Commerce Rente —
+                Ihr E-Commerce Business —
               </span>
               <br />
               <span className="text-white">
-                monatlich. automatisiert. passiv.
+                professionell. strukturiert. skalierbar.
               </span>
             </h1>
 
             {/* Subheading */}
             <p className="text-xl md:text-2xl text-gray-300 mb-4 leading-relaxed">
-              Einmal einrichten. Jeden Monat verdienen.
+              Geprüfte Warenpakete. Direkt handelbar.
             </p>
             <p className="text-base md:text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
-              Über <span className="text-gold font-semibold">500 Unternehmer</span> im DACH-Raum bauen sich mit unseren Handelspaketen ab <span className="text-gold font-semibold">€5.000</span> eine zweite Einnahmequelle auf — nebenberuflich, ohne Zeitaufwand, mit bis zu <span className="text-gold font-semibold">20% ROI</span>.
+              Über <span className="text-gold font-semibold">500 Unternehmer</span> im DACH-Raum starten mit unseren Handelspaketen ab <span className="text-gold font-semibold">€5.000</span> ein zusätzliches Handelsgeschäft — nebenberuflich, mit überschaubarem Aufwand.
             </p>
 
             {/* Trust indicators */}
             <div className="flex flex-wrap justify-center gap-6 mb-10 text-sm text-gray-400">
-              <span className="flex items-center gap-1.5">💰 Monatliche Einnahmen ohne aktive Arbeit</span>
+              <span className="flex items-center gap-1.5">💼 Strukturierter Handelsablauf</span>
               <span className="flex items-center gap-1.5">📦 Kein Sourcing, kein Risiko</span>
               <span className="flex items-center gap-1.5">🤖 Vollautomatisierter Verkaufsprozess</span>
               <span className="flex items-center gap-1.5">🕐 Nebenberuflich — ab 2h/Woche</span>
@@ -463,10 +463,10 @@ export default function Home() {
               </div>
               <div className="mt-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
-                  Verkaufserlös erhalten
+                  Handelsergebnis realisieren
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Nach Verkauf der Waren erhältst du den Erlös (abzüglich Kommission falls gewählt). Transparente Abrechnung.
+                  Nach Verkauf der Waren erhältst du den Erlös (abzüglich Kommission falls gewählt). Transparente Abwicklung.
                 </p>
               </div>
             </Card>
@@ -888,7 +888,7 @@ export default function Home() {
               </div>
               <p className="text-gray-600 leading-relaxed">
                 Ein Händler aus Bayern kaufte ein Elektronik-Paket für <strong>8.500 €</strong>.
-                Über Amazon FBA innerhalb von <strong>6 Wochen vollständig abverkauft</strong>.
+                Über Amazon FBA innerhalb von <strong>6 Wochen erfolgreich verkauft</strong>.
               </p>
             </Card>
 
@@ -909,8 +909,7 @@ export default function Home() {
               </div>
               <p className="text-gray-600 leading-relaxed">
                 Ein Online-Shop-Betreiber aus NRW nutzte den Kommissionsverkauf.
-                Paket für <strong>5.200 €</strong> – Abwicklung komplett durch uns,
-                Auszahlung nach <strong>10 Wochen</strong>.
+                Paket für <strong>5.200 €</strong> – Abwicklung komplett durch uns.
               </p>
             </Card>
 
@@ -937,9 +936,7 @@ export default function Home() {
           </div>
 
           {/* Disclaimer */}
-          <p className="text-gray-500 text-sm text-center mt-8">
-            * Anonymisierte Beispiele aus der Praxis. Ergebnisse variieren je nach Produkt, Markt und Verkaufsstrategie.
-          </p>
+          <p className="text-xs text-gray-500 text-center mt-6">* Individuelle Ergebnisse. Keine Renditegarantie. Vergangene Ergebnisse sind kein Indikator für zukünftige Resultate. Anonymisierte Beispiele aus der Praxis. Ergebnisse variieren je nach Produkt, Markt und Verkaufsstrategie.</p>
         </div>
       </section>
 
@@ -1047,11 +1044,11 @@ export default function Home() {
             </div>
 
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Verdiene <span className="text-gold">passiv</span> mit jedem Verkauf
+              Verdiene <span className="text-gold">Provisionen</span> mit jedem Verkauf
             </h2>
 
             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Empfehle E-Commerce Rente an Unternehmer aus deinem Netzwerk und profitiere von unserem <strong>3-Ebenen Provisionssystem</strong>. Bis zu <strong className="text-gold">5% Provision</strong> auf direkte Verkäufe plus wiederkehrende Einnahmen aus deinem Partner-Netzwerk.
+              Empfehle E-Commerce Business an Unternehmer aus deinem Netzwerk und profitiere von unserem <strong>3-Ebenen Provisionssystem</strong>. Bis zu <strong className="text-gold">5% Provision</strong> auf direkte Verkäufe plus Provisionseinkommen aus deinem Partner-Netzwerk.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 max-w-3xl mx-auto">
