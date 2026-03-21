@@ -51,6 +51,8 @@ export function Header() {
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-4">
             {/* Public links - always visible */}
+            <NavLink href="/markenware">Markenware</NavLink>
+            <NavLink href="/verkaufskommission">Auf Kommission</NavLink>
             <NavLink href="/partner">Partner werden</NavLink>
             <NavLink href="/knowledge">Knowledge Shop</NavLink>
 
@@ -120,6 +122,8 @@ export function Header() {
         {/* Mobile Navigation */}
         <div className="md:hidden border-t border-gray-300 py-3 flex space-x-4 overflow-x-auto">
           {/* Public links - always visible */}
+          <NavLink href="/markenware">Markenware</NavLink>
+          <NavLink href="/verkaufskommission">Auf Kommission</NavLink>
           <NavLink href="/partner">Partner werden</NavLink>
           <NavLink href="/knowledge">Knowledge Shop</NavLink>
 
