@@ -74,10 +74,10 @@ export default function Home() {
 
             {/* Subheading */}
             <p className="text-xl md:text-2xl text-gray-300 mb-4 leading-relaxed">
-              Geprüfte Warenpakete. Direkt handelbar.
+              Geprüfte Markenprodukte. Direkt handelbar.
             </p>
             <p className="text-base md:text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
-              Über <span className="text-gold font-semibold">500 Unternehmer</span> im DACH-Raum starten mit unseren Handelspaketen ab <span className="text-gold font-semibold">€5.000</span> ein zusätzliches Handelsgeschäft — nebenberuflich, mit überschaubarem Aufwand.
+              Über <span className="text-gold font-semibold">500 Unternehmer</span> im DACH-Raum starten mit unseren Markenprodukten mit Großhandelsrabatt ab <span className="text-gold font-semibold">€5.000</span> ein zusätzliches Handelsgeschäft — nebenberuflich, mit überschaubarem Aufwand.
             </p>
 
             {/* Trust indicators */}
@@ -96,7 +96,7 @@ export default function Home() {
                   size="lg"
                   className="text-lg px-8 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30 border border-gold-light/20"
                 >
-                  {isSignedIn ? '→ Warenpakete ansehen' : '→ Jetzt kostenlos registrieren'}
+                  {isSignedIn ? '→ Markenprodukte ansehen' : '→ Jetzt kostenlos registrieren'}
                 </Button>
               </Link>
               <Link href="/erstgespraech">
@@ -435,7 +435,7 @@ export default function Home() {
               </div>
               <div className="mt-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
-                  Warenpaket wählen
+                  Produkte auswählen
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
                   Wähle aus Paketen mit Produkten die nachweislich gut auf Marktplätzen laufen. Detaillierte Verkaufshistorie einsehbar.
@@ -866,7 +866,7 @@ export default function Home() {
               Erfolgs<span className="text-gold">beispiele</span>
             </h2>
             <p className="text-gray-600 text-lg">
-              So nutzen Händler unsere Warenpakete
+              So nutzen Händler unsere Markenprodukte mit Großhandelsrabatt
             </p>
           </div>
 
@@ -1275,7 +1275,7 @@ export default function Home() {
               Produkt-<span className="text-gold">Kategorien</span>
             </h2>
             <p className="text-gray-600 text-lg">
-              Warenpakete in verschiedenen Top-Kategorien
+              Markenprodukte mit Großhandelsrabatt in verschiedenen Top-Kategorien
             </p>
           </div>
 
@@ -1316,7 +1316,7 @@ export default function Home() {
         <div className="container relative mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-100 mb-3">
-              Jetzt <span className="text-gold">Warenpakete entdecken</span>
+              Jetzt <span className="text-gold">Markenprodukte entdecken</span>
             </h2>
             <p className="text-xl text-gray-400 mb-5 leading-relaxed">
               Registriere dich als Gewerbetreibender und erhalte Zugang
@@ -1330,7 +1330,7 @@ export default function Home() {
                   size="lg"
                   className="text-lg px-8 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
                 >
-                  Warenpakete ansehen
+                  Markenprodukte ansehen
                 </Button>
               </Link>
             ) : (
