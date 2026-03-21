@@ -7,6 +7,13 @@ const isPublicRoute = createRouteMatcher([
   '/erstgespraech',
   '/partner',
   '/knowledge',
+  '/markenware',
+  '/verkaufskommission',
+  '/sitemap.xml',
+  '/llms.txt',
+  '/agb',
+  '/datenschutz',
+  '/impressum',
 ]);
 
 const isAdminRoute = createRouteMatcher(['/admin(.*)']);
