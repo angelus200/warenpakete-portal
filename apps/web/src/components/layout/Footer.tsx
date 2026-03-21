@@ -21,8 +21,7 @@ export function Footer() {
               </div>
             </div>
             <p className="text-gray-600 text-sm leading-relaxed max-w-md">
-              Ihr exklusiver B2B Partner für Premium-Warenpakete im Großhandel.
-              Seit 2024 vertrauen über 500 Unternehmen auf unsere erstklassigen Konditionen.
+              Ihr B2B Partner für Markenware und Kommissionshandel im DACH-Raum.
             </p>
           </div>
 

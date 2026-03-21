@@ -153,16 +153,43 @@ export default function MarkenwarePage() {
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="text-center mt-14">
-            <Link href="/kontakt">
-              <Button
-                size="lg"
-                className="text-lg px-8 py-7 bg-gradient-to-r from-[#B8960C] via-[#D4AF37] to-[#FFD700] hover:from-[#A07800] hover:via-[#B8960C] hover:to-[#D4AF37] text-black font-bold shadow-2xl shadow-[#D4AF37]/30"
-              >
-                Jetzt Sortiment anfragen
-              </Button>
-            </Link>
+          {/* Dual CTA */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mt-14">
+            {/* Karte 1: Einkaufen */}
+            <div className="p-8 rounded-2xl border-2 border-[#D4AF37]/40 bg-black/30 backdrop-blur-sm flex flex-col">
+              <p className="text-xs font-bold tracking-widest text-[#D4AF37] uppercase mb-3">Händler</p>
+              <h3 className="text-xl font-bold text-gray-100 mb-3">Sie möchten einkaufen</h3>
+              <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
+                Markenprodukte zu Großhandelspreisen beziehen und über eigene Kanäle verkaufen.
+              </p>
+              <Link href="/erstgespraech">
+                <Button
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-[#B8960C] via-[#D4AF37] to-[#FFD700] hover:from-[#A07800] hover:via-[#B8960C] hover:to-[#D4AF37] text-black font-bold shadow-lg shadow-[#D4AF37]/20"
+                >
+                  Jetzt Sortiment anfragen
+                </Button>
+              </Link>
+            </div>
+
+            {/* Karte 2: Verkaufen */}
+            <div className="p-8 rounded-2xl border-2 border-[#D4AF37]/40 bg-black/30 backdrop-blur-sm flex flex-col relative">
+              <span className="absolute top-4 right-4 px-2.5 py-0.5 rounded-full bg-[#D4AF37] text-black text-xs font-bold">Neu</span>
+              <p className="text-xs font-bold tracking-widest text-[#D4AF37] uppercase mb-3">Dienstleister</p>
+              <h3 className="text-xl font-bold text-gray-100 mb-3">Sie möchten verkaufen</h3>
+              <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
+                Eigene Waren oder Markenprodukte über unsere Plattform und unser Netzwerk verkaufen lassen.
+              </p>
+              <Link href="/verkaufskommission">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full border-2 border-[#D4AF37] text-[#D4AF37] bg-transparent hover:bg-[#D4AF37]/10 font-bold"
+                >
+                  Als Verkäufer bewerben
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
