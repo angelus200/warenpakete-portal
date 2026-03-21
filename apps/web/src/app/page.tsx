@@ -77,7 +77,7 @@ export default function Home() {
               Geprüfte Markenprodukte. Direkt handelbar.
             </p>
             <p className="text-base md:text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
-              Über <span className="text-gold font-semibold">500 Unternehmer</span> im DACH-Raum starten mit unseren Markenprodukten mit Großhandelsrabatt ab <span className="text-gold font-semibold">€5.000</span> ein zusätzliches Handelsgeschäft — nebenberuflich, mit überschaubarem Aufwand.
+              Gewerbetreibende im DACH-Raum starten mit unseren Markenprodukten mit Großhandelsrabatt ein zusätzliches Handelsgeschäft — nebenberuflich, mit überschaubarem Aufwand.
             </p>
 
             {/* Trust indicators */}
@@ -438,7 +438,7 @@ export default function Home() {
                   Produkte auswählen
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Wähle aus Paketen mit Produkten die nachweislich gut auf Marktplätzen laufen. Detaillierte Verkaufshistorie einsehbar.
+                  Wähle aus Sortimenten mit Produkten die nachweislich gut auf Marktplätzen laufen. Detaillierte Verkaufshistorie einsehbar.
                 </p>
               </div>
             </Card>
@@ -879,7 +879,7 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    Elektronik-Paket
+                    Elektronik-Sortiment
                   </h3>
                   <span className="inline-block px-3 py-1 bg-gold/20 text-gold text-xs font-bold rounded-full">
                     Amazon FBA
@@ -887,7 +887,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-600 leading-relaxed">
-                Ein Händler aus Bayern kaufte ein Elektronik-Paket für <strong>8.500 €</strong>.
+                Ein Händler aus Bayern kaufte ein Elektronik-Sortiment für <strong>8.500 €</strong>.
                 Über Amazon FBA innerhalb von <strong>6 Wochen erfolgreich verkauft</strong>.
               </p>
             </Card>
@@ -900,7 +900,7 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    Haushaltswaren-Paket
+                    Haushaltswaren-Sortiment
                   </h3>
                   <span className="inline-block px-3 py-1 bg-gold/20 text-gold text-xs font-bold rounded-full">
                     Kommissionsverkauf
@@ -909,7 +909,7 @@ export default function Home() {
               </div>
               <p className="text-gray-600 leading-relaxed">
                 Ein Online-Shop-Betreiber aus NRW nutzte den Kommissionsverkauf.
-                Paket für <strong>5.200 €</strong> – Abwicklung komplett durch uns.
+                Sortiment für <strong>5.200 €</strong> – Abwicklung komplett durch uns.
               </p>
             </Card>
 
@@ -921,7 +921,7 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    Fashion-Paket
+                    Fashion-Sortiment
                   </h3>
                   <span className="inline-block px-3 py-1 bg-gold/20 text-gold text-xs font-bold rounded-full">
                     Multi-Channel
@@ -929,7 +929,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-600 leading-relaxed">
-                Eine Händlerin aus Österreich verkaufte ein Fashion-Paket über eBay und den eigenen Shop.
+                Eine Händlerin aus Österreich verkaufte ein Fashion-Sortiment über eBay und den eigenen Shop.
                 Einkauf <strong>4.800 €</strong>, verkauft in <strong>8 Wochen</strong>.
               </p>
             </Card>
