@@ -36,7 +36,7 @@ export default function PartnerPage() {
     {
       question: 'Wie funktioniert das 3-Ebenen-System?',
       answer:
-        'Sie erhalten 3% Provision auf direkte Empfehlungen (Ebene 1), 1% auf Empfehlungen Ihrer Empfehlungen (Ebene 2) und 1% auf die dritte Ebene.',
+        'Sie erhalten 5% Provision auf direkte Vermittlungen (Ebene 1), 2% auf Empfehlungen Ihrer Empfehlungen (Ebene 2) und 1% auf die dritte Ebene.',
     },
     {
       question: 'Wann und wie werde ich ausgezahlt?',
@@ -50,7 +50,7 @@ export default function PartnerPage() {
     {
       question: 'Muss ich selbst Kunde sein?',
       answer:
-        'Nein, Sie müssen kein eigenes Warenpaket kaufen um Partner zu werden.',
+        'Nein, Sie müssen kein eigenes Produkt kaufen um Partner zu werden.',
     },
     {
       question: 'Wie lange werden Empfehlungen getrackt?',
@@ -68,7 +68,7 @@ export default function PartnerPage() {
         <div className="container relative z-10 mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-[#FFD700] via-[#D4AF37] to-[#B8960C] bg-clip-text text-transparent">
-              Verdienen Sie mit jeder Empfehlung
+              Empfehlen Sie E-Commerce Service weiter
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
@@ -76,21 +76,17 @@ export default function PartnerPage() {
               <span className="text-[#D4AF37] font-semibold">
                 3-Ebenen-Provisionssystem
               </span>{' '}
-              — bis zu 5% auf jeden vermittelten Umsatz.
+              — bis zu 5% Provision auf vermittelte Abschlüsse.
             </p>
 
-            <Link href="/sign-up">
+            <Link href="/sign-up?redirect_url=/affiliate">
               <Button
                 size="lg"
                 className="text-lg px-8 py-7 bg-gradient-to-r from-[#B8960C] via-[#D4AF37] to-[#FFD700] hover:from-[#A07800] hover:via-[#B8960C] hover:to-[#D4AF37] text-black font-bold shadow-2xl shadow-[#D4AF37]/30"
               >
-                Jetzt Partner werden
+                Jetzt registrieren &amp; Partner werden
               </Button>
             </Link>
-
-            <p className="text-sm text-gray-400 italic mt-3">
-              Partner-Handbuch wird aktualisiert — bald verfügbar
-            </p>
           </div>
         </div>
 
@@ -107,7 +103,7 @@ export default function PartnerPage() {
               So funktioniert unser <span className="text-[#D4AF37]">Partnerprogramm</span>
             </h2>
             <p className="text-lg text-gray-600">
-              Verdienen Sie nicht nur an Ihren direkten Empfehlungen
+              Provisionen auf direkte und indirekte Vermittlungen — transparent und nachvollziehbar
             </p>
           </div>
 
@@ -119,7 +115,7 @@ export default function PartnerPage() {
                 <Card className="p-8 bg-gradient-to-br from-[#FFD700] to-[#D4AF37] border-2 border-[#B8960C] shadow-2xl max-w-md w-full">
                   <div className="text-center">
                     <div className="text-4xl font-bold text-black mb-2">Ebene 1</div>
-                    <div className="text-2xl font-bold text-black mb-3">3% Provision</div>
+                    <div className="text-2xl font-bold text-black mb-3">5% Provision</div>
                     <p className="text-black font-semibold">
                       Ihre direkten Empfehlungen
                     </p>
@@ -157,7 +153,7 @@ export default function PartnerPage() {
                       Ebene 2
                     </div>
                     <div className="text-xl font-bold text-[#D4AF37] mb-2">
-                      1% Provision
+                      2% Provision
                     </div>
                     <p className="text-sm text-gray-700 font-semibold">
                       Empfehlungen Ihrer Empfehlungen
@@ -170,7 +166,7 @@ export default function PartnerPage() {
                       Ebene 2
                     </div>
                     <div className="text-xl font-bold text-[#D4AF37] mb-2">
-                      1% Provision
+                      2% Provision
                     </div>
                     <p className="text-sm text-gray-700 font-semibold">
                       Empfehlungen Ihrer Empfehlungen
@@ -252,68 +248,27 @@ export default function PartnerPage() {
         </div>
       </section>
 
-      {/* SECTION 3: RECHENBEISPIEL */}
+      {/* SECTION 3: PROVISIONSINFO */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Was können Sie <span className="text-[#D4AF37]">verdienen?</span>
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Ihre <span className="text-[#D4AF37]">Provisionsübersicht</span>
             </h2>
-            <p className="text-lg text-gray-600">
-              Realistische Szenarien basierend auf unserer Partnererfahrung
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-[#1a1a1a] text-white">
-                  <th className="p-4 font-bold">Szenario</th>
-                  <th className="p-4 font-bold">Empfehlungen</th>
-                  <th className="p-4 font-bold">Ø Warenwert</th>
-                  <th className="p-4 font-bold text-[#D4AF37]">
-                    Ihre Provision (Ebene 1 + 2)
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-gray-200 hover:bg-gray-50">
-                  <td className="p-4 font-semibold">🚀 Starter</td>
-                  <td className="p-4">5 Kunden</td>
-                  <td className="p-4">€10.000</td>
-                  <td className="p-4 font-bold text-[#D4AF37]">
-                    €1.500 + €250
-                  </td>
-                </tr>
-                <tr className="border-b border-gray-200 hover:bg-gray-50">
-                  <td className="p-4 font-semibold">📈 Aufbau</td>
-                  <td className="p-4">15 Kunden</td>
-                  <td className="p-4">€15.000</td>
-                  <td className="p-4 font-bold text-[#D4AF37]">
-                    €6.750 + €1.125
-                  </td>
-                </tr>
-                <tr className="border-b border-gray-200 hover:bg-gray-50">
-                  <td className="p-4 font-semibold">💎 Profi</td>
-                  <td className="p-4">50 Kunden</td>
-                  <td className="p-4">€25.000</td>
-                  <td className="p-4 font-bold text-[#D4AF37]">
-                    €37.500 + €6.250
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div className="mt-8 max-w-3xl mx-auto">
-            <Card className="p-6 bg-[#fffbeb] border-2 border-[#D4AF37]/30">
-              <p className="text-sm text-gray-700 leading-relaxed">
-                <strong>Erklärung:</strong> Bei 5 direkten Empfehlungen à
-                €10.000 verdienen Sie <strong>€1.500 (3%)</strong>. Wenn diese
-                5 Kunden jeweils 1 weiteren Kunden empfehlen, kommen{' '}
-                <strong>€250 (1%)</strong> pro Ebene-2-Verkauf dazu. Das
-                3-Ebenen-System sorgt für passives Einkommen!
+            <Card className="p-8 bg-[#fffbeb] border-2 border-[#D4AF37]/30">
+              <p className="text-gray-700 leading-relaxed">
+                Die Höhe Ihrer Provision hängt von der Anzahl und dem Volumen Ihrer Vermittlungen ab.
+                Eine detaillierte Übersicht Ihrer Provisionen und Auszahlungen finden Sie nach der Registrierung
+                in Ihrem persönlichen Partner-Dashboard.
               </p>
+              <Link href="/sign-up?redirect_url=/affiliate">
+                <Button
+                  size="lg"
+                  className="mt-6 bg-gradient-to-r from-[#B8960C] via-[#D4AF37] to-[#FFD700] hover:from-[#A07800] hover:via-[#B8960C] hover:to-[#D4AF37] text-black font-bold"
+                >
+                  Jetzt registrieren &amp; Dashboard öffnen
+                </Button>
+              </Link>
             </Card>
           </div>
         </div>
@@ -332,9 +287,9 @@ export default function PartnerPage() {
             {[
               {
                 icon: <DollarSign size={32} />,
-                title: 'Passives Einkommen',
+                title: 'Provisionseinnahmen',
                 description:
-                  'Verdienen Sie an bis zu 3 Ebenen automatisch',
+                  'Provisionen auf bis zu 3 Vermittlungsebenen',
               },
               {
                 icon: <Rocket size={32} />,
@@ -362,7 +317,7 @@ export default function PartnerPage() {
               {
                 icon: <TrendingUp size={32} />,
                 title: 'Wachstumspotenzial',
-                description: 'Unbegrenzte Verdienstmöglichkeiten',
+                description: 'Mit wachsendem Netzwerk steigen Ihre Vermittlungen',
               },
             ].map((benefit, index) => (
               <Card
@@ -382,70 +337,7 @@ export default function PartnerPage() {
         </div>
       </section>
 
-      {/* SECTION 5: TESTIMONIALS */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Das sagen unsere <span className="text-[#D4AF37]">Partner</span>
-            </h2>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[
-              {
-                name: 'M. Schmidtner',
-                role: 'Affiliate Partner seit 2025',
-                quote:
-                  'Innerhalb von 3 Monaten konnte ich mir ein stabiles Nebeneinkommen aufbauen.',
-              },
-              {
-                name: 'S. Webermann',
-                role: 'Premium Partner',
-                quote:
-                  'Das 3-Ebenen-System macht den Unterschied. Mein Netzwerk arbeitet für mich.',
-              },
-              {
-                name: 'J. Moller',
-                role: 'Affiliate Partner seit 2025',
-                quote:
-                  'Einfacher Einstieg, professionelles Dashboard und pünktliche Auszahlungen.',
-              },
-            ].map((testimonial, index) => (
-              <Card
-                key={index}
-                className="p-8 bg-gradient-to-br from-[#fffbeb] to-white border-2 border-[#D4AF37]/30 shadow-lg"
-              >
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 text-[#D4AF37]"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-gray-700 italic mb-6 leading-relaxed">
-                  &quot;{testimonial.quote}&quot;
-                </p>
-                <div className="border-t border-gray-200 pt-4">
-                  <p className="font-bold text-gray-900">
-                    {testimonial.name}
-                  </p>
-                  <p className="text-sm text-gray-600">{testimonial.role}</p>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          <p className="text-center text-xs text-gray-500 mt-8">
-            Erfahrungsberichte können variieren
-          </p>
-        </div>
-      </section>
 
       {/* SECTION 6: FAQ */}
       <section className="py-24 bg-[#f5f5f0]">
@@ -496,20 +388,20 @@ export default function PartnerPage() {
               Bereit durchzustarten?
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              Registrieren Sie sich jetzt und starten Sie noch heute
+              Kostenlos registrieren und sofort loslegen
             </p>
 
-            <Link href="/sign-up">
+            <Link href="/sign-up?redirect_url=/affiliate">
               <Button
                 size="lg"
                 className="text-lg px-10 py-7 bg-gradient-to-r from-[#B8960C] via-[#D4AF37] to-[#FFD700] hover:from-[#A07800] hover:via-[#B8960C] hover:to-[#D4AF37] text-black font-bold shadow-2xl shadow-[#D4AF37]/30"
               >
-                Jetzt Partner werden
+                Jetzt registrieren &amp; Partner werden
               </Button>
             </Link>
 
             <p className="text-sm text-gray-400 mt-6">
-              Kostenlos • Unverbindlich • In 2 Minuten startklar
+              Kostenfreie Registrierung — Ihr Affiliate-Link wartet im Dashboard
             </p>
           </div>
         </div>
