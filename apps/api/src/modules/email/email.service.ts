@@ -1532,4 +1532,109 @@ export class EmailService {
       this.logger.error(`Failed to send guide email 4 to ${to}:`, error);
     }
   }
+
+  // ===== SELLER APPLICATIONS =====
+
+  async sendSellerApplicationConfirmation(
+    to: string,
+    company: string,
+    contactName: string,
+  ) {
+    try {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+          <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+          <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#f3f4f6;">
+            <div style="max-width:600px;margin:0 auto;padding:20px;">
+              <div style="background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%);padding:40px 20px;text-align:center;border-radius:8px 8px 0 0;">
+                <h1 style="margin:0;color:#1f2937;font-size:26px;font-weight:bold;">Bewerbung eingegangen ✓</h1>
+              </div>
+              <div style="background:#fff;padding:40px;border-radius:0 0 8px 8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+                <p style="font-size:16px;color:#374151;line-height:1.6;margin-top:0;">
+                  Guten Tag ${contactName},
+                </p>
+                <p style="font-size:16px;color:#374151;line-height:1.6;">
+                  vielen Dank für die Bewerbung von <strong>${company}</strong> als Verkäufer auf E-Commerce Service.
+                </p>
+                <div style="margin:30px 0;padding:20px;background:#fffbeb;border-radius:8px;border-left:4px solid #D4AF37;">
+                  <p style="margin:0;color:#374151;font-size:15px;">
+                    Wir prüfen Ihre Angaben und melden uns <strong>innerhalb von 48 Stunden</strong> bei Ihnen.
+                  </p>
+                </div>
+                <p style="font-size:14px;color:#6b7280;line-height:1.6;">
+                  Bei Rückfragen erreichen Sie uns unter:
+                  <a href="mailto:info@ecommercerente.com" style="color:#D4AF37;">info@ecommercerente.com</a>
+                </p>
+                <div style="margin-top:30px;padding-top:20px;border-top:1px solid #e5e7eb;">
+                  <p style="margin:0;font-size:12px;color:#9ca3af;">
+                    E-Commerce Service by Commercehelden GmbH · Österreich<br>
+                    Nur für Gewerbetreibende mit gültigem Gewerbeschein.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </body>
+        </html>
+      `;
+      await this.resend.emails.send({
+        from: this.fromAddress,
+        to,
+        subject: `Ihre Verkäufer-Bewerbung ist eingegangen — ${company}`,
+        html,
+      });
+      this.logger.log(`Seller application confirmation sent to ${to}`);
+    } catch (error) {
+      this.logger.error(`Failed to send seller application confirmation to ${to}:`, error);
+    }
+  }
+
+  async sendSellerApplicationAdminNotification(
+    to: string,
+    application: any,
+  ) {
+    try {
+      const frontendUrl = process.env.FRONTEND_URL || 'https://www.ecommercerente.com';
+      const html = `
+        <!DOCTYPE html>
+        <html>
+          <head><meta charset="utf-8"></head>
+          <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f3f4f6;">
+            <div style="max-width:600px;margin:0 auto;padding:20px;">
+              <div style="background:#1f2937;padding:30px 20px;text-align:center;border-radius:8px 8px 0 0;border-bottom:3px solid #D4AF37;">
+                <h1 style="margin:0;color:#D4AF37;font-size:22px;">Neue Verkäufer-Bewerbung</h1>
+              </div>
+              <div style="background:#fff;padding:30px;border-radius:0 0 8px 8px;">
+                <table style="width:100%;border-collapse:collapse;">
+                  <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;width:140px;">Firma</td><td style="padding:8px 0;font-weight:600;color:#111;">${application.company}</td></tr>
+                  <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">Ansprechpartner</td><td style="padding:8px 0;color:#111;">${application.contactName}</td></tr>
+                  <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">E-Mail</td><td style="padding:8px 0;color:#111;">${application.email}</td></tr>
+                  <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">Telefon</td><td style="padding:8px 0;color:#111;">${application.phone || '—'}</td></tr>
+                  <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">Website</td><td style="padding:8px 0;color:#111;">${application.website || '—'}</td></tr>
+                  <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">Kategorie</td><td style="padding:8px 0;color:#111;">${application.productCategory}</td></tr>
+                  <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">Anzahl SKUs</td><td style="padding:8px 0;color:#111;">${application.productCount || '—'}</td></tr>
+                </table>
+                <div style="margin:20px 0;padding:15px;background:#f9fafb;border-radius:6px;">
+                  <p style="margin:0 0 6px;font-size:13px;color:#6b7280;font-weight:600;">SORTIMENT</p>
+                  <p style="margin:0;color:#374151;font-size:14px;line-height:1.6;">${application.message}</p>
+                </div>
+                <a href="${frontendUrl}/admin/crm/seller-applications" style="display:inline-block;margin-top:10px;padding:12px 24px;background:#D4AF37;color:#1f2937;text-decoration:none;font-weight:600;border-radius:6px;font-size:14px;">
+                  Im CRM öffnen →
+                </a>
+              </div>
+            </div>
+          </body>
+        </html>
+      `;
+      await this.resend.emails.send({
+        from: this.fromAddress,
+        to,
+        subject: `Neue Verkäufer-Bewerbung: ${application.company}`,
+        html,
+      });
+      this.logger.log(`Seller application admin notification sent to ${to}`);
+    } catch (error) {
+      this.logger.error(`Failed to send seller application admin notification:`, error);
+    }
+  }
 }

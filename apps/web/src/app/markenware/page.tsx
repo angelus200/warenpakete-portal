@@ -1,132 +1,281 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { CheckCircle, ShoppingBag, Truck, Store, Package, FileText, BarChart3, Users } from 'lucide-react';
+'use client';
 
-export const metadata = {
-  title: 'Markenware zu Großhandelspreisen | E-Commerce Business',
-  description:
-    'Geprüfte Markensortimente direkt für Ihren Handel — kein Sourcing-Aufwand, direkte B2B-Abwicklung.',
+import { useState } from 'react';
+import Link from 'next/link';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+const VORTEILE = [
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h12M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5H6m0 0v4.5m0-4.5h12m-12 4.5h12" />
+      </svg>
+    ),
+    titel: 'Sofortige Reichweite',
+    text: 'Ihr Sortiment wird über unser bestehendes B2B-Netzwerk im DACH-Raum sichtbar — ohne eigene Marketing-Kosten.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+      </svg>
+    ),
+    titel: 'Logistik & Fulfillment',
+    text: 'Komplette Abwicklung auf Wunsch: Lagerung, Versand, Retouren — Sie liefern, wir kümmern uns um den Rest.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+      </svg>
+    ),
+    titel: 'Rechtssicher & transparent',
+    text: 'Klare Vertragsstrukturen nach §383 HGB (Kommissionsgeschäft), transparente Provisionen, ordentliche Buchführung.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
+      </svg>
+    ),
+    titel: 'Multi-Channel Vertrieb',
+    text: 'Amazon, eBay, Webshop, stationär — Platzierung dort, wo Nachfrage für Ihre Produkte ist.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+    titel: 'Kein Risiko',
+    text: 'Keine Vorabkosten, keine Mindestabnahmen. Faire Provision nur auf tatsächlich verkaufte Ware.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+      </svg>
+    ),
+    titel: 'Persönliche Betreuung',
+    text: 'Fester Ansprechpartner, individuelle Beratung zu Pricing und Positionierung für Ihren Markt.',
+  },
+];
+
+const SCHRITTE = [
+  { nr: '01', titel: 'Bewerbung einreichen', text: 'Formular ausfüllen, Sortiment beschreiben. Rückmeldung innerhalb von 48 Stunden.' },
+  { nr: '02', titel: 'Erstgespräch & Prüfung', text: 'Details besprechen: Produktqualität, Preisstruktur, Lieferfähigkeit und Kanalstrategie.' },
+  { nr: '03', titel: 'Vertrag & Onboarding', text: 'Kommissionsvertrag §383 HGB, Verkäufer-Konto einrichten, Produktdaten übermitteln.' },
+  { nr: '04', titel: 'Verkaufsstart', text: 'Produkte ins Netzwerk, aktive Vermarktung beginnt, regelmäßige Abrechnungen folgen.' },
+];
+
+const ANFORDERUNGEN = [
+  'Eingetragenes Gewerbe mit gültigem Gewerbeschein',
+  'Qualitätsprodukte mit CE-Kennzeichnung (falls zutreffend)',
+  'Zuverlässige Lieferfähigkeit und stabile Warenverfügbarkeit',
+  'Bereitschaft zu wettbewerbsfähigen B2B-Konditionen',
+  'Professionelle Produktdaten (Bilder, Beschreibungen, EAN)',
+  'Transparente Kommunikation und partnerschaftliche Zusammenarbeit',
+];
+
+const KATEGORIEN = [
+  'Elektronik & Technik',
+  'Mode & Accessoires',
+  'Beauty & Pflege',
+  'Haus & Garten',
+  'Sport & Outdoor',
+  'Lebensmittel & Getränke',
+  'Spielzeug & Kinder',
+  'Sonstiges',
+];
+
+const SKU_OPTIONEN = ['1–10', '11–50', '51–200', '200+'];
+
+type FormState = {
+  company: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  website: string;
+  productCategory: string;
+  productCount: string;
+  message: string;
+  gewerbeschein: boolean;
 };
 
-const schritte = [
-  {
-    nr: 1,
-    icon: ShoppingBag,
-    titel: 'Sortiment auswählen',
-    text: 'Aus kuratierten Markensortimenten das passende für Ihren Kanal wählen — mit transparenter Verkaufshistorie.',
-  },
-  {
-    nr: 2,
-    icon: Truck,
-    titel: 'Zu Großhandelskonditionen beziehen',
-    text: 'Direkte Abwicklung über Trademark24-7 AG, keine Zwischenhändler, vollständige Rechnungslegung.',
-  },
-  {
-    nr: 3,
-    icon: Store,
-    titel: 'Über eigene Kanäle verkaufen',
-    text: 'Amazon, eBay, eigener Shop oder stationär — Sie entscheiden. Wir liefern, Sie verkaufen.',
-  },
-];
-
-const vorteile = [
-  { icon: CheckCircle, text: 'Geprüfte Markenprodukte mit Verkaufshistorie' },
-  { icon: BarChart3, text: 'Großhandelsrabatt gegenüber UVP' },
-  { icon: Package, text: 'Kein Sourcing-Aufwand' },
-  { icon: FileText, text: 'Flexible Sortimentsgröße ab €2.500' },
-  { icon: CheckCircle, text: 'B2B-Abwicklung mit Rechnung' },
-];
-
-const zielgruppen = [
-  { icon: Store, label: 'Online-Händler', detail: 'Amazon, eBay, Shopify' },
-  { icon: ShoppingBag, label: 'Stationäre Einzelhändler', detail: 'Ladengeschäfte & Märkte' },
-  { icon: Package, label: 'Gewerbetreibende mit Lagerkapazität', detail: 'B2B-Einkauf & Weiterverkauf' },
-  { icon: Users, label: 'Importeure & Distributoren', detail: 'Großvolumen & Mengenrabatt' },
-];
+const INITIAL: FormState = {
+  company: '',
+  contactName: '',
+  email: '',
+  phone: '',
+  website: '',
+  productCategory: '',
+  productCount: '',
+  message: '',
+  gewerbeschein: false,
+};
 
 export default function MarkenwarePage() {
-  return (
-    <div className="flex flex-col">
+  const [form, setForm] = useState<FormState>(INITIAL);
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
 
-      {/* Hero */}
-      <section className="relative overflow-hidden py-28 md:py-40 bg-gradient-to-br from-[#1a1a1a] via-[#2a2a2a] to-[#1a1a1a]">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#D4AF37]/20 via-transparent to-transparent" />
-        <div className="absolute top-20 left-10 w-72 h-72 bg-[#D4AF37]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#FFD700]/10 rounded-full blur-3xl" />
+  const set = (field: keyof FormState) => (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const value = e.target.type === 'checkbox'
+      ? (e.target as HTMLInputElement).checked
+      : e.target.value;
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSubmitting(true);
+
+    try {
+      const res = await fetch(`${API_URL}/seller-applications`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company: form.company,
+          contactName: form.contactName,
+          email: form.email,
+          phone: form.phone || undefined,
+          website: form.website || undefined,
+          productCategory: form.productCategory,
+          productCount: form.productCount || undefined,
+          message: form.message,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.message || 'Fehler beim Senden. Bitte versuchen Sie es erneut.');
+      }
+
+      setSuccess(true);
+      setForm(INITIAL);
+    } catch (err: any) {
+      setError(err.message || 'Unbekannter Fehler. Bitte versuchen Sie es später erneut.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const inputClass =
+    'w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-yellow-500 transition-colors text-sm';
+  const labelClass = 'block text-sm font-medium text-neutral-300 mb-1.5';
+
+  return (
+    <div className="flex flex-col bg-neutral-950">
+
+      {/* ── HERO ── */}
+      <section className="relative overflow-hidden py-28 md:py-40">
+        <div className="absolute inset-0 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(234,179,8,0.08)_0%,_transparent_60%)]" />
+        <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-80 h-80 bg-yellow-500/5 rounded-full blur-3xl" />
 
         <div className="container relative z-10 mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block mb-6 px-4 py-2 rounded-full border border-[#D4AF37]/50 bg-[#D4AF37]/10">
-              <span className="text-[#D4AF37] text-sm font-bold tracking-wider">
-                🏷️ B2B GROSSHANDEL FÜR GEWERBETREIBENDE
+            <div className="inline-block mb-6 px-4 py-2 rounded-full border border-yellow-500/30 bg-yellow-500/10">
+              <span className="text-yellow-500 text-sm font-bold tracking-wider">
+                🏭 FÜR HERSTELLER, MARKEN &amp; GROSSHÄNDLER
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-[#FFD700] via-[#D4AF37] to-[#B8960C] bg-clip-text text-transparent leading-tight">
-              Markenware zu Großhandelspreisen
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
+              Eigene Produkte über{' '}
+              <span className="text-yellow-500">E-Commerce Service</span>{' '}
+              anbieten
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed">
-              Geprüfte Markensortimente direkt für Ihren Handel —{' '}
-              <span className="text-[#D4AF37] font-semibold">kein Sourcing-Aufwand</span>,
-              direkte B2B-Abwicklung.
+            <p className="text-lg md:text-xl text-neutral-400 mb-10 leading-relaxed max-w-3xl mx-auto">
+              Nutzen Sie unser bestehendes Netzwerk, unsere Infrastruktur und Reichweite, um Ihre Produkte im
+              DACH-Raum zu vertreiben — ohne eigenen Shop-Aufbau, ohne Logistik-Kopfschmerzen.
             </p>
 
-            <Link href="/kontakt">
-              <Button
-                size="lg"
-                className="text-lg px-8 py-7 bg-gradient-to-r from-[#B8960C] via-[#D4AF37] to-[#FFD700] hover:from-[#A07800] hover:via-[#B8960C] hover:to-[#D4AF37] text-black font-bold shadow-2xl shadow-[#D4AF37]/30"
-              >
-                Jetzt Sortiment anfragen
-              </Button>
-            </Link>
+            <a
+              href="#bewerbung"
+              className="inline-block px-8 py-4 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-lg transition-colors shadow-lg shadow-yellow-500/20"
+            >
+              Jetzt als Verkäufer bewerben
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Wie es funktioniert */}
-      <section className="py-24 bg-[#f5f5f0]">
+      {/* ── VORTEILE ── */}
+      <section className="py-24 bg-neutral-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Wie es <span className="text-[#D4AF37]">funktioniert</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Ihre Vorteile als <span className="text-yellow-500">Verkäufer</span>
             </h2>
-            <p className="text-lg text-gray-600">Drei Schritte zum eigenen Markenhandel</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {schritte.map(({ nr, icon: Icon, titel, text }) => (
-              <Card key={nr} className="p-8 bg-white border-2 border-gray-200 hover:border-[#D4AF37] hover:shadow-xl transition-all relative">
-                <div className="absolute -top-5 left-6 w-10 h-10 bg-gradient-to-br from-[#FFD700] to-[#B8960C] rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-black font-bold">{nr}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {VORTEILE.map(({ icon, titel, text }) => (
+              <div
+                key={titel}
+                className="p-6 rounded-xl border border-neutral-800 bg-neutral-950 hover:border-yellow-500/30 transition-colors"
+              >
+                <div className="w-10 h-10 rounded-lg bg-yellow-500/10 text-yellow-500 flex items-center justify-center mb-4">
+                  {icon}
                 </div>
-                <div className="mt-4 mb-4">
-                  <Icon className="w-8 h-8 text-[#D4AF37]" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{titel}</h3>
-                <p className="text-gray-600 leading-relaxed">{text}</p>
-              </Card>
+                <h3 className="text-lg font-bold text-white mb-2">{titel}</h3>
+                <p className="text-neutral-400 text-sm leading-relaxed">{text}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Ihre Vorteile */}
-      <section className="py-24 bg-white">
+      {/* ── SO FUNKTIONIERT'S ── */}
+      <section className="py-24 bg-neutral-950">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              So werden Sie <span className="text-yellow-500">Verkäufer</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {SCHRITTE.map(({ nr, titel, text }) => (
+              <div key={nr} className="flex gap-5 p-6 rounded-xl border border-neutral-800 bg-neutral-900">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center">
+                  <span className="text-yellow-500 font-bold text-lg">{nr}</span>
+                </div>
+                <div>
+                  <h3 className="text-white font-bold mb-1.5">{titel}</h3>
+                  <p className="text-neutral-400 text-sm leading-relaxed">{text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── ANFORDERUNGEN ── */}
+      <section className="py-24 bg-neutral-900">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Ihre <span className="text-[#D4AF37]">Vorteile</span>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Was wir von <span className="text-yellow-500">Verkäufern erwarten</span>
               </h2>
             </div>
 
-            <div className="space-y-4">
-              {vorteile.map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-4 p-5 rounded-xl border border-gray-100 bg-[#f9f9f6] hover:border-[#D4AF37]/40 transition-colors">
-                  <Icon className="w-6 h-6 text-[#D4AF37] flex-shrink-0" />
-                  <span className="text-gray-800 font-medium">{text}</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {ANFORDERUNGEN.map((req) => (
+                <div key={req} className="flex items-start gap-3 p-4 rounded-lg bg-neutral-950 border border-neutral-800">
+                  <svg className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                  <span className="text-neutral-300 text-sm">{req}</span>
                 </div>
               ))}
             </div>
@@ -134,72 +283,202 @@ export default function MarkenwarePage() {
         </div>
       </section>
 
-      {/* Für wen geeignet */}
-      <section className="py-24 bg-gradient-to-br from-[#1a1a1a] via-[#2a2a2a] to-[#1a1a1a]">
+      {/* ── BEWERBUNGSFORMULAR ── */}
+      <section id="bewerbung" className="scroll-mt-24 py-24 bg-neutral-950">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">
-              Für wen ist das <span className="text-[#D4AF37]">geeignet?</span>
-            </h2>
-          </div>
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Werden Sie Teil <span className="text-yellow-500">unseres Netzwerks</span>
+              </h2>
+              <p className="text-neutral-400">
+                Bewerbung dauert 5 Minuten — Rückmeldung innerhalb 48 Stunden.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {zielgruppen.map(({ icon: Icon, label, detail }) => (
-              <div key={label} className="p-6 rounded-xl border border-[#D4AF37]/30 bg-black/20 backdrop-blur-sm text-center hover:border-[#D4AF37]/60 transition-colors">
-                <Icon className="w-10 h-10 text-[#D4AF37] mx-auto mb-3" />
-                <p className="font-bold text-gray-100 mb-1">{label}</p>
-                <p className="text-sm text-gray-400">{detail}</p>
+            {success ? (
+              <div className="p-8 rounded-2xl border border-yellow-500/30 bg-yellow-500/5 text-center">
+                <div className="w-16 h-16 rounded-full bg-yellow-500/10 flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">Bewerbung eingegangen!</h3>
+                <p className="text-neutral-400 text-sm mb-6">
+                  Wir prüfen Ihre Angaben und melden uns innerhalb von 48 Stunden bei Ihnen.
+                </p>
+                <button
+                  onClick={() => setSuccess(false)}
+                  className="text-yellow-500 hover:text-yellow-400 text-sm underline underline-offset-2"
+                >
+                  Weitere Bewerbung einreichen
+                </button>
               </div>
-            ))}
-          </div>
+            ) : (
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-5 p-8 rounded-2xl border border-neutral-800 bg-neutral-900"
+              >
+                {/* Firma + Ansprechpartner */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className={labelClass}>
+                      Firma <span className="text-yellow-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={form.company}
+                      onChange={set('company')}
+                      placeholder="Ihre Firma"
+                      className={inputClass}
+                    />
+                  </div>
+                  <div>
+                    <label className={labelClass}>
+                      Ansprechpartner <span className="text-yellow-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={form.contactName}
+                      onChange={set('contactName')}
+                      placeholder="Vor- und Nachname"
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
 
-          {/* Dual CTA */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mt-14">
-            {/* Karte 1: Einkaufen */}
-            <div className="p-8 rounded-2xl border-2 border-[#D4AF37]/40 bg-black/30 backdrop-blur-sm flex flex-col">
-              <p className="text-xs font-bold tracking-widest text-[#D4AF37] uppercase mb-3">Händler</p>
-              <h3 className="text-xl font-bold text-gray-100 mb-3">Sie möchten einkaufen</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
-                Markenprodukte zu Großhandelspreisen beziehen und über eigene Kanäle verkaufen.
-              </p>
-              <Link href="/erstgespraech">
-                <Button
-                  size="lg"
-                  className="w-full bg-gradient-to-r from-[#B8960C] via-[#D4AF37] to-[#FFD700] hover:from-[#A07800] hover:via-[#B8960C] hover:to-[#D4AF37] text-black font-bold shadow-lg shadow-[#D4AF37]/20"
-                >
-                  Jetzt Sortiment anfragen
-                </Button>
-              </Link>
-            </div>
+                {/* E-Mail + Telefon */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className={labelClass}>
+                      E-Mail <span className="text-yellow-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={form.email}
+                      onChange={set('email')}
+                      placeholder="email@firma.de"
+                      className={inputClass}
+                    />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Telefon</label>
+                    <input
+                      type="tel"
+                      value={form.phone}
+                      onChange={set('phone')}
+                      placeholder="+49 ..."
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
 
-            {/* Karte 2: Verkaufen */}
-            <div className="p-8 rounded-2xl border-2 border-[#D4AF37]/40 bg-black/30 backdrop-blur-sm flex flex-col relative">
-              <span className="absolute top-4 right-4 px-2.5 py-0.5 rounded-full bg-[#D4AF37] text-black text-xs font-bold">Neu</span>
-              <p className="text-xs font-bold tracking-widest text-[#D4AF37] uppercase mb-3">Dienstleister</p>
-              <h3 className="text-xl font-bold text-gray-100 mb-3">Sie möchten verkaufen</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
-                Eigene Waren oder Markenprodukte über unsere Plattform und unser Netzwerk verkaufen lassen.
-              </p>
-              <Link href="/verkaufskommission">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full border-2 border-[#D4AF37] text-[#D4AF37] bg-transparent hover:bg-[#D4AF37]/10 font-bold"
+                {/* Website */}
+                <div>
+                  <label className={labelClass}>Website / Online-Shop</label>
+                  <input
+                    type="url"
+                    value={form.website}
+                    onChange={set('website')}
+                    placeholder="https://..."
+                    className={inputClass}
+                  />
+                </div>
+
+                {/* Kategorie + SKUs */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className={labelClass}>
+                      Produktkategorie <span className="text-yellow-500">*</span>
+                    </label>
+                    <select
+                      required
+                      value={form.productCategory}
+                      onChange={set('productCategory')}
+                      className={inputClass}
+                    >
+                      <option value="">Bitte wählen...</option>
+                      {KATEGORIEN.map((k) => (
+                        <option key={k} value={k}>{k}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className={labelClass}>Anzahl Produkte / SKUs</label>
+                    <select
+                      value={form.productCount}
+                      onChange={set('productCount')}
+                      className={inputClass}
+                    >
+                      <option value="">Bitte wählen...</option>
+                      {SKU_OPTIONEN.map((o) => (
+                        <option key={o} value={o}>{o}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Sortiment beschreiben */}
+                <div>
+                  <label className={labelClass}>
+                    Sortiment beschreiben <span className="text-yellow-500">*</span>
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={form.message}
+                    onChange={set('message')}
+                    placeholder="Welche Produkte / Marken möchten Sie anbieten?"
+                    className={inputClass}
+                  />
+                </div>
+
+                {/* Gewerbeschein-Checkbox */}
+                <div className="flex items-start gap-3 p-4 rounded-lg border border-neutral-700 bg-neutral-800/50">
+                  <input
+                    id="gewerbeschein"
+                    type="checkbox"
+                    required
+                    checked={form.gewerbeschein}
+                    onChange={set('gewerbeschein')}
+                    className="mt-0.5 w-4 h-4 accent-yellow-500 flex-shrink-0"
+                  />
+                  <label htmlFor="gewerbeschein" className="text-neutral-300 text-sm cursor-pointer leading-relaxed">
+                    Ich bestätige, dass ich ein eingetragenes Gewerbe betreibe und einen gültigen Gewerbeschein besitze.
+                    <span className="text-yellow-500"> *</span>
+                  </label>
+                </div>
+
+                {/* Error */}
+                {error && (
+                  <div className="p-4 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm">
+                    {error}
+                  </div>
+                )}
+
+                {/* Submit */}
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full py-4 rounded-lg bg-yellow-500 hover:bg-yellow-400 disabled:bg-yellow-500/40 disabled:cursor-not-allowed text-black font-bold text-base transition-colors shadow-lg shadow-yellow-500/10"
                 >
-                  Als Verkäufer bewerben
-                </Button>
-              </Link>
-            </div>
+                  {submitting ? 'Wird gesendet...' : 'Bewerbung absenden'}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Rechtlicher Hinweis */}
-      <section className="py-8 bg-gray-50 border-t border-gray-200">
+      {/* ── DISCLAIMER ── */}
+      <section className="py-8 bg-neutral-900 border-t border-neutral-800">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-neutral-600 max-w-3xl mx-auto">
             Nur für Gewerbetreibende mit gültigem Gewerbeschein. Kein Endkundenverkauf.
-            Alle Preise zzgl. gesetzlicher MwSt. Angebote freibleibend.
+            Alle Angaben freibleibend. Die Aufnahme als Verkäufer erfolgt nach individueller Prüfung.
           </p>
         </div>
       </section>

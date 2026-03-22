@@ -25,6 +25,7 @@ import { TrackingModule } from './modules/tracking/tracking.module';
 import { FunnelModule } from './modules/funnel/funnel.module';
 import { AiAgentModule } from './modules/ai-agent/ai-agent.module';
 import { KnowledgeModule } from './modules/knowledge/knowledge.module';
+import { SellerApplicationsModule } from './modules/seller-applications/seller-applications.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { KnowledgeModule } from './modules/knowledge/knowledge.module';
     ChatModule,
     TrackingModule,
     FunnelModule,
+    SellerApplicationsModule,
     AiAgentModule,
     KnowledgeModule,
     UsersModule,

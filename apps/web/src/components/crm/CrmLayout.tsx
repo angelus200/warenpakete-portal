@@ -11,6 +11,7 @@ import {
   MessageSquare,
   UserPlus,
   UserCheck,
+  Briefcase,
 } from 'lucide-react';
 
 const TABS = [
@@ -61,6 +62,12 @@ const TABS = [
     label: 'Berater',
     icon: UserCheck,
     href: '/admin/crm/consultants',
+  },
+  {
+    key: 'seller-applications',
+    label: 'Bewerbungen',
+    icon: Briefcase,
+    href: '/admin/crm/seller-applications',
   },
 ];
 
