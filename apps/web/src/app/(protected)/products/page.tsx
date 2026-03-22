@@ -49,7 +49,7 @@ export default function ProductsPage() {
         {/* Header */}
         <div className="mb-3 text-center">
           <h1 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
-            Premium <span className="text-gold">B2B Warenpakete</span>
+            Premium <span className="text-gold">B2B Markenprodukte</span>
           </h1>
           <p className="text-gray-600 text-lg">
             Exklusive Angebote mit bis zu 70% unter UVP

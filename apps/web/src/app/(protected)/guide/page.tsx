@@ -139,7 +139,7 @@ export default function GuidePage() {
             </div>
 
             <div className="p-4 bg-[#fffbeb] border-l-4 border-gold rounded-lg">
-              <h3 className="font-bold text-gray-900 mb-2">Kapitel 4: Warenpakete im Detail</h3>
+              <h3 className="font-bold text-gray-900 mb-2">Kapitel 4: Markenprodukte im Detail</h3>
               <p className="text-sm text-gray-600">Was Sie für Ihr Geld bekommen – Transparente Kalkulation</p>
             </div>
 
@@ -190,7 +190,7 @@ export default function GuidePage() {
               Bereit für den <span className="text-gold">nächsten Schritt?</span>
             </h2>
             <p className="text-gray-400 text-lg mb-8">
-              Entdecken Sie unsere kuratierten Warenpakete oder buchen Sie ein kostenloses Erstgespräch
+              Entdecken Sie unsere kuratierten Markenprodukte oder buchen Sie ein kostenloses Erstgespräch
             </p>
           </div>
 
@@ -200,7 +200,7 @@ export default function GuidePage() {
                 size="lg"
                 className="text-lg px-8 py-6 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-lg"
               >
-                Warenpakete ansehen
+                Markenprodukte ansehen
               </Button>
             </Link>
             <Link href="/erstgespraech">

@@ -224,7 +224,7 @@ export default function OrdersPage() {
               </div>
               <p className="text-xl text-gray-600 mb-4">Noch keine Bestellungen</p>
               <p className="text-gray-600 mb-4">
-                Entdecken Sie unsere Premium-Warenpakete und starten Sie Ihr Business
+                Entdecken Sie unsere Premium-Markenprodukte und starten Sie Ihr Business
               </p>
               <Link href="/products">
                 <button className="px-4 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold rounded-lg shadow-lg shadow-gold/20 transition-all">

@@ -204,7 +204,7 @@ export default function DashboardPage() {
               </div>
               <p className="text-gray-600 text-lg mb-2">Noch keine Bestellungen</p>
               <p className="text-gray-600 text-sm mb-3">
-                Starten Sie jetzt und entdecken Sie unsere Premium-Warenpakete
+                Starten Sie jetzt und entdecken Sie unsere Premium-Markenprodukte
               </p>
               <Link href="/products">
                 <button className="px-3 py-3 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold rounded-lg shadow-lg shadow-gold/20 transition-all">
