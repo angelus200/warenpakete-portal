@@ -6,7 +6,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@clerk/nextjs';
 import { ECommerceNewsTicker } from '@/components/ECommerceNewsTicker';
-import VidyardLazyVideo from '@/components/VidyardLazyVideo';
 import { MarktplatzModell } from '@/components/MarktplatzModell';
 
 export default function Home() {
@@ -405,29 +404,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Erklärvideo Section */}
-      <section className="py-20 bg-gradient-to-br from-[#2a2a2a] via-[#1f1f1f] to-[#2a2a2a] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold/10 via-transparent to-transparent" />
-
-        <div className="container relative z-10 mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">
-              Sehen Sie <span className="text-gold">wie es funktioniert</span>
-            </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              In diesem kurzen Video erklären wir Ihnen den gesamten Ablauf – von der Auswahl bis zum Verkaufserlös
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <VidyardLazyVideo
-              videoId="R5YaUYnT8eP2y3YTjZ7gFW"
-              thumbnailUrl="https://play.vidyard.com/R5YaUYnT8eP2y3YTjZ7gFW.jpg"
-              className="border-2 border-gold/30 rounded-2xl overflow-hidden shadow-2xl shadow-gold/10"
-            />
-          </div>
-        </div>
-      </section>
 
       <MarktplatzModell />
 
