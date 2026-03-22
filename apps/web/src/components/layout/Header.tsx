@@ -53,7 +53,7 @@ export function Header() {
             {/* Public links - always visible */}
             <NavLink href="/markenware">Produkte anbieten</NavLink>
             <NavLink href="/verkaufskommission">Auf Kommission</NavLink>
-            <NavLink href="/partner">Partner werden</NavLink>
+            <NavLink href={api.isSignedIn ? '/partner' : '/sign-up?redirect_url=/partner'}>Partner werden</NavLink>
             <NavLink href="/knowledge">Knowledge Shop</NavLink>
 
             {api.isSignedIn && (
@@ -124,7 +124,7 @@ export function Header() {
           {/* Public links - always visible */}
           <NavLink href="/markenware">Produkte anbieten</NavLink>
           <NavLink href="/verkaufskommission">Auf Kommission</NavLink>
-          <NavLink href="/partner">Partner werden</NavLink>
+          <NavLink href={api.isSignedIn ? '/partner' : '/sign-up?redirect_url=/partner'}>Partner werden</NavLink>
           <NavLink href="/knowledge">Knowledge Shop</NavLink>
 
           {api.isSignedIn && (
