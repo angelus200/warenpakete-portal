@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useAuth } from '@clerk/nextjs';
 import { ECommerceNewsTicker } from '@/components/ECommerceNewsTicker';
 import VidyardLazyVideo from '@/components/VidyardLazyVideo';
+import { MarktplatzModell } from '@/components/MarktplatzModell';
 
 export default function Home() {
   const { isSignedIn } = useAuth();
@@ -470,6 +471,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <MarktplatzModell />
 
       {/* Affiliate Partner Section */}
       <section className="py-24 bg-gradient-to-br from-[#fffbeb] via-white to-[#fffbeb] relative overflow-hidden">
