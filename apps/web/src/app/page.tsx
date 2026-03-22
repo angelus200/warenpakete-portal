@@ -382,7 +382,7 @@ export default function Home() {
                   Verkaufsweg entscheiden
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Selbst über eigene Kanäle verkaufen oder per Kommissionsverkauf durch uns – du entscheidest flexibel.
+                  Selbst über eigene Kanäle verkaufen oder per Kommissionsverkauf durch qualifizierte Dienstleister – Sie entscheiden flexibel.
                 </p>
               </div>
             </Card>
@@ -396,7 +396,7 @@ export default function Home() {
                   Handelsergebnis realisieren
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Nach Verkauf der Waren erhältst du den Erlös (abzüglich Kommission falls gewählt). Transparente Abwicklung.
+                  Nach Verkauf der Waren erhalten Sie den Erlös (abzüglich Kommission falls gewählt). Transparente Abwicklung.
                 </p>
               </div>
             </Card>
@@ -424,7 +424,7 @@ export default function Home() {
             </h2>
 
             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Empfehle E-Commerce Business an Unternehmer aus deinem Netzwerk und profitiere von unserem <strong>3-Ebenen Provisionssystem</strong>. Bis zu <strong className="text-gold">5% Provision</strong> auf direkte Verkäufe plus Provisionseinkommen aus deinem Partner-Netzwerk.
+              Empfehlen Sie E-Commerce Business an Unternehmer aus Ihrem Netzwerk und profitieren Sie von unserem <strong>3-Ebenen Provisionssystem</strong>. Bis zu <strong className="text-gold">5% Provision</strong> auf direkte Verkäufe plus Provisionseinkommen aus Ihrem Partner-Netzwerk.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 max-w-3xl mx-auto">
@@ -434,7 +434,7 @@ export default function Home() {
               </div>
               <div className="bg-white p-6 rounded-xl border-2 border-gold/30 shadow-lg">
                 <div className="text-3xl font-bold text-gold mb-2">2%</div>
-                <div className="text-sm text-gray-600">Ebene 2: Deine Partner-Verkäufe</div>
+                <div className="text-sm text-gray-600">Ebene 2: Ihre Partner-Verkäufe</div>
               </div>
               <div className="bg-white p-6 rounded-xl border-2 border-gold/30 shadow-lg">
                 <div className="text-3xl font-bold text-gold mb-2">1%</div>
@@ -472,7 +472,7 @@ export default function Home() {
               Zwei <span className="text-gold">Verkaufswege</span>
             </h2>
             <p className="text-gray-600 text-lg">
-              Wähle den Weg der zu deinem Geschäftsmodell passt
+              Wählen Sie den Weg, der zu Ihrem Geschäftsmodell passt
             </p>
           </div>
 
@@ -489,7 +489,7 @@ export default function Home() {
                   Option A: Selbstverkauf
                 </h3>
                 <p className="text-gray-600">
-                  Du verkaufst eigenständig über deine Kanäle
+                  Sie verkaufen eigenständig über Ihre Kanäle
                 </p>
               </div>
 
@@ -539,7 +539,7 @@ export default function Home() {
                   Option B: Kommissionsverkauf
                 </h3>
                 <p className="text-gray-600">
-                  Wir verkaufen für dich über etablierte Kanäle
+                  Qualifizierte Dienstleister verkaufen über etablierte Kanäle
                 </p>
               </div>
 
@@ -631,7 +631,7 @@ export default function Home() {
                 Flexible Verkaufswege
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Selbst verkaufen oder Kommission nutzen – du entscheidest je nach Geschäftssituation und Kapazität flexibel.
+                Selbst verkaufen oder Kommission nutzen – Sie entscheiden je nach Geschäftssituation und Kapazität flexibel.
               </p>
             </Card>
           </div>
@@ -690,7 +690,7 @@ export default function Home() {
               Jetzt <span className="text-gold">Markenprodukte entdecken</span>
             </h2>
             <p className="text-xl text-gray-400 mb-5 leading-relaxed">
-              Registriere dich als Gewerbetreibender und erhalte Zugang
+              Registrieren Sie sich als Gewerbetreibender und erhalten Sie Zugang
               <br />
               zu bewährten Produkten zu Großhandelspreisen
             </p>
