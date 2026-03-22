@@ -50,7 +50,7 @@ export default function AGBPage() {
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
-                  (1) Der Plattformbetreiber bietet eine Online-Plattform, auf der Gewerbetreibende Warenpakete
+                  (1) Der Plattformbetreiber bietet eine Online-Plattform, auf der Gewerbetreibende Waren
                   erwerben und optional Kommissionsverkauf-Dienstleistungen in Anspruch nehmen können.
                 </p>
                 <p>
@@ -93,7 +93,7 @@ export default function AGBPage() {
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
-                  (1) Verträge über den Kauf von Warenpaketen kommen zwischen dem jeweiligen Verkäufer und dem Käufer
+                  (1) Verträge über den Kauf von Waren kommen zwischen dem jeweiligen Verkäufer und dem Käufer
                   zustande, nicht mit dem Plattformbetreiber.
                 </p>
                 <p>
@@ -156,14 +156,23 @@ export default function AGBPage() {
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
-                  (1) Die auf der Plattform angebotenen Warenpakete sind Handelswaren und keine Finanz- oder
-                  Anlageprodukte.
+                  (1) Die auf der Plattform angebotenen Waren sind physische Handelswaren und stellen keine
+                  Finanzinstrumente, Anlageprodukte, Wertpapiere oder Vermögensanlagen im Sinne des jeweiligen
+                  nationalen Finanzmarktrechts dar. Die Plattform unterliegt keiner Finanzmarktaufsicht.
                 </p>
                 <p>
-                  (2) Der Erwerb von Warenpaketen erfolgt auf eigenes unternehmerisches Risiko. Es bestehen keine
-                  Gewinn- oder Renditegarantien.
+                  (2) Der Erwerb von Waren erfolgt auf eigenes unternehmerisches Risiko. Es bestehen keine Gewinn-,
+                  Rendite- oder Rückkaufgarantien. Der Plattformbetreiber schuldet weder eine Mindestrendite noch
+                  einen Rückkauf der erworbenen Waren.
                 </p>
-                <p>(3) Vergangene Verkaufserfolge sind keine Garantie für zukünftige Ergebnisse.</p>
+                <p>
+                  (3) Vergangene Verkaufserfolge sind keine Garantie für zukünftige Ergebnisse. Jegliche auf der
+                  Plattform dargestellten Beispielrechnungen dienen ausschließlich der Veranschaulichung.
+                </p>
+                <p>
+                  (4) Der Nutzer bestätigt, dass er die Waren zu gewerblichen Handelszwecken und nicht als
+                  Kapitalanlage erwirbt.
+                </p>
               </div>
             </section>
 
