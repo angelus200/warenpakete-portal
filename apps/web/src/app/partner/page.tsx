@@ -87,6 +87,16 @@ export default function PartnerPage() {
                 Jetzt registrieren &amp; Partner werden
               </Button>
             </Link>
+
+            <a href="/downloads/partner-handbuch.pdf" download className="inline-block mt-3">
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-lg px-8 py-6 border-2 border-[#D4AF37] text-[#D4AF37] bg-transparent hover:bg-[#D4AF37]/10 font-bold"
+              >
+                📥 Partner-Handbuch herunterladen (PDF)
+              </Button>
+            </a>
           </div>
         </div>
 
