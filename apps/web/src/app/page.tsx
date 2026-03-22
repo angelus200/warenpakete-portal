@@ -443,14 +443,9 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a href="/downloads/partner-handbuch.pdf" download>
-                <Button
-                  size="lg"
-                  className="text-lg px-8 py-7 bg-gradient-to-r from-gold-dark via-gold to-gold-light hover:from-gold-darker hover:via-gold-dark hover:to-gold text-dark font-bold shadow-2xl shadow-gold/30"
-                >
-                  📥 Partner-Handbuch herunterladen (PDF)
-                </Button>
-              </a>
+              <span className="text-sm text-gray-500 italic">
+                Partner-Handbuch wird aktualisiert — bald verfügbar
+              </span>
               <Link href="/partner">
                 <Button
                   size="lg"
