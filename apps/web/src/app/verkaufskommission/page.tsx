@@ -6,7 +6,7 @@ import { ClipboardList, Package, ShoppingCart, CreditCard, CheckCircle, Calendar
 export const metadata = {
   title: 'Verkauf auf Kommission | E-Commerce Business',
   description:
-    'Als E-Commerce Dienstleister auf Kommissionsbasis verkaufen — gemäß §383 HGB, nur für Gewerbetreibende.',
+    'Als E-Commerce Dienstleister auf Kommissionsbasis verkaufen — Kommissionshandel im DACH-Raum, nur für Gewerbetreibende.',
 };
 
 const ablauf = [
@@ -64,7 +64,7 @@ export default function VerkaufskommissionPage() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block mb-6 px-4 py-2 rounded-full border border-[#D4AF37]/50 bg-[#D4AF37]/10">
               <span className="text-[#D4AF37] text-sm font-bold tracking-wider">
-                🤝 KOMMISSIONSVERKAUF GEM. §383 HGB
+                🤝 KOMMISSIONSVERKAUF IM DACH-RAUM
               </span>
             </div>
 
@@ -101,7 +101,7 @@ export default function VerkaufskommissionPage() {
               Wir stellen die Markenprodukte bereit. Sie übernehmen den Verkauf über Ihre Kanäle.
               Nach erfolgreichem Verkauf erhalten Sie Ihre Kommission —
               <strong> transparent und pünktlich abgerechnet</strong>.
-              Die Abwicklung erfolgt auf Basis eines Kommissionsvertrags gemäß §383 HGB.
+              Die Abwicklung erfolgt auf Basis eines Kommissionsvertrags nach geltendem Recht im jeweiligen Land (§383 HGB in Deutschland, §383 UGB in Österreich, Art. 425 OR in der Schweiz).
             </p>
           </div>
         </div>
@@ -198,7 +198,7 @@ export default function VerkaufskommissionPage() {
       <section className="py-8 bg-gray-50 border-t border-gray-200">
         <div className="container mx-auto px-4 text-center">
           <p className="text-xs text-gray-500">
-            Kommissionsverkauf gemäß §383 HGB. Nur für Gewerbetreibende mit gültigem Gewerbeschein.
+            Kommissionshandel nach anwendbarem Recht im jeweiligen Land (§383 HGB/§383 UGB/Art. 425 OR). Nur für Gewerbetreibende mit gültigem Gewerbeschein.
             Es handelt sich um eine Dienstleistungsbeziehung, kein Arbeitsverhältnis.
           </p>
         </div>
