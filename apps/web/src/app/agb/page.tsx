@@ -131,6 +131,40 @@ export default function AGBPage() {
               </div>
             </section>
 
+            {/* § 3b */}
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 3b Kommissions-Dienstleister — Plattformgebühren
+              </h2>
+              <div className="space-y-3 text-gray-900 text-sm">
+                <p>
+                  (1) Gewerbetreibende können sich als Kommissions-Dienstleister auf der Plattform registrieren, um
+                  im Auftrag von Wareneigentümern den Verkauf auf Kommissionsbasis abzuwickeln.
+                </p>
+                <p>
+                  (2) Für die Registrierung und laufende Nutzung der Plattform als Kommissions-Dienstleister gelten
+                  folgende Gebühren:
+                </p>
+                <ul className="list-none ml-4 space-y-2">
+                  <li>a) <strong>Einmaliges Onboarding:</strong> 499,00 EUR</li>
+                  <li>b) <strong>Monatliche Plattformgebühr:</strong> 49,90 EUR</li>
+                  <li>
+                    c) <strong>Laufende Provision:</strong> 2% auf den tatsächlichen Netto-Verkaufserlös der über
+                    die Plattform abgewickelten Kommissionsverkäufe.
+                  </li>
+                </ul>
+                <p>(3) Alle Preise verstehen sich zzgl. der gesetzlichen Mehrwertsteuer.</p>
+                <p>
+                  (4) Die monatliche Plattformgebühr wird jeweils zum 1. des Monats fällig. Die einmalige
+                  Onboarding-Gebühr wird bei Freischaltung des Dienstleister-Kontos fällig.
+                </p>
+                <p>
+                  (5) Der Plattformbetreiber behält sich das Recht vor, die Gebühren mit einer Ankündigungsfrist
+                  von 30 Tagen anzupassen. Der Dienstleister hat in diesem Fall ein Sonderkündigungsrecht.
+                </p>
+              </div>
+            </section>
+
             {/* § 4 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
