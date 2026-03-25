@@ -131,10 +131,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 5 */}
+            {/* § 4 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 5 Vertragsschluss und Vertragspartner
+                § 4 Vertragsschluss und Vertragspartner
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -151,10 +151,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 6 */}
+            {/* § 5 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 6 Haftungsausschluss und -begrenzung
+                § 5 Haftungsausschluss und -begrenzung
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>(1) Der Plattformbetreiber haftet nicht für:</p>
@@ -179,10 +179,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 7 */}
+            {/* § 6 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 7 Freistellung
+                § 6 Freistellung
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -194,10 +194,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 8 */}
+            {/* § 7 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 8 Kein Anlageprodukt
+                § 7 Kein Anlageprodukt
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -221,10 +221,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 9 */}
+            {/* § 8 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 9 Datenschutz
+                § 8 Datenschutz
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -234,10 +234,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 10 */}
+            {/* § 9 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 10 Änderungen der AGB
+                § 9 Änderungen der AGB
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>(1) Der Plattformbetreiber behält sich vor, diese AGB jederzeit zu ändern.</p>
@@ -249,10 +249,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 11 */}
+            {/* § 10 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 11 Anwendbares Recht
+                § 10 Anwendbares Recht
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -263,10 +263,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 12 */}
+            {/* § 11 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 12 Schiedsgerichtsvereinbarung
+                § 11 Schiedsgerichtsvereinbarung
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -281,10 +281,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 13 */}
+            {/* § 12 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 13 Salvatorische Klausel
+                § 12 Salvatorische Klausel
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
