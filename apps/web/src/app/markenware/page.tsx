@@ -234,6 +234,135 @@ export default function MarkenwarePage() {
         </div>
       </section>
 
+      {/* ── PREISPAKETE ── */}
+      <section className="py-24 bg-neutral-950">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <p className="text-yellow-500 text-xs font-bold uppercase tracking-widest mb-4">
+              Plattformgebühren
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Transparente Preise für <span className="text-yellow-500">Produktanbieter</span>
+            </h2>
+            <p className="text-neutral-400 max-w-xl mx-auto text-sm leading-relaxed">
+              Registrierung, Produktlisting und laufende Plattformnutzung — alles inklusive.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+
+            {/* Starter */}
+            <div className="relative rounded-2xl border border-yellow-500/30 bg-neutral-900/50 p-8 flex flex-col hover:border-yellow-500/50 transition-colors">
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-white mb-1">Starter</h3>
+                <p className="text-yellow-500 text-sm font-medium">1–5 Produkte</p>
+                <p className="text-neutral-500 text-xs">mit jeweils bis zu 4 Varianten</p>
+              </div>
+              <div className="mb-6 pb-6 border-b border-neutral-800">
+                <div className="text-4xl font-bold text-white">499 €</div>
+                <div className="text-xs text-neutral-400 mt-1">Einmalige Einrichtungsgebühr</div>
+                <div className="mt-3 text-sm text-neutral-300 font-medium">49 € <span className="text-neutral-500 font-normal">/ Monat</span></div>
+                <div className="text-xs text-neutral-500">Plattformgebühr</div>
+                <div className="mt-2 text-sm text-neutral-300 font-medium">2% <span className="text-neutral-500 font-normal">vom Warenumsatz</span></div>
+                <div className="text-xs text-neutral-500">laufende Provision</div>
+              </div>
+              <ul className="space-y-3 mb-8 flex-grow">
+                {[
+                  'Registrierung & Onboarding',
+                  'Bis zu 5 Produktlistings',
+                  'Bis zu 4 Varianten pro Produkt',
+                  'Zugang zum Verkäufer-Dashboard',
+                  'Support via Dashboard-Chat',
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2.5 text-sm text-neutral-300">
+                    <svg className="w-4 h-4 text-yellow-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="#bewerbung"
+                className="block text-center py-3 rounded-lg border border-yellow-500/50 text-yellow-500 hover:bg-yellow-500/10 text-sm font-semibold transition-colors"
+              >
+                Jetzt als Verkäufer bewerben
+              </a>
+            </div>
+
+            {/* Professional — hervorgehoben */}
+            <div className="relative rounded-2xl border border-yellow-500 bg-neutral-900/80 p-8 flex flex-col shadow-lg shadow-yellow-500/10">
+              <div className="absolute top-4 right-4 bg-yellow-500 text-neutral-900 text-xs font-bold px-3 py-1 rounded-full">
+                Empfohlen
+              </div>
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-white mb-1">Professional</h3>
+                <p className="text-yellow-500 text-sm font-medium">6–25 Produkte</p>
+                <p className="text-neutral-500 text-xs">mit jeweils bis zu 4 Varianten</p>
+              </div>
+              <div className="mb-6 pb-6 border-b border-neutral-700">
+                <div className="text-4xl font-bold text-white">899 €</div>
+                <div className="text-xs text-neutral-400 mt-1">Einmalige Einrichtungsgebühr</div>
+                <div className="mt-3 text-sm text-neutral-300 font-medium">89 € <span className="text-neutral-500 font-normal">/ Monat</span></div>
+                <div className="text-xs text-neutral-500">Plattformgebühr</div>
+                <div className="mt-2 text-sm text-neutral-300 font-medium">2% <span className="text-neutral-500 font-normal">vom Warenumsatz</span></div>
+                <div className="text-xs text-neutral-500">laufende Provision</div>
+              </div>
+              <ul className="space-y-3 mb-8 flex-grow">
+                {[
+                  'Alles aus Starter',
+                  'Bis zu 25 Produktlistings',
+                  'Erweiterte Produktanalysen',
+                  'Priorisierter Support',
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2.5 text-sm text-neutral-300">
+                    <svg className="w-4 h-4 text-yellow-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="#bewerbung"
+                className="block text-center py-3 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-neutral-900 text-sm font-bold transition-colors shadow-md shadow-yellow-500/20"
+              >
+                Jetzt als Verkäufer bewerben
+              </a>
+            </div>
+
+            {/* Enterprise */}
+            <div className="relative rounded-2xl border border-neutral-700 bg-neutral-900/50 p-8 flex flex-col hover:border-neutral-600 transition-colors">
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-white mb-1">Enterprise</h3>
+                <p className="text-yellow-500 text-sm font-medium">Mehr als 25 Produkte</p>
+                <p className="text-neutral-500 text-xs">Individuelle Konditionen</p>
+              </div>
+              <div className="mb-6 pb-6 border-b border-neutral-800">
+                <div className="text-4xl font-bold text-white">Auf Anfrage</div>
+              </div>
+              <p className="text-neutral-400 text-sm leading-relaxed mb-8 flex-grow">
+                Für größere Sortimente erstellen wir ein individuelles Angebot — abgestimmt auf Ihr Volumen und Ihre Anforderungen.
+              </p>
+              <a
+                href="#bewerbung"
+                className="block text-center py-3 rounded-lg border border-neutral-700 text-neutral-300 hover:border-neutral-500 hover:text-white text-sm font-semibold transition-colors"
+              >
+                Individuelles Angebot anfragen
+              </a>
+            </div>
+
+          </div>
+
+          {/* Hinweistexte */}
+          <div className="mt-10 text-center space-y-1.5">
+            <p className="text-xs text-neutral-500">Alle Preise zzgl. gesetzlicher MwSt.</p>
+            <p className="text-xs text-neutral-500">Die laufende Provision von 2% wird auf den tatsächlichen Warenumsatz über die Plattform erhoben.</p>
+            <p className="text-xs text-neutral-500">Nur für Gewerbetreibende mit gültigem Gewerbeschein.</p>
+          </div>
+        </div>
+      </section>
+
       {/* ── SO FUNKTIONIERT'S ── */}
       <section className="py-24 bg-neutral-950">
         <div className="container mx-auto px-4">
