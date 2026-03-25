@@ -86,10 +86,55 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 4 */}
+            {/* § 3a */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 4 Vertragsschluss und Vertragspartner
+                § 3a Produktanbieter — Plattformgebühren
+              </h2>
+              <div className="space-y-3 text-gray-900 text-sm">
+                <p>
+                  (1) Hersteller, Marken und Großhändler können ihre Produkte über die Plattform anbieten. Die Nutzung
+                  der Plattform als Produktanbieter ist kostenpflichtig.
+                </p>
+                <p>
+                  (2) Für die Registrierung, das Produktlisting und die laufende Plattformnutzung gelten folgende
+                  Gebühren:
+                </p>
+                <ul className="list-none ml-4 space-y-2">
+                  <li>
+                    a) <strong>Starter</strong> (1–5 Produkte, jeweils bis zu 4 Varianten): Einmalige
+                    Einrichtungsgebühr 499,00 EUR, monatliche Plattformgebühr 49,00 EUR, sowie eine laufende Provision
+                    von 2% auf den über die Plattform erzielten Warenumsatz.
+                  </li>
+                  <li>
+                    b) <strong>Professional</strong> (6–25 Produkte, jeweils bis zu 4 Varianten): Einmalige
+                    Einrichtungsgebühr 899,00 EUR, monatliche Plattformgebühr 89,00 EUR, sowie eine laufende Provision
+                    von 2% auf den über die Plattform erzielten Warenumsatz.
+                  </li>
+                  <li>
+                    c) <strong>Enterprise</strong> (mehr als 25 Produkte): Individuelle Konditionen nach Vereinbarung.
+                  </li>
+                </ul>
+                <p>(3) Alle Preise verstehen sich zzgl. der gesetzlichen Mehrwertsteuer.</p>
+                <p>
+                  (4) Die monatliche Plattformgebühr wird jeweils zum 1. des Monats fällig. Die einmalige
+                  Einrichtungsgebühr wird bei Freischaltung des Verkäufer-Kontos fällig.
+                </p>
+                <p>
+                  (5) Die Provision von 2% wird auf den tatsächlichen Netto-Warenumsatz erhoben und monatlich
+                  abgerechnet.
+                </p>
+                <p>
+                  (6) Der Plattformbetreiber behält sich das Recht vor, die Gebühren mit einer Ankündigungsfrist von
+                  30 Tagen anzupassen. Der Produktanbieter hat in diesem Fall ein Sonderkündigungsrecht.
+                </p>
+              </div>
+            </section>
+
+            {/* § 5 */}
+            <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
+              <h2 className="text-lg font-semibold text-gold mb-3">
+                § 5 Vertragsschluss und Vertragspartner
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -106,10 +151,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 5 */}
+            {/* § 6 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 5 Haftungsausschluss und -begrenzung
+                § 6 Haftungsausschluss und -begrenzung
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>(1) Der Plattformbetreiber haftet nicht für:</p>
@@ -134,10 +179,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 6 */}
+            {/* § 7 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 6 Freistellung
+                § 7 Freistellung
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -149,10 +194,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 7 */}
+            {/* § 8 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 7 Kein Anlageprodukt
+                § 8 Kein Anlageprodukt
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -176,10 +221,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 8 */}
+            {/* § 9 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 8 Datenschutz
+                § 9 Datenschutz
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -189,10 +234,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 9 */}
+            {/* § 10 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 9 Änderungen der AGB
+                § 10 Änderungen der AGB
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>(1) Der Plattformbetreiber behält sich vor, diese AGB jederzeit zu ändern.</p>
@@ -204,10 +249,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 10 */}
+            {/* § 11 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 10 Anwendbares Recht
+                § 11 Anwendbares Recht
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -218,10 +263,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 11 */}
+            {/* § 12 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 11 Schiedsgerichtsvereinbarung
+                § 12 Schiedsgerichtsvereinbarung
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
@@ -236,10 +281,10 @@ export default function AGBPage() {
               </div>
             </section>
 
-            {/* § 12 */}
+            {/* § 13 */}
             <section className="bg-[#ebebeb] p-4 rounded border border-gray-300">
               <h2 className="text-lg font-semibold text-gold mb-3">
-                § 12 Salvatorische Klausel
+                § 13 Salvatorische Klausel
               </h2>
               <div className="space-y-3 text-gray-900 text-sm">
                 <p>
