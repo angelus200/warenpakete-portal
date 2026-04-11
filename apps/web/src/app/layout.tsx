@@ -59,8 +59,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://www.ecommercerente.com',
   },
-  // TODO: Google Search Console verifizieren und Code hier eintragen
-  // verification: { google: 'GOOGLE_SITE_VERIFICATION_CODE' },
+  verification: { google: 'google33f797da16253ff3' },
 };
 
 const structuredData = {
