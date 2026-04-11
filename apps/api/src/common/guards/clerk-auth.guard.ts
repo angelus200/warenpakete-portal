@@ -6,13 +6,17 @@ import {
 } from '@nestjs/common';
 import { Clerk } from '@clerk/backend';
 import { PrismaService } from '../prisma/prisma.service';
+import { GhlService } from '../../modules/ghl/ghl.service';
 import { nanoid } from 'nanoid';
 
 @Injectable()
 export class ClerkAuthGuard implements CanActivate {
   private clerk = Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private ghlService: GhlService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -97,6 +101,15 @@ export class ClerkAuthGuard implements CanActivate {
           });
 
           console.log(`✅ Auto-created user ${user.email} (webhook missed)`);
+
+          // GHL Sync — fire and forget
+          this.ghlService.upsertContact({
+            firstName: clerkUser.firstName || '',
+            lastName: clerkUser.lastName || '',
+            email: clerkUser.emailAddresses[0]?.emailAddress || '',
+            tags: ['portal-user', 'registered'],
+            source: 'ecommercerente.com',
+          }).catch(() => {});
         } catch (createError) {
           console.error('❌ Failed to auto-create user:', createError.message);
           throw new UnauthorizedException('User not found and auto-create failed');

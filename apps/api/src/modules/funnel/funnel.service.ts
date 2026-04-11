@@ -1,6 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { EmailService } from '../email/email.service';
+import { GhlService } from '../ghl/ghl.service';
 import { CreateLeadDto } from './dto/create-lead.dto';
 import { UpdateLeadDto } from './dto/update-lead.dto';
 import { CreateConsultantDto } from './dto/create-consultant.dto';
@@ -13,6 +14,7 @@ export class FunnelService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly emailService: EmailService,
+    private readonly ghlService: GhlService,
   ) {}
 
   // ===== LEADS =====
@@ -44,6 +46,19 @@ export class FunnelService {
         consultant: true,
       },
     });
+
+    // GHL Sync — fire and forget
+    this.ghlService.upsertContact({
+      firstName: lead.firstName,
+      lastName: lead.lastName,
+      email: lead.email,
+      phone: lead.phone,
+      companyName: lead.company,
+      tags: lead.isQualified
+        ? ['funnel-lead', 'qualified', `budget-${lead.budget}`]
+        : ['funnel-lead', 'not-qualified', `budget-${lead.budget}`],
+      source: (lead as any).utmSource || 'erstgespraech-funnel',
+    }).catch(() => {});
 
     // Emails versenden
     try {

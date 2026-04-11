@@ -26,6 +26,7 @@ import { FunnelModule } from './modules/funnel/funnel.module';
 import { AiAgentModule } from './modules/ai-agent/ai-agent.module';
 import { KnowledgeModule } from './modules/knowledge/knowledge.module';
 import { SellerApplicationsModule } from './modules/seller-applications/seller-applications.module';
+import { GhlModule } from './modules/ghl/ghl.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { SellerApplicationsModule } from './modules/seller-applications/seller-a
         limit: 10,
       },
     ]),
+    GhlModule,
     PrismaModule,
     EmailModule,
     EmailAutomationModule,

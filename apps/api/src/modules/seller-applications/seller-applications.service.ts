@@ -1,6 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { EmailService } from '../email/email.service';
+import { GhlService } from '../ghl/ghl.service';
 import { CreateSellerApplicationDto } from './dto/create-seller-application.dto';
 import { UpdateSellerApplicationDto } from './dto/update-seller-application.dto';
 
@@ -12,6 +13,7 @@ export class SellerApplicationsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly emailService: EmailService,
+    private readonly ghlService: GhlService,
   ) {}
 
   async create(dto: CreateSellerApplicationDto) {
@@ -20,6 +22,25 @@ export class SellerApplicationsService {
     const application = await this.prisma.sellerApplication.create({
       data: dto,
     });
+
+    // GHL Sync — fire and forget
+    const nameParts = application.contactName.trim().split(' ');
+    this.ghlService.upsertContact({
+      firstName: nameParts[0] || application.contactName,
+      lastName: nameParts.slice(1).join(' ') || '',
+      email: application.email,
+      phone: application.phone || undefined,
+      companyName: application.company,
+      tags: ['seller-application', `category-${application.productCategory}`],
+      source: 'markenware-bewerbung',
+    }).then((contactId) => {
+      if (contactId) {
+        this.ghlService.addNote(
+          contactId,
+          `Verkäufer-Bewerbung:\nFirma: ${application.company}\nKategorie: ${application.productCategory}\nProdukte: ${application.productCount || 'k.A.'}\nSortiment: ${application.message}`,
+        ).catch(() => {});
+      }
+    }).catch(() => {});
 
     // Emails asynchron versenden — Fehler sollen den Request nicht blockieren
     this.sendEmails(application).catch((err) =>

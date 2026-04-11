@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { EmailService } from '../email/email.service';
+import { GhlService } from '../ghl/ghl.service';
 import { VerifyCustomerDto } from './dto/verify-customer.dto';
 import { OrderStatusDto } from './dto/order-status.dto';
 import { AiAgentCreateLeadDto } from './dto/create-lead.dto';
@@ -13,6 +14,7 @@ export class AiAgentService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly emailService: EmailService,
+    private readonly ghlService: GhlService,
   ) {}
 
   // ===== TOOL 1: VERIFY CUSTOMER =====
@@ -109,6 +111,17 @@ export class AiAgentService {
         try { await this.emailService.sendConsultantLeadNotification(consultant.email, lead); }
         catch (e) { this.logger.error('Email error:', e); }
       }
+
+      // GHL Sync — fire and forget
+      this.ghlService.upsertContact({
+        firstName,
+        lastName,
+        email: dto.email || 'phone-lead@ecommercerente.com',
+        phone: dto.phone || '',
+        companyName: dto.company_name,
+        tags: ['phone-lead', 'ai-agent', isQualified ? 'qualified' : 'not-qualified'],
+        source: 'ai-phone-agent',
+      }).catch(() => {});
 
       return {
         success: true, lead_id: lead.id, is_qualified: isQualified,

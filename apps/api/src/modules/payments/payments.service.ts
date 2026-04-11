@@ -4,6 +4,7 @@ import { PrismaService } from '../../common/prisma/prisma.service';
 import { OrdersService } from '../orders/orders.service';
 import { EmailService } from '../email/email.service';
 import { AffiliateService } from '../affiliate/affiliate.service';
+import { GhlService } from '../ghl/ghl.service';
 import { OrderStatus } from '@prisma/client';
 import Stripe from 'stripe';
 
@@ -16,6 +17,7 @@ export class PaymentsService {
     private ordersService: OrdersService,
     private emailService: EmailService,
     private affiliateService: AffiliateService,
+    private ghlService: GhlService,
     private moduleRef: ModuleRef,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
@@ -154,6 +156,25 @@ export class PaymentsService {
 
           // Get order with user data
           const order = await this.ordersService.findOne(orderId, undefined, true);
+
+          // GHL Sync — fire and forget
+          this.ghlService.upsertContact({
+            email: order.user.email,
+            firstName: order.user.firstName || '',
+            lastName: order.user.lastName || '',
+            tags: ['customer', 'paid'],
+            source: 'ecommercerente.com',
+          }).then((contactId) => {
+            if (contactId) {
+              this.ghlService.createOpportunity({
+                pipelineId: process.env.GHL_PIPELINE_ID || '',
+                stageId: process.env.GHL_STAGE_PAID_ID || '',
+                name: `Order ${order.id}`,
+                contactId,
+                monetaryValue: Number(order.totalAmount),
+              }).catch(() => {});
+            }
+          }).catch(() => {});
 
           // Send order confirmation email
           await this.emailService.sendOrderConfirmation(order.user.email, order);
