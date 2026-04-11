@@ -16,8 +16,8 @@ export class GhlService {
   }
 
   private isEnabled(): boolean {
-    if (!this.token) {
-      this.logger.warn('GHL sync disabled — GHL_API_TOKEN not set');
+    if (!this.token || !this.locationId) {
+      this.logger.warn('GHL sync disabled — GHL_API_TOKEN or GHL_LOCATION_ID not set');
       return false;
     }
     return true;
@@ -35,7 +35,7 @@ export class GhlService {
     if (!this.isEnabled()) return null;
     try {
       const searchRes = await fetch(
-        `${this.baseUrl}/contacts/search/duplicate?email=${encodeURIComponent(data.email)}`,
+        `${this.baseUrl}/contacts/search/duplicate?locationId=${this.locationId}&email=${encodeURIComponent(data.email)}`,
         { method: 'GET', headers: this.headers },
       );
       const searchData = await searchRes.json() as any;
@@ -61,6 +61,7 @@ export class GhlService {
           method: 'POST',
           headers: this.headers,
           body: JSON.stringify({
+            locationId: this.locationId,
             firstName: data.firstName,
             lastName: data.lastName || '',
             email: data.email,
@@ -101,7 +102,7 @@ export class GhlService {
       await fetch(`${this.baseUrl}/contacts/${contactId}/notes`, {
         method: 'POST',
         headers: this.headers,
-        body: JSON.stringify({ body }),
+        body: JSON.stringify({ body, userId: this.locationId }),
       });
       this.logger.log(`GHL: Note added to ${contactId}`);
     } catch (error) {
@@ -127,6 +128,7 @@ export class GhlService {
         method: 'POST',
         headers: this.headers,
         body: JSON.stringify({
+          locationId: this.locationId,
           pipelineId: data.pipelineId,
           pipelineStageId: data.stageId,
           name: data.name,
