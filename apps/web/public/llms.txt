@@ -1,30 +1,52 @@
-# E-Commerce Service — B2B Markenware & Kommissionshandel
-# https://www.ecommercerente.com
+# E-Commerce Service
 
-## Unternehmen
-Betreiber: Commercehelden GmbH (Österreich)
-Produktlieferant: Trademark24-7 AG (Schweiz)
-Zielmarkt: DACH-Raum (Deutschland, Österreich, Schweiz)
-Rechtsform: B2B — ausschließlich für Gewerbetreibende
+> Neutraler B2B-Marktplatz für Markenprodukte im DACH-Raum
 
-## Leistungen
-1. Markenware zu Großhandelspreisen (/markenware)
-   Geprüfte Markensortimente für Händler, Online-Shops, Einzelhändler
-   Mindestbestellwert: ab €2.500, nur B2B mit Gewerbeschein
+E-Commerce Service ist ein B2B-Marktplatz der Gewerbetreibende in Deutschland, Österreich und der Schweiz mit geprüften Markenlieferanten verbindet. Als Plattformbetreiber bieten wir Zugang zu Markenprodukten zu B2B-Konditionen.
 
-2. Kommissionsverkauf für E-Commerce Dienstleister (/verkaufskommission)
-   Dienstleister verkaufen Markenprodukte auf Kommissionsbasis
-   Rechtsgrundlage: §383 HGB Kommissionsgeschäft
+## Geschäftsmodell
+- Lieferanten listen ihre Markenprodukte auf der Plattform (wechselnde Lieferanten)
+- Gewerbetreibende beziehen Produkte zu B2B-Konditionen
+- Option A: Selbstverkauf über eigene Kanäle
+- Option B: Kommissionsverkauf durch qualifizierte Dienstleister
+- Kommissionshandel nach anwendbarem Recht (§383 HGB / §383 UGB / Art. 425 OR)
 
-3. Affiliate-Partnerprogramm (/partner)
-   3-Ebenen Provisionssystem für Vermittlungspartner
-   Provision: bis zu 5% auf vermittelte Aufträge
+## Für Gewerbetreibende
+- Geprüfte Markenprodukte zu B2B-Konditionen
+- Selbstverkauf oder optionaler Kommissionsverkauf
+- Dashboard für Bestellungen, Verträge und Abrechnungen
+- Mindestbestellwert: ab €2.500
+- URL: https://www.ecommercerente.com
 
-## Kontakt
-Partner-Support: partner@ecommercerente.com
-Allgemein: support@ecommercerente.com
-Erstgespräch: https://www.ecommercerente.com/erstgespraech
+## Für Produktanbieter (Hersteller, Marken, Großhändler)
+- Produkte über den Marktplatz anbieten
+- Starter (1–5 Produkte): 499 EUR einmalig, 49 EUR/Monat, 2% Provision
+- Professional (6–25 Produkte): 899 EUR einmalig, 89 EUR/Monat, 2% Provision
+- Enterprise (25+ Produkte): Auf Anfrage, individuelle Konditionen
+- Bewerbung: https://www.ecommercerente.com/markenware
+
+## Für Kommissions-Dienstleister
+- Verkauf im Auftrag von Wareneigentümern auf eigenen Kanälen (Amazon, eBay, Webshop etc.)
+- Onboarding: 499 EUR einmalig, 49,90 EUR/Monat, 2% vom Umsatz
+- Monatliche Abrechnung nach tatsächlichen Verkäufen
+- URL: https://www.ecommercerente.com/verkaufskommission
+
+## Affiliate-Partnerprogramm
+- 3-Ebenen-System: 5% (Ebene 1) / 2% (Ebene 2) / 1% (Ebene 3)
+- Kostenlose Teilnahme nach Registrierung und Verifizierung
+- Auszahlung monatlich zum 15. ab €100 Guthaben per SEPA
+- URL: https://www.ecommercerente.com/partner
 
 ## Rechtliches
-Nur B2B-Geschäfte. Kein Endkundenverkauf.
-Keine Renditegarantie. Individuelle Ergebnisse.
+- Nur für Gewerbetreibende mit gültigem Gewerbeschein
+- Keine Renditegarantie, keine Erfolgsgarantien
+- Kommissionshandel nach anwendbarem Recht (DE: §383 HGB / AT: §383 UGB / CH: Art. 425 OR)
+- Plattform unterliegt keiner Finanzmarktaufsicht
+- Kein Endkundenverkauf
+
+## Kontakt & Links
+- Website: https://www.ecommercerente.com
+- Erstgespräch: https://www.ecommercerente.com/erstgespraech
+- FAQ: https://www.ecommercerente.com/faq
+- Impressum: https://www.ecommercerente.com/impressum
+- Datenschutz: https://www.ecommercerente.com/datenschutz

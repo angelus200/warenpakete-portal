@@ -1,6 +1,22 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /orders/
+Disallow: /contracts/
+Disallow: /affiliate/
+Disallow: /support/
+Disallow: /wallet/
+Disallow: /referrals/
+Disallow: /onboarding/
+Disallow: /checkout/
+Disallow: /guide/
+Disallow: /sign-in
+Disallow: /sign-up
 
+Sitemap: https://www.ecommercerente.com/sitemap.xml
+
+# KI-Crawler erlaubt
 User-agent: GPTBot
 Allow: /
 
@@ -15,5 +31,3 @@ Allow: /
 
 User-agent: Google-Extended
 Allow: /
-
-Sitemap: https://www.ecommercerente.com/sitemap.xml

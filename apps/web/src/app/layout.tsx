@@ -12,14 +12,68 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'E-Commerce Service — B2B Markenware & Kommissionshandel',
+  metadataBase: new URL('https://www.ecommercerente.com'),
+  title: {
+    default: 'E-Commerce Service — B2B-Marktplatz für Markenprodukte im DACH-Raum',
+    template: '%s | E-Commerce Service',
+  },
   description:
-    'B2B Plattform für Markenware zu Großhandelspreisen und Kommissionshandel im DACH-Raum. Ausschließlich für Gewerbetreibende.',
+    'Geprüfte Markenprodukte zu B2B-Konditionen. Neutraler Marktplatz für Gewerbetreibende in Deutschland, Österreich und der Schweiz.',
+  keywords: [
+    'B2B Marktplatz',
+    'Markenprodukte Großhandel',
+    'E-Commerce DACH',
+    'Kommissionshandel',
+    'Online Handel B2B',
+    'Markenware Großhandelspreise',
+    'B2B E-Commerce Plattform',
+    'Gewerbetreibende Markenprodukte',
+  ],
+  authors: [{ name: 'E-Commerce Service' }],
+  creator: 'E-Commerce Service',
+  openGraph: {
+    type: 'website',
+    locale: 'de_DE',
+    url: 'https://www.ecommercerente.com',
+    siteName: 'E-Commerce Service',
+    title: 'E-Commerce Service — B2B-Marktplatz im DACH-Raum',
+    description:
+      'Geprüfte Markenprodukte zu B2B-Konditionen für Gewerbetreibende in Deutschland, Österreich und der Schweiz.',
+    images: [{ url: '/opengraph-image.png', width: 1200, height: 630, alt: 'E-Commerce Service' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'E-Commerce Service — B2B-Marktplatz',
+    description: 'Markenprodukte zu B2B-Konditionen im DACH-Raum.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+    },
+  },
+  alternates: {
+    canonical: 'https://www.ecommercerente.com',
+  },
+  // TODO: Google Search Console verifizieren und Code hier eintragen
+  // verification: { google: 'GOOGLE_SITE_VERIFICATION_CODE' },
 };
 
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://www.ecommercerente.com/#website',
+      url: 'https://www.ecommercerente.com',
+      name: 'E-Commerce Service',
+      description: 'Neutraler B2B-Marktplatz für Markenprodukte im DACH-Raum',
+      publisher: { '@id': 'https://www.ecommercerente.com/#organization' },
+    },
     {
       '@type': 'Organization',
       '@id': 'https://www.ecommercerente.com/#organization',

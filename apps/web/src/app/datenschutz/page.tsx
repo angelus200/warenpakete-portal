@@ -2,8 +2,10 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Datenschutz | E-Commerce Service',
-  description: 'Datenschutzerklärung',
+  title: 'Datenschutzerklärung',
+  description: 'Datenschutzerklärung der E-Commerce Service Plattform gemäß DSGVO.',
+  alternates: { canonical: 'https://www.ecommercerente.com/datenschutz' },
+  robots: { index: false, follow: false },
 };
 
 export default function DatenschutzPage() {

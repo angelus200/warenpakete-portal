@@ -3,10 +3,29 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ClipboardList, Package, ShoppingCart, CreditCard, CheckCircle, Calendar, Banknote, Zap } from 'lucide-react';
 
-export const metadata = {
-  title: 'Verkauf auf Kommission | E-Commerce Business',
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Kommissionsverkauf im DACH-Raum — E-Commerce Dienstleister werden',
   description:
-    'Als E-Commerce Dienstleister auf Kommissionsbasis verkaufen — Kommissionshandel im DACH-Raum, nur für Gewerbetreibende.',
+    'Als E-Commerce Dienstleister auf Kommission verkaufen. Markenprodukte über Amazon, eBay und eigene Shops vertreiben. Onboarding ab 499 EUR einmalig.',
+  keywords: [
+    'Kommissionshandel E-Commerce',
+    'Auf Kommission verkaufen',
+    'E-Commerce Dienstleister werden',
+    'Kommissionsverkauf DACH',
+    'Amazon eBay Kommission',
+    '§383 HGB Kommissionsgeschäft',
+  ],
+  alternates: {
+    canonical: 'https://www.ecommercerente.com/verkaufskommission',
+  },
+  openGraph: {
+    title: 'Kommissionsverkauf — E-Commerce Service',
+    description:
+      'Markenprodukte auf Kommission verkaufen. Monatliche Abrechnung, keine Vorabkosten.',
+    url: 'https://www.ecommercerente.com/verkaufskommission',
+  },
 };
 
 const ablauf = [

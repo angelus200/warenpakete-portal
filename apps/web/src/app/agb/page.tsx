@@ -2,8 +2,10 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'AGB | E-Commerce Service',
-  description: 'Allgemeine Geschäftsbedingungen',
+  title: 'AGB — Allgemeine Geschäftsbedingungen',
+  description: 'Allgemeine Geschäftsbedingungen der E-Commerce Service Plattform für Gewerbetreibende im DACH-Raum.',
+  alternates: { canonical: 'https://www.ecommercerente.com/agb' },
+  robots: { index: false, follow: false },
 };
 
 export default function AGBPage() {

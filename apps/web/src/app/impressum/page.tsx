@@ -2,8 +2,10 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Impressum | E-Commerce Service',
-  description: 'Impressum und rechtliche Angaben',
+  title: 'Impressum',
+  description: 'Impressum und rechtliche Angaben der Commercehelden GmbH.',
+  alternates: { canonical: 'https://www.ecommercerente.com/impressum' },
+  robots: { index: false, follow: false },
 };
 
 export default function ImpressumPage() {
